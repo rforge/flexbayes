@@ -1,0 +1,62 @@
+	# The data frame stack.dat combines the stack.loss and stack.x 
+	# data sets included with S-PLUS.  These data are from the operation of 
+	# a plant for the oxidation of ammonia to nitric acid, measured on 21 
+	# consecutive days. 
+	# The goal is to model  Loss (percent of ammonia lost times 10), as a 
+	# linear function of 
+	# Air.Flow (air flow to the plant), Water.Temp (cooling 
+	# water inlet temperature), and 
+	# Acid.Conc (acid concentration as a 
+	# percentage). 
+
+	library(FlexBayes)
+
+	# specify the model in BUGS format	
+	bugsModel <- function (){
+		for( i in 1 : N ) {
+
+			Loss[i] ~ dnorm(mu[i],tau.c)
+			mu[i] <- beta[1] + beta[2] * Air.Flow[i] + beta[3] * Water.Temp[i] + beta[4] * Acid.Conc.[i]
+		}
+		for(j in 1:4){
+			beta[j] ~ dnorm(beta.mean, beta.prec)
+		}
+		tau.c <- pow(sigma.c, -2)
+		sigma.c ~ dunif (0, sigma.c.max)
+		
+		invisible()		
+	}
+	
+	# Create the data frame for fitting the model
+	stackModelData <- stack.dat
+	stackModelData$N <- length(stack.dat$Loss)
+	# Set the values for the hyperparameters.  Choose values which lead to very
+	# diffuse priors on the variance 1/tau.c and the coefficients beta[j]
+	sigma.c.max <- 1000
+	beta.mean <- 0
+	beta.prec <- 1e-6
+	stackModelData$sigma.c.max <- sigma.c.max
+	stackModelData$beta.mean <- beta.mean
+	stackModelData$beta.prec <- beta.prec
+
+	# Specify the parameters for which we wish to save the posterior samples
+	parameters.to.save <- c("beta", "sigma.c")
+	
+	# Specify the initial values
+	initial.values <- list(beta = rep(beta.mean, 4), 
+		sigma.c = sigma.c.max/2 )
+	# Make a list of the initial values for the chains.  We will fit a single chain,
+	# so this is just the trivial list:
+	initial.values <- list(initial.values)
+
+	# get the posterior samples
+	posterior.samples <- posteriorSamples (data = stackModelData, 
+		model = bugsModel, inits = initial.values, 
+		parametersToSave = parameters.to.save,
+		nIter = 11000, nBurnin = 1000, nThin = 1,
+		bugsDirectory = "C:/Program Files/WinBUGS14/")
+
+	# Obtain Bayesian point and interval estimates for the parameters
+	summary(posterior.samples)
+
+	detach("flexBayes")
