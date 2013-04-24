@@ -1,0 +1,24 @@
+export(
+  ## bayes.distribution.R ##
+  bayes.normal,
+  bayes.t,
+  bayes.nonInformative,
+  bayes.beta,
+  bayes.gamma,
+  bayes.normal.mixture,
+  bayes.t.mixture,
+  bayes.uniformShrinkage,
+  bayes.duMouchel,
+  bayes.nonInfoPower,
+  bayes.massPoint,
+  bayes.wishart,
+  bayes.invWishart,
+  bayes.invChisq
+)
+
+
+## S3 methods for fbdstn ##
+
+S3method(print, fbdstn)
+
+
