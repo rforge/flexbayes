@@ -4,7 +4,8 @@ Date: 2013-04-17
 Title: Flexible Bayesian Inference
 Author: TIBCO Software Inc., Kjell Konis <kjell.konis@icloud.com>.
 Maintainer: Kjell Konis <kjell.konis@icloud.com>
-Suggests: coda, R2WinBUGS, BRugs
+Depends: coda
+Suggests: R2WinBUGS, BRugs
 Description: Using this package, it is possible to run an MCMC on a model and \
              data set, summarize inferences, and do convergence diagnostics. \
              Examples are available in the help files for posteriorSamples, \

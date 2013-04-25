@@ -1,12 +1,11 @@
-^README
-^Tibco-FlexBayes.tar.gz
-^doc
-^funs
-^misc
-^origRd
-^origTests
+^README$
+^Tibco-FlexBayes.tar.gz$
+^doc$
+^funs$
+^misc$
+^origRd$
+^origTests$
 
-
-
-
-
+^FlexBayes.xcodeproj$
+^.*\.Rproj$
+^\.Rproj\.user$

@@ -1,0 +1,98 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		0E2FFB411729938D00427552 /* DESCRIPTION */ = {isa = PBXFileReference; lastKnownFileType = text; path = DESCRIPTION; sourceTree = "<group>"; };
+		0E2FFB421729938D00427552 /* NAMESPACE */ = {isa = PBXFileReference; lastKnownFileType = text; path = NAMESPACE; sourceTree = "<group>"; };
+		0E2FFB431729938D00427552 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		0E2FFB491729946400427552 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
+		0E2FFB4B1729946400427552 /* inst */ = {isa = PBXFileReference; lastKnownFileType = folder; path = inst; sourceTree = "<group>"; };
+		0E2FFB4C1729946400427552 /* man */ = {isa = PBXFileReference; lastKnownFileType = folder; path = man; sourceTree = "<group>"; };
+		0E2FFB4D1729946400427552 /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
+		0E2FFB4E1729946400427552 /* origRd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = origRd; sourceTree = "<group>"; };
+		0E2FFB4F1729946400427552 /* origTests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = origTests; sourceTree = "<group>"; };
+		0E2FFB501729946400427552 /* R */ = {isa = PBXFileReference; lastKnownFileType = folder; path = R; sourceTree = "<group>"; };
+		0E2FFB511729946400427552 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+		0E2FFB521729946400427552 /* tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tests; sourceTree = "<group>"; };
+		0E2FFB531729951E00427552 /* .Rbuildignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .Rbuildignore; sourceTree = "<group>"; };
+		0E2FFB541729E9ED00427552 /* funs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = funs; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0E2FFB3A1729932100427552 = {
+			isa = PBXGroup;
+			children = (
+				0E2FFB411729938D00427552 /* DESCRIPTION */,
+				0E2FFB421729938D00427552 /* NAMESPACE */,
+				0E2FFB431729938D00427552 /* README */,
+				0E2FFB531729951E00427552 /* .Rbuildignore */,
+				0E2FFB491729946400427552 /* data */,
+				0E2FFB541729E9ED00427552 /* funs */,
+				0E2FFB4B1729946400427552 /* inst */,
+				0E2FFB4C1729946400427552 /* man */,
+				0E2FFB4D1729946400427552 /* misc */,
+				0E2FFB4E1729946400427552 /* origRd */,
+				0E2FFB4F1729946400427552 /* origTests */,
+				0E2FFB501729946400427552 /* R */,
+				0E2FFB511729946400427552 /* src */,
+				0E2FFB521729946400427552 /* tests */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		0E2FFB3B1729932100427552 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
+			buildConfigurationList = 0E2FFB3E1729932100427552 /* Build configuration list for PBXProject "FlexBayes" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0E2FFB3A1729932100427552;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		0E2FFB3F1729932100427552 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		0E2FFB401729932100427552 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0E2FFB3E1729932100427552 /* Build configuration list for PBXProject "FlexBayes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E2FFB3F1729932100427552 /* Debug */,
+				0E2FFB401729932100427552 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0E2FFB3B1729932100427552 /* Project object */;
+}

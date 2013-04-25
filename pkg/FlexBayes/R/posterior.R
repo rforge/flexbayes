@@ -25,3 +25,5 @@ posterior <- function(sims, DIC = NULL, call = NULL){
 	attr(post, "class") <- "posterior"	
 	post
 }
+
+

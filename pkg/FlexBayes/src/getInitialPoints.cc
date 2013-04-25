@@ -11,20 +11,20 @@ extern "C" {
 /* creates a set of initial points for starting
    a simulation (Gibbs or exact 
 */
-void getInitialPointsBayesLM( long * number_data,
-                              long * dim_Cov,
-                              double * data_response,
-                              double * data_predictors,
-                              double * prior_sigmaDF,
-                              double * prior_sigmaScale,
-                              double * betamean,
-                              double * betaCov,
-                              double * betaDF,
-                              double * beta_props,
-                              long * number_mixtures,
-                              long * number_draws,
-                              long * mixture_with_MLE,
-                              double * output_initial_points )
+void getInitialPointsBayesLM(Sint *number_data,
+                             Sint *dim_Cov,
+                             Sfloat *data_response,
+                             Sfloat *data_predictors,
+                             Sfloat *prior_sigmaDF,
+                             Sfloat *prior_sigmaScale,
+                             Sfloat *betamean,
+                             Sfloat *betaCov,
+                             Sfloat *betaDF,
+                             Sfloat *beta_props,
+                             Sint *number_mixtures,
+                             Sint *number_draws,
+                             Sint *mixture_with_MLE,
+                             Sfloat *output_initial_points )
 {
   int i;
   double local_sigmaDF, beta_dfreedom;

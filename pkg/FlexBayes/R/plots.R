@@ -1,22 +1,23 @@
 # This function is intended to create plots summarizing the posterior distributions
 # of the parameters.  However, it is not yet working.
-plotPosterior <- function(x, ...){
-	sims <- x$mcmc.list	
-	nChains <- length(sims)
-	nSimsPerChain <- dim(sims[[1]])[1]
-  nParams <- dim(sims[[1]])[2]
 
-	paramNames <- dimnames(sims[[1]])[[2]]
-	simsArray <- array(data=0, dim = c(nSimsPerChain, nChains, nParams),
-		dimnames = list(c(),c(),rev(paramNames)))
-	for (i in (1:nChains))
-		for (j in (1:nParams))
-			simsArray[,i,nParams-j+1] <- sims[[i]][,j]
-
-	bugsArray <- as.bugs.array (simsArray, DIC = x$is.DIC)
-
-	plot(bugsArray)
-}
+#plotPosterior <- function(x, ...){
+#	sims <- x$mcmc.list
+#	nChains <- length(sims)
+#	nSimsPerChain <- dim(sims[[1]])[1]
+#  nParams <- dim(sims[[1]])[2]
+#
+#	paramNames <- dimnames(sims[[1]])[[2]]
+#	simsArray <- array(data=0, dim = c(nSimsPerChain, nChains, nParams),
+#		dimnames = list(c(),c(),rev(paramNames)))
+#	for (i in (1:nChains))
+#		for (j in (1:nParams))
+#			simsArray[,i,nParams-j+1] <- sims[[i]][,j]
+#
+#	bugsArray <- as.bugs.array (simsArray, DIC = x$is.DIC)
+#
+#	plot(bugsArray)
+#}
 
 # Create traceplots for a posterior object
 traceplot.posterior <- function(x, maxVars = 30, ...){
