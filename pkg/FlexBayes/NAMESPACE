@@ -13,7 +13,21 @@ export(
   bayes.massPoint,
   bayes.wishart,
   bayes.invWishart,
-  bayes.invChisq
+  bayes.invChisq,
+
+  ## blm.R ##
+  blm,
+  fit.bayeslm,
+  blm.likelihood,
+  blm.prior,
+  blm.sampler,
+
+  ## initPoints.blm.R ##
+  init.points.blm,
+  generateInitPoints.blm,
+
+  ## posterior.R ##
+  posterior
 )
 
 

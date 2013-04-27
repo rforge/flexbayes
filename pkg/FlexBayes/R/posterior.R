@@ -1,6 +1,7 @@
 # Create a posterior object.  sims is the object of class mcmc.list,
 # mcmc, matrix, data.frame that contains the posterior samples.  DIC 
 # is the value of the DIC, estimated from the posterior samples.
+
 posterior <- function(sims, DIC = NULL, call = NULL){
 
 	if (!(class(sims) %in% c("mcmc.list", "mcmc", "matrix", "data.frame")))
@@ -21,6 +22,7 @@ posterior <- function(sims, DIC = NULL, call = NULL){
 
 		simsList <- sims
   }
+
 	post <- list (mcmc.list = simsList, DIC = DIC, call = call) 
 	attr(post, "class") <- "posterior"	
 	post

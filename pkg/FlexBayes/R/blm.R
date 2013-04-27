@@ -781,7 +781,8 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
     	
   		blmodel[[i]] <- mcmc(samples.this.chain,
                            thin = sampleFrequency, 
-                           burnin = burnInLength)
+                           start = burnInLength + 1,
+                           end = simulationsToPerform*sampleFrequency + burnInLength)
     }
   }#end for loop
 
