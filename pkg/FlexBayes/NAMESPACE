@@ -31,8 +31,15 @@ export(
 )
 
 
-## S3 methods for fbdstn ##
+## S3 methods for class fbdstn ##
 
 S3method(print, fbdstn)
+
+
+## S3 methods for class posterior ##
+
+S3method(print, posterior)
+S3method(summary, posterior)
+S3method(print, summary.posterior)
 
 

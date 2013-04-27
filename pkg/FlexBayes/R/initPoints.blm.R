@@ -313,7 +313,8 @@ generateInitPoints.blm <- function(number.draws, X, Y, sigmaDf, sigmaScale,
                as.integer(beta.components),
                as.integer(number.draws),
                as.integer(mixture.MLE),
-               output.points = output.points)
+               output.points = output.points,
+               PACKAGE = "FlexBayes")
 
   #output is organized so that the first elements of it correspond to the samples
   #from beta (each beta at the time).

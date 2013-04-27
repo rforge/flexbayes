@@ -869,7 +869,8 @@ fit.bayeslm <- function(X, Y, errorCov, degreesOfFreedom.likelihood, sigmaDf,
 	          as.integer(print.stats),
 	          output.samples = as.double(output.samples),
 	          gibbs.stats = as.double(gibbs.stats),
-	          mixture.stats = as.double(mixture.stats))
+	          mixture.stats = as.double(mixture.stats),
+            PACKAGE = "FlexBayes")
 
 	# output is organized as a matrix of simulationsToPerform x beta dimension
 	# the column beyond beta dimension is associated to simulations of sigma
