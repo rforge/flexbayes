@@ -587,9 +587,6 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
     starting.points <- generateInitPoints.blm(number.chains, X, Y, sigmaDf, sigmaScale, 
                                               betaMean, betaCov, betaDf, beta.components,
                                               beta.props, mix.with.MLE = 0)
-
-
-    #}
   }
 
   else {
@@ -784,10 +781,12 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
                            start = burnInLength + 1,
                            end = simulationsToPerform*sampleFrequency + burnInLength)
     }
-  }#end for loop
+  }
 
-	posterior(sims = mcmc.list(blmodel), call = match.call())
-}#end blm generator
+	ans <- list(call = match.call(), chains = mcmc.list(blmodel))
+  oldClass(ans) <- c("blm", "posterior")
+  ans
+}
 
 
 fit.bayeslm <- function(X, Y, errorCov, degreesOfFreedom.likelihood, sigmaDf,

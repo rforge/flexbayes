@@ -24,10 +24,7 @@ export(
 
   ## initPoints.blm.R ##
   init.points.blm,
-  generateInitPoints.blm,
-
-  ## posterior.R ##
-  posterior
+  generateInitPoints.blm
 )
 
 
@@ -41,5 +38,6 @@ S3method(print, fbdstn)
 S3method(print, posterior)
 S3method(summary, posterior)
 S3method(print, summary.posterior)
+S3method(plot, posterior)
 
 

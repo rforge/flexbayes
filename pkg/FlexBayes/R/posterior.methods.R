@@ -1,10 +1,10 @@
 summary.posterior <- function(object, ...)
 {
   call <- object$call
-  mcs <- summary(object$mcmc.list)
+  mcs <- summary(object$chains)
   DIC <- object$DIC
   ans <- list(call = call, mcs = mcs, DIC = DIC)
-	oldClass(ans) <- "summary.posterior"
+	oldClass(ans) <- "summary.blm"
 	ans
 }
 
@@ -33,8 +33,8 @@ print.posterior <-  function(x, ...){
 }
 
 
-
-
+plot.posterior <- function(x, y, ...)
+  plot(x$chains, ...)
 
 
 
