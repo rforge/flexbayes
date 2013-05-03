@@ -4,7 +4,7 @@ summary.posterior <- function(object, ...)
   mcs <- summary(object$chains)
   DIC <- object$DIC
   ans <- list(call = call, mcs = mcs, DIC = DIC)
-	oldClass(ans) <- "summary.blm"
+	oldClass(ans) <- "summary.posterior"
 	ans
 }
 

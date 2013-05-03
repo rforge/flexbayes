@@ -24,7 +24,44 @@ export(
 
   ## initPoints.blm.R ##
   init.points.blm,
-  generateInitPoints.blm
+  generateInitPoints.blm,
+
+  ## coda.generics.R ##
+  crosscorr,
+  crosscorr.default,
+  effectiveSize,
+  effectiveSize.default,
+  autocorr.plot,
+  autocorr.plot.default,
+  crosscorr.plot,
+  crosscorr.plot.default,
+  traceplot,
+  traceplot.default,
+  autocorr,
+  autocorr.default,
+  densplot,
+  densplot.default,
+  nvar,
+  nvar.default,
+  nchain,
+  nchain.default,
+  niter,
+  niter.default,
+  as.mcmc.list.posterior,
+  gelman.diag,
+  gelman.diag.default,
+  gelman.plot,
+  gelman.plot.default,
+  geweke.diag,
+  geweke.diag.default,
+  geweke.plot,
+  geweke.plot.default,
+  raftery.diag,
+  raftery.diag.default,
+  heidel.diag,
+  heidel.diag.default,
+  cumuplot,
+  cumuplot.default
 )
 
 
@@ -39,5 +76,25 @@ S3method(print, posterior)
 S3method(summary, posterior)
 S3method(print, summary.posterior)
 S3method(plot, posterior)
+
+S3method(crosscorr, posterior)
+S3method(effectiveSize, posterior)
+S3method(autocorr.plot, posterior)
+S3method(crosscorr.plot, posterior)
+S3method(traceplot, posterior)
+S3method(autocorr, posterior)
+S3method(densplot, posterior)
+S3method(nvar, posterior)
+S3method(thin, posterior)
+S3method(nchain, posterior)
+
+S3method(niter, posterior)
+S3method(gelman.diag, posterior)
+S3method(gelman.plot, posterior)
+S3method(geweke.diag, posterior)
+S3method(geweke.plot, posterior)
+S3method(raftery.diag, posterior)
+S3method(heidel.diag, posterior)
+S3method(cumuplot, posterior)
 
 
