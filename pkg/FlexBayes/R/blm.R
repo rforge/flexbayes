@@ -135,7 +135,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			0
 		},
 
-		"normal:normal:non-informative" = {
+		"normal:norm:non-informative" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
 			betaCov <- prior$priorBeta$parameters[["sigma"]]
 			betaDf <- 3.0
@@ -144,7 +144,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			1
 		},
 
-		"normal:normal:invChisq" = {
+		"normal:norm:invChisq" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
 
       if(prior$conjugate && dim.Cov == 1)
@@ -177,7 +177,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			2
 		},
 
-		"normal:normal mixture:non-informative" = {
+		"normal:normmix:non-informative" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
 			betaCov <- prior$priorBeta$parameters[["sigma"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -189,7 +189,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			7
 		},
 
-		"normal:normal mixture:invChisq" = {
+		"normal:normmix:invChisq" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
       betaCov <- prior$priorBeta$parameters[["sigma"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -201,7 +201,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			ifelse(prior$conjugate, 15, 8)
 		},
 
-		"normal:t mixture:non-informative" = {
+		"normal:tmix:non-informative" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
 			betaCov <- prior$priorBeta$parameters[["sigma"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -213,7 +213,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			9
 		},
 
-		"normal:t mixture:invChisq" = {
+		"normal:tmix:invChisq" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
       betaCov <- prior$priorBeta$parameters[["sigma"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -243,7 +243,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			3
 		},
 
-		"t:normal:non-informative" = {
+		"t:norm:non-informative" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
 			betaCov <- prior$priorBeta$parameters[["sigma"]]
 			betaDf <- 3.0
@@ -252,7 +252,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			4
 		},
 
-		"t:normal:invChisq" = {
+		"t:norm:invChisq" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
 			betaCov <- prior$priorBeta$parameters[["sigma"]]
 			betaDf <- 3.0
@@ -279,7 +279,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			5
 		},
 
-		"t:normal mixture:non-informative" = {
+		"t:normmix:non-informative" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
 			betaCov <- prior$priorBeta$parameters[["sigma"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -291,7 +291,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			11
 		},
 
-		"t:normal mixture:invChisq" = {
+		"t:normmix:invChisq" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
       betaCov <- prior$priorBeta$parameters[["sigma"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -303,7 +303,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			12
 		},
 
-		"t:t mixture:non-informative" = {
+		"t:tmix:non-informative" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
 			betaCov <- prior$priorBeta$parameters[["sigma"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -315,7 +315,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
 			13
 		},
 
-		"t:t mixture:invChisq" = {
+		"t:tmix:invChisq" = {
 			betaMean <- prior$priorBeta$parameters[["mu"]]
       betaCov <- prior$priorBeta$parameters[["sigma"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -687,7 +687,7 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
       prior$priorBeta$parameters[["props"]] <- beta.props
 
       if(prior$priorBeta$name == "tmix")
-        prior$priorBeta@parameters[["df"]] <- betaDf
+        prior$priorBeta$parameters[["df"]] <- betaDf
     }
   }
 
@@ -695,8 +695,8 @@ blm <- function(formula, data, prior = blm.prior(), likelihood = blm.likelihood(
     prior$priorBeta <- bayes.nonInformative(betaMean, betaCov)
 
   if(class(prior$priorSigma)== "fbdstn") {
-    prior$priorSigma@parameters[["df"]] <- sigmaDf
-    prior$priorSigma@parameters[["sigma0.sq"]] <- sigmaScale
+    prior$priorSigma$parameters[["df"]] <- sigmaDf
+    prior$priorSigma$parameters[["sigma0.sq"]] <- sigmaScale
   }
 
   else #create proper prior
@@ -914,12 +914,12 @@ blm.prior <- function(fixed.coef = "non-informative", sigma2 = "non-informative"
     stop("blm.prior: prior for coefficients is not of the right type")
 
   else if(class(priorBeta) == "fbdstn") {
-    if(!is.element(priorBeta$name, c("normal", "t", "normmix", "tmix")))
+    if(!is.element(priorBeta$name, c("norm", "t", "normmix", "tmix")))
       stop("blm.prior: prior specification for coefficients is not supported")
   }
 
   if(class(priorSigma) != "fbdstn" && priorSigma != "non-informative")
-    stop("blm.prior: prior for variance is not of the right type")
+    stop("blm.prior: prior for variance is not the right type")
 
   else if(class(priorSigma) == "fbdstn") {
     if(!is.element(priorSigma$name, c("invChisq")))

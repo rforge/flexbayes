@@ -40,6 +40,12 @@ autocorr.plot.posterior <- function(x, ..., chain = 1)
 
 ################################################################################
 
+autocorr.diag.mcmc.posterior <- function(mcmc.obj, ...)
+  coda::autocorr.diag(mcmc.obj$chains, ...)
+
+
+################################################################################
+
 crosscorr.plot <- function(x, ...)
   UseMethod("crosscorr.plot")
 
