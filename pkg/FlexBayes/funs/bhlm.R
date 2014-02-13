@@ -608,7 +608,7 @@ fixed.effects, second.effects, error.var.common, error.var.type, random.coef.typ
                                      r.mean <- valid.mean.specification( r.mean, dim )
                                      r.mean
                                    },
-                                   y = init.point$random.coef,
+                                   y = init.point$random.coef
                                    dim = dimX )            
 
         }
@@ -843,7 +843,7 @@ validate.initial.points.bhlmMV <- function( n.groups, dimR, dimX, dimM, dimZ, in
                                      r.mean <- valid.mean.specification( r.mean, dim )
                                      r.mean
                                    },
-                                   y = init.point$random.coef,
+                                   y = init.point$random.coef
                                    dim = dimX )            
 
         }
@@ -921,14 +921,14 @@ bhlm <- function( fixed.formula = NULL,
   ## Get Data 
   ##
 
-  if ( is.data( data ) )
+  if ( is.null( data ) )
   {
     stop( "bhlm: data must be provided." )
   }
 
 
-  found.response <- FALSE
-  multi.variate.response <- FALSE
+  found.response <- F
+  multi.variate.response <- F
 
   if ( !is.null( response.formula ) && length( response.formula ) > 0 && !is.all.white( response.formula )[1] )
   {

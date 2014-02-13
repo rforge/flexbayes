@@ -716,7 +716,7 @@ validate.initial.points.bhpm <- function( n.groups, dimX, dimM, dimZ, init.point
                                      r.mean <- valid.mean.specification.bhpm( r.mean, dim )
                                      r.mean
                                    },
-                                   y = init.point$random.coef,
+                                   y = init.point$random.coef
                                    dim = dimX )            
 
         }
