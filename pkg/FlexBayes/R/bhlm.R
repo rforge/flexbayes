@@ -46,7 +46,7 @@ bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
     level2.coef = !missing( level2.coef ),
     random.var = !missing( random.var ) )
 
-  random.coef <- bayes.normal(mean=zero, cov=identity)
+  random.coef <- bayes.normal(mean=zero, cov=diag)
 
   # for common sigma = error.var
   # 0 ==> independent sigmas; different hyper prior parameters
@@ -608,7 +608,7 @@ fixed.effects, second.effects, error.var.common, error.var.type, random.coef.typ
                                      r.mean <- valid.mean.specification( r.mean, dim )
                                      r.mean
                                    },
-                                   y = init.point$random.coef
+                                   y = init.point$random.coef,
                                    dim = dimX )            
 
         }
@@ -843,7 +843,7 @@ validate.initial.points.bhlmMV <- function( n.groups, dimR, dimX, dimM, dimZ, in
                                      r.mean <- valid.mean.specification( r.mean, dim )
                                      r.mean
                                    },
-                                   y = init.point$random.coef
+                                   y = init.point$random.coef,
                                    dim = dimX )            
 
         }

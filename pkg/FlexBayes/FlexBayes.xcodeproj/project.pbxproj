@@ -21,12 +21,14 @@
 		0E2FFB521729946400427552 /* tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tests; sourceTree = "<group>"; };
 		0E2FFB531729951E00427552 /* .Rbuildignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .Rbuildignore; sourceTree = "<group>"; };
 		0E2FFB541729E9ED00427552 /* funs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = funs; sourceTree = "<group>"; };
+		0E62751E18AD587F00E97761 /* scratch.R */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = scratch.R; path = R/scratch.R; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		0E2FFB3A1729932100427552 = {
 			isa = PBXGroup;
 			children = (
+				0E62751E18AD587F00E97761 /* scratch.R */,
 				0E2FFB411729938D00427552 /* DESCRIPTION */,
 				0E2FFB421729938D00427552 /* NAMESPACE */,
 				0E2FFB431729938D00427552 /* README */,

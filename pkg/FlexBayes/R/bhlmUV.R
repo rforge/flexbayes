@@ -2006,3 +2006,6 @@ fit.bayeshlm <- function( n.groups, sorted.by.group.idx, n.responses, dim.random
   return( mcmc( data = post.samples, 
     thin = sampleFrequency, burnin = burnInLength ) )
 }#end
+
+
+

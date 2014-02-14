@@ -1,10 +1,22 @@
+# identity is already the name of a function in base, switch to diag
+
+identity <- function(p)
+{
+	diag(p)
+}
+
+zero <- function(p)
+{
+	rep(0.0, p)
+}
+
 ##
 #
 #	Distributions for bayes priors
 #
 ##
 
-bayes.normal <- function( mean.vector = zero, covmat = identity, k0 = 1 )
+bayes.normal <- function( mean.vector = zero, covmat = diag, k0 = 1 )
 {
 
         if ( k0 <= 0 )
@@ -19,7 +31,7 @@ bayes.normal <- function( mean.vector = zero, covmat = identity, k0 = 1 )
 }
 
 
-bayes.t <- function(mean.vector = zero, covmat = identity, df = 3 )
+bayes.t <- function(mean.vector = zero, covmat = diag, df = 3 )
 {
 	name <- "t"
 	params <- list("mean vector" = mean.vector, "covariance matrix" = covmat,
@@ -63,7 +75,7 @@ bayes.gamma <- function(shape = 0, scale = 0)
 }
 
 
-bayes.normal.mixture <- function( mean.vector = zero, covmat = identity, k = 3, props = c( 0.5, 0.5 ), n.components = 2, k0 = 1  )
+bayes.normal.mixture <- function( mean.vector = zero, covmat = diag, k = 3, props = c( 0.5, 0.5 ), n.components = 2, k0 = 1  )
 {
         ## k = 0 indicates that covariances are different
 
@@ -83,7 +95,7 @@ bayes.normal.mixture <- function( mean.vector = zero, covmat = identity, k = 3, 
 }
 
 
-bayes.t.mixture <- function( mean.vector = zero, covmat = identity, k = 3, df = 3, props = c( 0.5, 0.5 ), n.components = 2 )
+bayes.t.mixture <- function( mean.vector = zero, covmat = diag, k = 3, df = 3, props = c( 0.5, 0.5 ), n.components = 2 )
 {
         ## k = 0 indicates that covariances are different
 

@@ -1,100 +1,85 @@
 export(
-  ## bayes.distribution.R ##
-  bayes.normal,
-  bayes.t,
-  bayes.nonInformative,
   bayes.beta,
+  bayes.duMouchel,
   bayes.gamma,
+  bayes.invChisq,
+  bayes.invWishart,
+  bayes.massPoint,
+  bayes.nonInfoPower,
+  bayes.nonInformative,
+  bayes.normal,
   bayes.normal.mixture,
+  bayes.t,
   bayes.t.mixture,
   bayes.uniformShrinkage,
-  bayes.duMouchel,
-  bayes.nonInfoPower,
-  bayes.massPoint,
   bayes.wishart,
-  bayes.invWishart,
-  bayes.invChisq,
-
-  ## blm.R ##
-  blm,
-  fit.bayeslm,
-  blm.likelihood,
-  blm.prior,
-  blm.sampler,
-
-  ## initPoints.blm.R ##
-  init.points.blm,
-  generateInitPoints.blm,
-
-  ## coda.generics.R ##
-  crosscorr,
-  effectiveSize,
-  autocorr.plot,
-  crosscorr.plot,
-  traceplot,
-  autocorr,
-  densplot,
-  nvar,
-  nchain,
-  niter,
-  as.mcmc.list.posterior,
-  gelman.diag,
-  gelman.plot,
-  geweke.diag,
-  geweke.plot,
-  raftery.diag,
-  heidel.diag,
-  cumuplot
+  bhlm,
+  bhlm.likelihood,
+  bhlm.prior,
+  bhlm.sampler,
+  bhlmMD,
+  bhlmMV,
+  bhlmUV,
+  fit.bayeshlm,
+  fit.bayeshlmMD,
+  fit.bayeshlmMV,
+  print.bayes.distribution,
+  valid.Cov.specification,
+  valid.mean.specification,
+  validate.initial.points.bhlm,
+  validate.initial.points.bhlmMV,
+  identity,
+  zero
 )
 
 
 ## S3 methods for class fbdstn ##
 
-S3method(print, fbdstn)
+#S3method(print, fbdstn)
 
 
 ## S3 methods for class posterior ##
 
-S3method(print, posterior)
-S3method(summary, posterior)
-S3method(print, summary.posterior)
-S3method(plot, posterior)
-S3method(crosscorr, posterior)
-S3method(effectiveSize, posterior)
-S3method(autocorr.plot, posterior)
-S3method(crosscorr.plot, posterior)
-S3method(traceplot, posterior)
-S3method(autocorr, posterior)
-S3method(densplot, posterior)
-S3method(nvar, posterior)
-S3method(thin, posterior)
-S3method(nchain, posterior)
-S3method(niter, posterior)
-S3method(gelman.diag, posterior)
-S3method(gelman.plot, posterior)
-S3method(geweke.diag, posterior)
-S3method(geweke.plot, posterior)
-S3method(raftery.diag, posterior)
-S3method(heidel.diag, posterior)
-S3method(cumuplot, posterior)
+#S3method(print, posterior)
+#S3method(summary, posterior)
+#S3method(print, summary.posterior)
+#S3method(plot, posterior)
+#S3method(crosscorr, posterior)
+#S3method(effectiveSize, posterior)
+#S3method(autocorr.plot, posterior)
+#S3method(crosscorr.plot, posterior)
+#S3method(traceplot, posterior)
+#S3method(autocorr, posterior)
+#S3method(densplot, posterior)
+#S3method(nvar, posterior)
+#S3method(thin, posterior)
+#S3method(nchain, posterior)
+#S3method(niter, posterior)
+#S3method(gelman.diag, posterior)
+#S3method(gelman.plot, posterior)
+#S3method(geweke.diag, posterior)
+#S3method(geweke.plot, posterior)
+#S3method(raftery.diag, posterior)
+#S3method(heidel.diag, posterior)
+#S3method(cumuplot, posterior)
 
 ## S3 default methods ##
-S3method(crosscorr, default)
-S3method(effectiveSize, default)
-S3method(autocorr.plot, default)
-S3method(crosscorr.plot, default)
-S3method(traceplot, default)
-S3method(autocorr, default)
-S3method(densplot, default)
-S3method(nvar, default)
-S3method(nchain, default)
-S3method(niter, default)
-S3method(gelman.diag, default)
-S3method(gelman.plot, default)
-S3method(geweke.diag, default)
-S3method(geweke.plot, default)
-S3method(raftery.diag, default)
-S3method(heidel.diag, default)
-S3method(cumuplot, default)
+#S3method(crosscorr, default)
+#S3method(effectiveSize, default)
+#S3method(autocorr.plot, default)
+#S3method(crosscorr.plot, default)
+#S3method(traceplot, default)
+#S3method(autocorr, default)
+#S3method(densplot, default)
+#S3method(nvar, default)
+#S3method(nchain, default)
+#S3method(niter, default)
+#S3method(gelman.diag, default)
+#S3method(gelman.plot, default)
+#S3method(geweke.diag, default)
+#S3method(geweke.plot, default)
+#S3method(raftery.diag, default)
+#S3method(heidel.diag, default)
+#S3method(cumuplot, default)
 
 

@@ -1,16 +1,7 @@
 ##################################################
 # bhbm function in the FlexBayes package          #
 ##################################################
-
-identity <- function(p)
-{
-	diag(p)
-}
-
-zero <- function(p)
-{
-	rep(0.0, p)
-}
+## Kjell: 02/13/2014 moved zero and identity functions to bayes.distribution.R
 
 
 #####################################################################################
