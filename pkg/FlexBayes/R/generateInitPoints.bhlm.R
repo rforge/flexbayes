@@ -109,7 +109,9 @@ generateInitPoints.bhlm <- function( number.draws, n.responses, Y, X, M, Z,
              as.double( random.var.scale ),
              as.integer( random.var.type ),
              #
-             init.points = as.double( init.points ) )
+             init.points = as.double( init.points ),
+             #
+             PACKAGE = "FlexBayes")
 
   init.points <- matrix( fit$init.points, ncol = number.draws, nrow = output.dim )
 
@@ -141,7 +143,6 @@ generateInitPoints.bhlm <- function( number.draws, n.responses, Y, X, M, Z,
     init.level2.coef <- matrix( init.points[ end.index + seq( 1, dim.level2 ), ], ncol = number.draws )
     end.index <- end.index + dim.level2
   }
-
 
   if ( common.error.var == 0 )
   {
@@ -190,7 +191,8 @@ generateInitPoints.bhlm <- function( number.draws, n.responses, Y, X, M, Z,
     init.random.var <- vector( "list", number.draws )
     for ( i in seq( 1, number.draws ) )
     {
-      init.random.var[[i]] <- NULL
+      #init.random.var[[i]] <- NULL
+      init.random.var[[i]] <- NA
     }
   }
 

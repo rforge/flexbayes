@@ -913,7 +913,7 @@ bhlm <- function( fixed.formula = NULL,
                   likelihood  = bhlm.likelihood(),
 	                sampler = bhlm.sampler(), 
                   random.seed = .Random.seed, na.action = NULL, contrasts = NULL,
-                  debug = F )
+                  debug = FALSE )
 {
   response.formula <- NULL
 
@@ -927,24 +927,24 @@ bhlm <- function( fixed.formula = NULL,
   }
 
 
-  found.response <- F
-  multi.variate.response <- F
+  found.response <- FALSE
+  multi.variate.response <- FALSE
 
-  if ( !is.null( response.formula ) && length( response.formula ) > 0 && !is.all.white( response.formula )[1] )
+  if ( !is.null( response.formula ) && length( response.formula ) > 0 )# && !is.all.white( response.formula )[1] )
   {
     if ( length( terms( response.formula )@term.labels ) > 1 )
     {
-      multi.variate.response <- T
+      multi.variate.response <- TRUE
     }
     else if ( length( terms( response.formula )@term.labels ) == 1 )
     {
       if ( terms( response.formula )@term.labels == "." )
       {
-        multi.variate.response <- T
+        multi.variate.response <- TRUE
       }
       else
       {
-        multi.variate.response <- F
+        multi.variate.response <- FALSE
       }
     }
     else
@@ -952,30 +952,35 @@ bhlm <- function( fixed.formula = NULL,
       stop( "bhlm: Formula specifying response variable(s) is not valid.\n" )
     } 
 
-    found.response <- T 
+    found.response <- TRUE
   }
 
   if ( !found.response )
   {
-    if ( !is.null( random.formula ) && length( random.formula ) > 0 && !is.all.white( random.formula )[1] )
+    if ( !is.null( random.formula ) && length( random.formula ) > 0 ) #&& !is.all.white( random.formula )[1] )
     {
-      if ( terms( random.formula )@response == 1 )
+      attrib <- attributes(terms(random.formula, data = data))
+
+      #if ( terms( random.formula )@response == 1 )
+      if ( attrib$response == 1 )
       {
-        found.response <- T
-        if ( charmatch( "cbind(", dimnames( terms( random.formula )@factors )[[1]][1], nomatch = - 1 ) == 1 )
+        found.response <- TRUE
+        #if ( charmatch( "cbind(", dimnames( terms( random.formula )@factors )[[1]][1], nomatch = - 1 ) == 1 )
+        if ( charmatch( "cbind(", dimnames( attrib@factors )[[1]][1], nomatch = - 1 ) == 1 )
         {
-          if ( grep( ",", dimnames( terms( random.formula )@factors )[[1]][1] ) >= 1 )
+          #if ( grep( ",", dimnames( terms( random.formula )@factors )[[1]][1] ) >= 1 )
+          if ( grep( ",", dimnames( attrib$factors )[[1]][1] ) >= 1 )
           {
-            multi.variate.response <- T
+            multi.variate.response <- TRUE
           }
           else
           {
-            multi.variate.response <- F
+            multi.variate.response <- FALSE
           }
         }
         else
         {
-          multi.variate.response <- F
+          multi.variate.response <- FALSE
         }
       }
     }
@@ -983,25 +988,30 @@ bhlm <- function( fixed.formula = NULL,
 
   if ( !found.response )
   {
-    if ( !is.null( fixed.formula ) && length( fixed.formula ) > 0 && !is.all.white( fixed.formula )[1] )
+    if ( !is.null( fixed.formula ) && length( fixed.formula ) > 0 ) # && !is.all.white( fixed.formula )[1] )
     {
-      if ( terms( fixed.formula )@response == 1 )
+      attrib <- attributes(terms(fixed.formula, data = data))
+
+      #if ( terms( fixed.formula )@response == 1 )
+      if ( attrib$response == 1 )
       {
-        found.response <- T
-        if ( charmatch( "cbind(", dimnames( terms( fixed.formula )@factors )[[1]][1], nomatch = - 1 ) == 1 )
+        found.response <- TRUE
+        #if ( charmatch( "cbind(", dimnames( terms( fixed.formula )@factors )[[1]][1], nomatch = - 1 ) == 1 )
+        if ( charmatch( "cbind(", dimnames( attrib$factors )[[1]][1], nomatch = - 1 ) == 1 )
         {
-          if ( grep( ",", dimnames( terms( fixed.formula )@factors )[[1]][1] ) >= 1 )
+          #if ( grep( ",", dimnames( terms( fixed.formula )@factors )[[1]][1] ) >= 1 )
+          if ( grep( ",", dimnames( attrib$factors )[[1]][1] ) >= 1 )
           {
-            multi.variate.response <- T
+            multi.variate.response <- TRUE
           }
           else
           {
-            multi.variate.response <- F
+            multi.variate.response <- FALSE
           }
         }
         else
         {
-          multi.variate.response <- F
+          multi.variate.response <- FALSE
         }
       }
     }
@@ -1030,56 +1040,65 @@ bhlm <- function( fixed.formula = NULL,
   {
     #need to check if random, fixed, level2 formulas are trivial
 
-    means.model <- T
-    if ( !is.null( random.formula ) && length( random.formula ) > 0 && !is.all.white( random.formula )[1] )
+    attrib <- attributes(terms(random.formula, data = data))
+
+    means.model <- TRUE
+    if ( !is.null( random.formula ) && length( random.formula ) > 0 ) # && !is.all.white( random.formula )[1] )
     {
-      if ( length( terms( random.formula )@term.labels ) > 0 )
+      #if ( length( terms( random.formula )@term.labels ) > 0 )
+      if ( length( attrib$term.labels ) > 0 )
       {
-        means.model <- F
+        means.model <- FALSE
       }
     }
 
-    if ( means.model && !is.null( fixed.formula ) && length( fixed.formula ) > 0 && !is.all.white( fixed.formula )[1] )
+    if ( means.model && !is.null( fixed.formula ) && length( fixed.formula ) > 0 ) # && !is.all.white( fixed.formula )[1] )
     {
-      if ( length( terms( fixed.formula )@term.labels ) > 0 )
+      attrib <- attributes(terms(fixed.formula, data = data))
+
+      #if ( length( terms( fixed.formula )@term.labels ) > 0 )
+      if ( length( attrib$term.labels ) > 0 )
       {
-        means.model <- F
+        means.model <- FALSE
       }
-      else if ( terms( fixed.formula )@intercept == 1 )
+      else if ( attrib$intercept == 1 )
       {
-        means.model <- F
+        means.model <- FALSE
       }
     }
 
-    if ( !is.null( level2.formula ) && length( level2.formula ) > 0 && !is.all.white( level2.formula )[1] )
+    if ( !is.null( level2.formula ) && length( level2.formula ) > 0 ) # && !is.all.white( level2.formula )[1] )
     {
-      if ( length( terms( level2.formula )@term.labels ) > 0 )
+      attrib <- attributes(terms(level2.formula, data = data))
+
+      #if ( length( terms( level2.formula )@term.labels ) > 0 )
+      if ( length( attrib$term.labels ) > 0 )
       {
-        means.model <- F
+        means.model <- FALSE
       }
     }
 
 
     if ( means.model )
     {
-      random.effects <- F
-      fixed.effects <- F
-      second.effects <- F
+      random.effects <- FALSE
+      fixed.effects <- FALSE
+      second.effects <- FALSE
 
       #call bhlmMD
-      if ( !is.null( random.formula ) && length( random.formula ) > 0 && !is.all.white( random.formula )[1] )
+      if ( !is.null( random.formula ) && length( random.formula ) > 0 ) # && !is.all.white( random.formula )[1] )
       {
-        random.effects <- T
+        random.effects <- TRUE
       }
 
-      if ( !is.null( fixed.formula ) && length( fixed.formula ) > 0 && !is.all.white( fixed.formula )[1] )
+      if ( !is.null( fixed.formula ) && length( fixed.formula ) > 0 ) # && !is.all.white( fixed.formula )[1] )
       {
-        fixed.effects <- T
+        fixed.effects <- TRUE
       }
 
-      if ( !is.null( level2.formula ) && length( level2.formula ) > 0 && !is.all.white( level2.formula )[1] )
+      if ( !is.null( level2.formula ) && length( level2.formula ) > 0 ) # && !is.all.white( level2.formula )[1] )
       {
-        second.effects <- T
+        second.effects <- TRUE
       }
 
       ##"Missing Data\n\n"
@@ -1104,7 +1123,7 @@ bhlm <- function( fixed.formula = NULL,
 
   }
 
-  out.bhlm$call = match.call()
+  #out.bhlm$call <- match.call()
   out.bhlm
 
 }#end bhlm

@@ -17,7 +17,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
                   likelihood  = bhlm.likelihood(),
 	                sampler = bhlm.sampler(), 
                   random.seed = .Random.seed, na.action = NULL, contrasts = NULL,
-                  debug = F )
+                  debug = FALSE )
 {
 
   #get all stats from Gibbs sampling
@@ -68,17 +68,20 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
   M <- 0
   Z <- 0
 
-  random.effects <- F
-  fixed.effects <- F
+  random.effects <- FALSE
+  fixed.effects <- FALSE
   random.vars <- -1
   fixed.vars <- -1
 
   if ( !is.null( random.formula ) )
   {
-    if ( length( terms( random.formula )@term.labels ) == 0 && terms( random.formula )@response == 0 )
+    attrib <- attributes(terms(random.formula, data = data))
+
+    #if ( length( terms( random.formula )@term.labels ) == 0 && terms( random.formula )@response == 0 )
+    if ( length( attrib$term.labels ) == 0 && attrib$response == 0 )
     {
       #may contain only the intercept
-      if ( terms( random.formula )@intercept != 1 )
+      if ( attrib$intercept != 1 )
       {
         stop( "bhlm: formula for random effects must contain at least one variable or intercept." )
       }
@@ -88,7 +91,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
         random.vars <- 0
       }
     }
-    else if ( length( terms( random.formula )@term.labels ) > 0 && terms( random.formula )@response == 1 )
+    else if ( length( attrib$term.labels ) > 0 && attrib$response == 1 )
     {
       #formula contains the response variable, and predictors other than intercept
       random.vars <- 1
@@ -96,7 +99,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
     else if ( length( terms( random.formula )@term.labels ) == 0 )
     {
       #formula contains response and perhaps intercept
-      if ( terms( random.formula )@intercept != 1 )
+      if ( attrib$intercept != 1 )
       {
         stop( "bhlm: formula for random effects must contain at least one variable or intercept." )
       }
@@ -115,10 +118,14 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
 
   if ( !is.null( fixed ) )
   {
-    if ( length( terms( fixed )@term.labels ) == 0 && terms( fixed )@response == 0 )
+    attrib <- attributes(terms(fixed, data = data))
+
+    #if ( length( terms( fixed )@term.labels ) == 0 && terms( fixed )@response == 0 )
+    if ( length( attrib$term.labels ) == 0 && attrib$response == 0 )
     {
       #may contain only the intercept
-      if ( terms( fixed )@intercept != 1 )
+      #if ( terms( fixed )@intercept != 1 )
+      if ( attrib$intercept != 1 )
       {
         stop( "bhlm: formula for fixed effects must contain at least one variable or intercept." )
       }
@@ -128,15 +135,18 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
         fixed.vars <- 0
       }
     }
-    else if ( length( terms( fixed )@term.labels ) > 0 && terms( fixed )@response == 1 )
+    #else if ( length( terms( fixed )@term.labels ) > 0 && terms( fixed )@response == 1 )
+    else if ( length( attrib$term.labels ) > 0 && attrib$response == 1 )
     {
       #formula contains the response variable (and predictors other than just intercept)
       fixed.vars <- 1
     }
-    else if ( length( terms( fixed )@term.labels ) == 0 )
+    #else if ( length( terms( fixed )@term.labels ) == 0 )
+    else if ( length( attrib$term.labels ) == 0 )
     {
       #formula contains response and perhaps intercept
-      if ( terms( fixed )@intercept != 1 )
+      #if ( terms( fixed )@intercept != 1 )
+      if ( attrib$intercept != 1 )
       {
         stop( "bhlm: formula for fixed effects must contain at least one variable or intercept." )
       }
@@ -153,18 +163,21 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
   }
     
 
-  used.contrasts <- NULL
+#used.contrasts <- NULL
 
-  response.in.response <- F
+  response.in.response <- FALSE
   if ( !is.element( random.vars, c( 1, 2 ) ) && !is.element( fixed.vars, c( 1, 2 ) ) )
   {
     #check response.formula
     if ( !is.null( response.formula ) && length( response.formula ) > 0 )
     {
-      if ( length( terms( response.formula )@term.labels ) == 1 )
+      attrib <- attributes(terms(response.formula, data = data))
+
+      #if ( length( terms( response.formula )@term.labels ) == 1 )
+      if ( length( attrib$term.labels ) == 1 )
       {
         #found response variable
-        response.in.response <- T
+        response.in.response <- TRUE
       }
       else
       {
@@ -188,7 +201,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       if ( random.vars != 2 )
       {
         X <- model.matrix( Terms, model.random, contrasts )
-        used.contrasts <- contrasts( X )
+        #used.contrasts <- contrasts( X )
         random.names <- dimnames( X )[[2]]
 
       }
@@ -205,12 +218,12 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
         response.names <- dimnames( attr( Terms, "factors" ) )[[1]][1]
       }
 
-      random.effects <- T
+      random.effects <- TRUE
     }
     else #random effects contain only the intercept
     {
       X <- matrix( rep( 1, nrow( data ) ), nrow = nrow( data ) )
-      random.effects <- T
+      random.effects <- TRUE
       random.names <- "(Intercept)"
     }
 
@@ -233,7 +246,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       if ( fixed.vars != 2 )
       {
         M <- model.matrix( Terms, model.fixed, contrasts )
-        used.contrasts <- c( used.contrasts, contrasts( M ) )
+        #used.contrasts <- c( used.contrasts, contrasts( M ) )
 
         fixed.names <- dimnames( M )[[2]]
 
@@ -250,12 +263,12 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
         response.names <- dimnames( attr( Terms, "factors" ) )[[1]][1]
       }
 
-      fixed.effects <- T
+      fixed.effects <- TRUE
     }    
     else #fixed effects contain only the intercept
     {
       M <- matrix( rep( 1, nrow( data ) ), nrow = nrow( data ) )
-      fixed.effects <- T
+      fixed.effects <- TRUE
       fixed.names <- "(Intercept)"
     }
 
@@ -270,23 +283,24 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
     model.response <- call( "model.frame", formula = response.formula, data = data, na.action = na.action )
     model.response <- eval( model.response, sys.parent() )
     Terms <- attr( model.response, "terms" )
-    Terms@intercept <- 0
+    attributes(Terms)$intercept <- 0
     Y <- model.matrix( Terms, model.response, contrasts )
-    used.contrasts <- c( used.contrasts, contrasts( Y ) )
+    #used.contrasts <- c( used.contrasts, contrasts( Y ) )
 
     response.names <- dimnames( Y )[[2]]
 
   }
 
-  second.effects <- F
+  second.effects <- FALSE
   if ( !is.null( level2 ) )
   {
     level2.vars <- -1
+    attrib <- attributes(terms(level2, data = data))
     
-    if ( length( terms( level2 )@term.labels ) == 0 )
+    if ( length( attrib$term.labels ) == 0 )
     {
       #may contain only the intercept
-      if ( terms( level2 )@intercept != 1 )
+      if ( attrib$intercept != 1 )
       {
         stop( "bhlm: formula for second level effects must contain at least one variable or intercept." )
       }
@@ -309,9 +323,9 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       Terms <- attr( model.level2, "terms" )
   
       Z <- model.matrix( Terms, model.level2, contrasts )
-      used.contrasts <- c( used.contrasts, contrasts( Z ) )
+      #used.contrasts <- c( used.contrasts, contrasts( Z ) )
 
-      second.effects <- T
+      second.effects <- TRUE
 
       level2.names <- dimnames( Z )[[2]]
 
@@ -321,7 +335,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       #only the intercept
       Z <- matrix( rep( 1, nrow( data ) ), nrow = nrow( data ) )
 
-      second.effects <- T
+      second.effects <- TRUE
       level2.names <- "(Intercept)"
     }
 
@@ -500,7 +514,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
     {
       missing.response.components <- apply( missing.response, 2, 
                                             FUN = function( x, p ) 
-                                                    { seq( 1, p )[x == T] }, 
+                                                    { seq( 1, p )[x == TRUE] },
                                             p = nrow( missing.response ) )
     
       missing.response.components <- unlist( missing.response.components )
@@ -518,7 +532,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
     {
       missing.random.components <- apply( missing.random, 2, 
                                             FUN = function( x, p ) 
-                                                    { seq( 1, p )[x == T] }, 
+                                                    { seq( 1, p )[x == TRUE] },
                                             p = nrow( missing.random ) )
     
       missing.random.components <- unlist( missing.random.components )
@@ -536,7 +550,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
     {
       missing.fixed.components <- apply( missing.fixed, 2, 
                                             FUN = function( x, p ) 
-                                                    { seq( 1, p )[x == T] }, 
+                                                    { seq( 1, p )[x == TRUE] },
                                             p = nrow( missing.fixed ) )
     
       missing.fixed.components <- unlist( missing.fixed.components )
@@ -597,11 +611,11 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
   }
 
 
-  check.errorCov <- T
+  check.errorCov <- TRUE
   if ( is.null( likelihood$errorCov ) ) 
   {
     likelihood$errorCov <- 1
-    check.errorCov <- F
+    check.errorCov <- FALSE
   }
   else if ( is.name( likelihood$errorCov ) )
   {
@@ -610,20 +624,20 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       errorCov <- as.vector( eval( likelihood$errorCov ) )
       if ( is.vector( errorCov ) && length( errorCov ) != n.responses[1] && length( errorCov == n.groups ) )
       {
-        proceed.with.groups <- F
-        check.errorCov <- T
+        proceed.with.groups <- FALSE
+        check.errorCov <- TRUE
       }
       else
       {
-        proceed.with.groups <- T
-        check.errorCov <- F
+        proceed.with.groups <- TRUE
+        check.errorCov <- FALSE
       }   
     }
     else
     {
       errorCov <- as.vector( eval( call( likelihood$errorCov, p = n.responses[1] ) ) )
-      proceed.with.groups <- T
-      check.errorCov <- F
+      proceed.with.groups <- TRUE
+      check.errorCov <- FALSE
     }
 
     if ( proceed.with.groups && n.groups > 1 )
@@ -655,7 +669,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       }
     }
     likelihood$errorCov <- errorCov
-    check.errorCov <- F
+    check.errorCov <- FALSE
   }#end function
 
   if ( check.errorCov && is.vector( likelihood$errorCov ) ) 
@@ -1106,7 +1120,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
   ## Get the seed
   ##
 
-  set.seed( random.seed )
+#set.seed( random.seed )
 
 ####end Seed-----------------------------------------------------------------
 
@@ -1322,8 +1336,11 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
 
   }#end for chains
 
-  return(posterior(mcmc.list(bhlmodel)))
-        
+  #return(posterior(mcmc.list(bhlmodel)))
+  post <- mcmc.list(bhlmodel)
+  oldClass(post) <- c("posterior", class(post))
+  post
+
 }#end
 
 
@@ -1506,6 +1523,9 @@ fit.bayeshlm <- function( n.groups, sorted.by.group.idx, n.responses, dim.random
   {
     gibbs.stats <- 0
   }
+
+  if(is.na(starting.random.var)) starting.random.var <- NULL
+
   #call the function
   if (debug){
     cat("n.groups:", n.groups, "\n")
@@ -1544,6 +1564,7 @@ fit.bayeshlm <- function( n.groups, sorted.by.group.idx, n.responses, dim.random
     cat("sampleFrequency:", sampleFrequency, "\n")
 
   }
+
   fit <- .C( "fitBayesianHLM",
              as.integer( n.groups ),
              as.integer( n.responses ),
@@ -1614,7 +1635,9 @@ fit.bayeshlm <- function( n.groups, sorted.by.group.idx, n.responses, dim.random
              #
              as.integer( print.stats ),
              output.samples = as.double( output.samples ),
-             gibbs.stats = as.double( gibbs.stats ) )
+             gibbs.stats = as.double( gibbs.stats ),
+             #
+             PACKAGE = "FlexBayes")
 
 
   # OUTPUT
@@ -2003,8 +2026,8 @@ fit.bayeshlm <- function( n.groups, sorted.by.group.idx, n.responses, dim.random
     post.samples <- cbind(post.samples, likelihood.group.tau)
   }
 
-  return( mcmc( data = post.samples, 
-    thin = sampleFrequency, burnin = burnInLength ) )
+  return( mcmc( data = post.samples, thin = sampleFrequency) )
+  #, burnin = burnInLength ) )
 }#end
 
 
