@@ -1,14 +1,14 @@
 # identity is already the name of a function in base, switch to diag
 
-identity <- function(p)
-{
-	diag(p)
-}
+#identity <- function(p)
+#{
+#	diag(p)
+#}
 
-zero <- function(p)
-{
-	rep(0.0, p)
-}
+#zero <- function(p)
+#{
+#	rep(0.0, p)
+#}
 
 ##
 #
@@ -212,21 +212,5 @@ bayes.invChisq <- function( df = 3, sigma0.sq = 1)
 
 	new( "bayes.distribution", name = name, parameters = params )
 }
-
-print.bayes.distribution <- function(object, digits)
-{
-	name <- object@name
-	params <- object@parameters
-
-	cat(paste(name, "with:\n\n"))
-
-	for(name in names(params)) {
-		cat(paste(name, ":\n"))
-		print(params[[name]])
-		cat("\n")
-	}
-	invisible(object)
-}
-
 
 

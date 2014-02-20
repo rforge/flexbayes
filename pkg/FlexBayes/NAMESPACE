@@ -1,24 +1,9 @@
 export(
-  bayes.beta,
-  bayes.duMouchel,
-  bayes.gamma,
-  bayes.invChisq,
-  bayes.invWishart,
-  bayes.massPoint,
-  bayes.nonInfoPower,
-  bayes.nonInformative,
-  bayes.normal,
-  bayes.normal.mixture,
-  bayes.t,
-  bayes.t.mixture,
-  bayes.uniformShrinkage,
-  bayes.wishart,
+  fbprior,
   bhlm,
   bhlm.likelihood,
   bhlm.prior,
-  bhlm.sampler,
-  identity,
-  zero
+  bhlm.sampler
 )
 
 
@@ -27,48 +12,14 @@ export(
 #S3method(print, fbdstn)
 
 
-## S3 methods for class posterior ##
+## S3 methods for fbprior class ##
+
+S3method(print, fbprior)
+
+
+  ## S3 methods for posterior class ##
 
 S3method(print, posterior)
 S3method(summary, posterior)
 S3method(print, summary.posterior)
-#S3method(plot, posterior)
-#S3method(crosscorr, posterior)
-#S3method(effectiveSize, posterior)
-#S3method(autocorr.plot, posterior)
-#S3method(crosscorr.plot, posterior)
-#S3method(traceplot, posterior)
-#S3method(autocorr, posterior)
-#S3method(densplot, posterior)
-#S3method(nvar, posterior)
-#S3method(thin, posterior)
-#S3method(nchain, posterior)
-#S3method(niter, posterior)
-#S3method(gelman.diag, posterior)
-#S3method(gelman.plot, posterior)
-#S3method(geweke.diag, posterior)
-#S3method(geweke.plot, posterior)
-#S3method(raftery.diag, posterior)
-#S3method(heidel.diag, posterior)
-#S3method(cumuplot, posterior)
-
-## S3 default methods ##
-#S3method(crosscorr, default)
-#S3method(effectiveSize, default)
-#S3method(autocorr.plot, default)
-#S3method(crosscorr.plot, default)
-#S3method(traceplot, default)
-#S3method(autocorr, default)
-#S3method(densplot, default)
-#S3method(nvar, default)
-#S3method(nchain, default)
-#S3method(niter, default)
-#S3method(gelman.diag, default)
-#S3method(gelman.plot, default)
-#S3method(geweke.diag, default)
-#S3method(geweke.plot, default)
-#S3method(raftery.diag, default)
-#S3method(heidel.diag, default)
-#S3method(cumuplot, default)
-
 

@@ -6,7 +6,6 @@
 ^misc$
 ^origRd$
 ^origTests$
-
 ^FlexBayes.xcodeproj$
 ^.*\.Rproj$
 ^\.Rproj\.user$

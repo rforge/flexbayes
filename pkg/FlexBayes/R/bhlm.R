@@ -31,10 +31,10 @@ bhlm.likelihood <- function( type = "normal",
 ##
 #####################################################################################
 
-bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
-                        fixed.coef = "non-informative",
-                        level2.coef = "non-informative",
-                        random.var = bayes.nonInfoPower( -1.0 ),
+bhlm.prior <- function( error.var = fbprior("nonInfoPower"),
+                        fixed.coef = "nonInformative",
+                        level2.coef = "nonInformative",
+                        random.var = fbprior("nonInfoPower"),
                         common.error.var = 2 )
 {
 
@@ -46,14 +46,15 @@ bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
     level2.coef = !missing( level2.coef ),
     random.var = !missing( random.var ) )
 
-  random.coef <- bayes.normal(mean=zero, cov=diag)
+  #random.coef <- bayes.normal(mean=zero, cov=diag)
+  random.coef <- fbprior("normal")
 
   # for common sigma = error.var
   # 0 ==> independent sigmas; different hyper prior parameters
   # 1 ==> independent sigmas; same hyper prior parameters
   # 2 ==> common sigma
 
-  if ( !is.null( error.var ) && class( error.var ) == "bayes.distribution" )
+  if ( !is.null( error.var ) && class( error.var ) == "fbprior" )
   {
     if ( !is.element( common.error.var, c( 1, 2 ) ) )
     {
@@ -61,7 +62,7 @@ bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
     }
 
 
-    if ( !is.element( error.var@name, c( "invChisq", "uniform shrinkage", "du Mouchel", "non-informative power", "mass point", "invWishart" ) ) )
+    if ( !is.element( error.var$name, c( "invChisq", "uniformShrinkage", "duMouchel", "nonInfoPower", "mass point", "invWishart" ) ) )
     {
       stop( "bhlm.prior: Invalid prior distribution for error variance." )
     }
@@ -75,9 +76,9 @@ bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
 
     for ( i in seq( 1, length( error.var ) ) )
     {
-      if ( class( error.var[[i]] ) == "bayes.distribution" )
+      if ( class( error.var[[i]] ) == "fbprior" )
       {
-        if ( !is.element( error.var[[i]]@name, c( "invChisq", "uniform shrinkage", "du Mouchel", "non-informative power", "mass point", "invWishart" ) ) )
+        if ( !is.element( error.var[[i]]$name, c( "invChisq", "uniformShrinkage", "duMouchel", "nonInfoPower", "mass point", "invWishart" ) ) )
         {
           stop( "bhlm.prior: Invalid prior distribution for error variance." )
         }
@@ -97,9 +98,9 @@ bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
   ## Now check the variance for the random coefficients
   ##
 
-  if ( !is.null( random.var ) && class( random.var ) == "bayes.distribution" )
+  if ( !is.null( random.var ) && class( random.var ) == "fbprior" )
   {
-    if ( !is.element( random.var@name, c( "invChisq", "uniform shrinkage", "du Mouchel", "invWishart", "non-informative power" ) ) )
+    if ( !is.element( random.var$name, c( "invChisq", "uniformShrinkage", "duMouchel", "invWishart", "nonInfoPower" ) ) )
     {
       stop( "bhlm.prior: Invalid prior distribution for random effects coefficients variance." )
     }
@@ -116,9 +117,9 @@ bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
   ## if a list then check each element of the list
   ##
 
-  if ( !is.null( random.coef ) && class( random.coef ) == "bayes.distribution" )
+  if ( !is.null( random.coef ) && class( random.coef ) == "fbprior" )
   {
-    if ( !is.element( random.coef@name, c( "normal", "t", "non-informative" ) ) )
+    if ( !is.element( random.coef$name, c( "normal", "t", "nonInformative" ) ) )
     {
       stop( "bhlm.prior: Invalid prior distribution for random effects coefficients." )
     }
@@ -127,30 +128,31 @@ bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
   {
     for ( i in seq( 1, length( random.coef ) ) )
     {
-      if ( class( random.coef[[i]] ) == "bayes.distribution" )
+      if ( class( random.coef[[i]] ) == "fbprior" )
       {
-        if ( !is.element( random.coef[[i]]@name, c( "normal", "t", "non-informative" ) ) )
+        if ( !is.element( random.coef[[i]]$name, c( "normal", "t", "nonInformative" ) ) )
         {
           stop( "bhlm.prior: Invalid prior distribution for random effects coefficients." )
         }        
       }
-      else if ( random.coef[[i]] != "non-informative" )
+      else if ( random.coef[[i]] != "nonInformative" )
       {
         stop( "bhlm.prior: Invalid prior distribution for random effects coefficients." )
       }
-      else if ( random.coef[[i]] == "non-informative" )  
+      else if ( random.coef[[i]] == "nonInformative" )  
       {
-        random.coef[[i]] <- bayes.nonInformative()
+        random.coef[[i]] <- fpprior(")nonInformative")
       }
     }#end for loop
   }
-  else if ( !is.null( random.coef )  && random.coef != "non-informative" )
+  else if ( !is.null( random.coef )  && random.coef != "nonInformative" )
   {
     stop( "bhlm.prior: Invalid prior distribution for random effects coefficients." )
   }
-  else if ( !is.null( random.coef )  && random.coef == "non-informative" )  
+  else if ( !is.null( random.coef )  && random.coef == "nonInformative" )  
   {
-    random.coef <- bayes.nonInformative()
+    #random.coef <- bayes.nonInformative()
+    random.coef <- fbprior("nonInformative")
   }
 
 
@@ -159,20 +161,20 @@ bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
   ##
 
 
-  if ( !is.null( fixed.coef ) && class( fixed.coef ) == "bayes.distribution" )
+  if ( !is.null( fixed.coef ) && class( fixed.coef ) == "fbprior" )
   {
-    if ( !is.element( fixed.coef@name, c( "normal", "t", "non-informative" ) ) )
+    if ( !is.element( fixed.coef$name, c( "normal", "t", "nonInformative" ) ) )
     {
       stop( "bhlm.prior: Invalid prior distribution for fixed effects coefficients." )
     }
   }
-  else if ( !is.null( fixed.coef ) && fixed.coef != "non-informative" )
+  else if ( !is.null( fixed.coef ) && fixed.coef != "nonInformative" )
   {  
     stop( "bhlm.prior: Invalid prior distribution for fixed effects coefficients." )
   }
-  else if ( fixed.coef == "non-informative" )  
+  else if ( fixed.coef == "nonInformative" )  
   {
-    fixed.coef <- bayes.nonInformative()
+    fixed.coef <- fbprior("nonInformative")
   }
 
 
@@ -182,20 +184,20 @@ bhlm.prior <- function( error.var = bayes.nonInfoPower( -1.0 ),
   ##
 
 
-  if ( !is.null( level2.coef ) && class( level2.coef ) == "bayes.distribution" )
+  if ( !is.null( level2.coef ) && class( level2.coef ) == "fbprior" )
   {
-    if ( !is.element( level2.coef@name, c( "normal", "t", "non-informative" ) ) )
+    if ( !is.element( level2.coef$name, c( "normal", "t", "nonInformative" ) ) )
     {
       stop( "bhlm.prior: Invalid prior distribution for second level coefficients." )
     }
   }
-  else if ( !is.null( level2.coef ) && level2.coef != "non-informative" )
+  else if ( !is.null( level2.coef ) && level2.coef != "nonInformative" )
   {  
     stop( "bhlm.prior: Invalid prior distribution for second level coefficients." )
   }
-  else if ( !is.null( random.coef )  && level2.coef == "non-informative" )  
+  else if ( !is.null( random.coef )  && level2.coef == "nonInformative" )  
   {
-    level2.coef <- bayes.nonInformative()
+    level2.coef <- fbprior("nonInformative")
   }
 
 
@@ -392,6 +394,8 @@ bhlm.sampler <- function( nBurnin = 1000, nSamples = 1000, nThin = 1,
 
 valid.mean.specification <- function( x, dim )
 {
+  if(length(x) == 1 && is.numeric(x))
+    x <- rep(x, dim)
 
   if ( is.function( x ) )
   {
@@ -621,7 +625,7 @@ fixed.effects, second.effects, error.var.common, error.var.type, random.coef.typ
           stop( "bhlm: wrong specification for initial values of random effects coefficients." )
         }
       }
-      else #non-informative case
+      else #nonInformative case
       {
         if ( is.vector( init.point$random.coef ) && length( init.point$random.coef ) == dimX )
         {
@@ -856,7 +860,7 @@ validate.initial.points.bhlmMV <- function( n.groups, dimR, dimX, dimM, dimZ, in
           stop( "bhlm: wrong specification for initial values of random effects coefficients." )
         }
       }
-      else #non-informative case
+      else #nonInformative case
       {
         if ( is.vector( init.point$random.coef ) && length( init.point$random.coef ) == dimX )
         {
@@ -932,13 +936,18 @@ bhlm <- function( fixed.formula = NULL,
 
   if ( !is.null( response.formula ) && length( response.formula ) > 0 )# && !is.all.white( response.formula )[1] )
   {
-    if ( length( terms( response.formula )@term.labels ) > 1 )
+    attrib <- attributes(terms(response.formula, data = data))
+
+    #if ( length( terms( response.formula )@term.labels ) > 1 )
+    if ( length( attrib$term.labels ) > 1 )
     {
       multi.variate.response <- TRUE
     }
-    else if ( length( terms( response.formula )@term.labels ) == 1 )
+    #else if ( length( terms( response.formula )@term.labels ) == 1 )
+    else if ( length( attribterm.labels ) == 1 )
     {
-      if ( terms( response.formula )@term.labels == "." )
+      #if ( terms( response.formula )@term.labels == "." )
+      if ( attrib$term.labels == "." )
       {
         multi.variate.response <- TRUE
       }

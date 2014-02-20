@@ -96,7 +96,8 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       #formula contains the response variable, and predictors other than intercept
       random.vars <- 1
     }
-    else if ( length( terms( random.formula )@term.labels ) == 0 )
+    #else if ( length( terms( random.formula )@term.labels ) == 0 )
+    else if ( length( attrib$term.labels ) == 0 )
     {
       #formula contains response and perhaps intercept
       if ( attrib$intercept != 1 )
@@ -765,12 +766,12 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
   level2.coef.mean <- 0
   level2.coef.Cov <- 1
   level2.coef.df <- 0
-  level2.coef.type <- 1 #non-informative
+  level2.coef.type <- 1 #nonInformative
 
   fixed.coef.mean <- 0
   fixed.coef.Cov <- 1
   fixed.coef.df <- 0
-  fixed.coef.type <- 1 #non-informative
+  fixed.coef.type <- 1 #nonInformative
 
 
   random.var.scale <- 1
@@ -788,7 +789,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
   {
     if ( second.effects )
     {
-      if ( valid.prior$level2.coef@name == "non-informative" )
+      if ( valid.prior$level2.coef$name == "nonInformative" )
       {
         level2.coef.mean <- rep( 0.0, ncol( Z ) )
         level2.coef.Cov <- diag( ncol( Z ) )
@@ -796,15 +797,15 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       }
       else
       {
-        level2.coef.mean <- valid.prior$level2.coef@parameters[["mean vector"]]
-        level2.coef.Cov <- valid.prior$level2.coef@parameters[["covariance matrix"]]
+        level2.coef.mean <- valid.prior$level2.coef$parameters[["mean"]]
+        level2.coef.Cov <- valid.prior$level2.coef$parameters[["S"]]
 
         level2.coef.mean <- valid.mean.specification( level2.coef.mean, ncol( Z ) )
         level2.coef.Cov <- valid.Cov.specification( level2.coef.Cov, ncol( Z ) )
 
-        if ( valid.prior$level2.coef@name == "t" )
+        if ( valid.prior$level2.coef$name == "t" )
         {
-          level2.coef.df <- valid.prior$level2.coef@parameters[["t degrees of freedom"]]
+          level2.coef.df <- valid.prior$level2.coef$parameters[["df"]]
         }
         level2.coef.type <- 0
       }
@@ -812,7 +813,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       ## beta for the full model
       random.coef.type <- 0
 
-      if ( valid.prior$random.coef@name == "non-informative" )
+      if ( valid.prior$random.coef$name == "nonInformative" )
       {
         random.coef.mean <- rep( 0.0, ncol( X ) )
         random.coef.Cov <- diag( ncol( X ) )
@@ -820,12 +821,12 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       else
       {
         random.coef.mean <- rep( 0.0, ncol( X ) )
-        random.coef.Cov <- valid.prior$random.coef@parameters[["covariance matrix"]]
+        random.coef.Cov <- valid.prior$random.coef$parameters[["S"]]
         random.coef.Cov <- valid.Cov.specification( random.coef.Cov, ncol( X ) )
 
-        if ( valid.prior$random.coef@name == "t" )
+        if ( valid.prior$random.coef$name == "t" )
         {
-          random.coef.df <- valid.prior$random.coef@parameters[["t degrees of freedom"]]
+          random.coef.df <- valid.prior$random.coef$parameters[["df"]]
         }
       }
     }#end second effects
@@ -834,9 +835,9 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
       ## beta for the mixed effects model
       random.coef.type <- 1
       
-      if ( class( valid.prior$random.coef ) == "bayes.distribution" )
+      if ( class( valid.prior$random.coef ) == "fbprior" )
       {
-        if ( valid.prior$random.coef@name == "non-informative" )
+        if ( valid.prior$random.coef$name == "nonInformative" )
         {
           random.coef.type <- 3
           random.coef.mean <- rep( 0, ncol( X ) )
@@ -844,15 +845,15 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
         }
         else
         {
-          random.coef.mean <- valid.prior$random.coef@parameters[["mean"]]
-          random.coef.Cov <- valid.prior$random.coef@parameters[["covariance matrix"]]
+          random.coef.mean <- valid.prior$random.coef$parameters[["mean"]]
+          random.coef.Cov <- valid.prior$random.coef$parameters[["S"]]
 
           random.coef.mean <- valid.mean.specification( random.coef.mean, ncol( X ) )
           random.coef.Cov <- valid.Cov.specification( random.coef.Cov, ncol( X ) )
 
-          if ( valid.prior$random.coef@name == "t" )
+          if ( valid.prior$random.coef$name == "t" )
           {
-            random.coef.df <- valid.prior$random.coef@parameters[["t degrees of freedom"]]
+            random.coef.df <- valid.prior$random.coef$parameters[["df"]]
           }
         }
       }#end if a single prior
@@ -867,7 +868,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
 
         ##all covariances are assume equal
 
-        if ( valid.prior$random.coef[[1]]@name == "non-informative" )
+        if ( valid.prior$random.coef[[1]]$name == "nonInformative" )
         {
           random.coef.Cov <- diag( ncol( X ) )
           random.coef.mean <- rep ( 0, ncol( X ) )
@@ -875,20 +876,20 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
         }
         else
         {
-          random.coef.Cov <- valid.prior$random.coef[[1]]@parameters[["covariance matrix"]]
+          random.coef.Cov <- valid.prior$random.coef[[1]]$parameters[["S"]]
           random.coef.Cov <- valid.Cov.specification( random.coef.Cov, ncol( X ) )         
 
           random.coef.mean <- apply( matrix( seq( 1, length( valid.prior$random.coef ) ), nrow = 1 ), 
                                      MARGIN = 2, 
                                      FUN = function( x, y, dim )
                                      {
-                                       if ( y[[ x ]]@name == "non-informative" )
+                                       if ( y[[ x ]]$name == "nonInformative" )
                                        {
                                          r.mean <- rep( 0, dim ) 
                                        }
                                        else
                                        {
-                                         r.mean <- y[[ x ]]@parameters[["mean"]]
+                                         r.mean <- y[[ x ]]$parameters[["mean"]]
                                          r.mean <- valid.mean.specification( r.mean, dim )
                                        }
                                        r.mean
@@ -899,9 +900,9 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
         }
  
         ## all t's are assume to have the same df's
-        if ( valid.prior$random.coef[[1]]@name == "t" )
+        if ( valid.prior$random.coef[[1]]$name == "t" )
         {
-          random.coef.df <- valid.prior$random.coef[[1]]@parameters[["t degrees of freedom"]]
+          random.coef.df <- valid.prior$random.coef[[1]]$parameters[["df"]]
         }
 
       }#end several prior parameters
@@ -914,11 +915,11 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
     ##check beta has an informative prior
     if ( random.coef.type != 3 )
     {
-      random.var.type <- switch( valid.prior$random.var@name,
+      random.var.type <- switch( valid.prior$random.var$name,
       "invChisq" =
       {
-        random.var.scale <- valid.prior$random.var@parameters[["sigma0.sq"]]
-        random.var.nu <- valid.prior$random.var@parameters[["df"]]
+        random.var.scale <- valid.prior$random.var$parameters[["sigma0.sq"]]
+        random.var.nu <- valid.prior$random.var$parameters[["df"]]
         
         if( length( random.var.scale ) != ncol(X) ){
           if( length( random.var.scale ) == 1 )
@@ -935,32 +936,32 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
         0
       },
 
-      "non-informative power" =
+      "nonInfoPower" =
       {
-        random.var.power <- valid.prior$random.var@parameters[["power"]]
+        random.var.power <- valid.prior$random.var$parameters[["power"]]
         1
       },
 
-      "uniform shrinkage" =
+      "uniformShrinkage" =
       {
-        random.var.scale <- valid.prior$random.var@parameters[["median"]]
+        random.var.scale <- valid.prior$random.var$parameters[["median"]]
         2
       },
 
-      "du Mouchel" =
+      "duMouchel" =
       {
-        random.var.scale <- valid.prior$random.var@parameters[["dispersion"]]
+        random.var.scale <- valid.prior$random.var$parameters[["dispersion"]]
         3
       },
 
       "invWishart" =
       {
-        random.var.scale <- valid.Cov.specification( valid.prior$random.var@parameters[["scale"]], ncol( X ) )
-        random.var.nu <- valid.prior$random.var@parameters[["degrees of freedom"]]
+        random.var.scale <- valid.Cov.specification( valid.prior$random.var$parameters[["Sigma"]], ncol( X ) )
+        random.var.nu <- valid.prior$random.var$parameters[["df"]]
         4
       },
 
-      stop( "bhlm: distribution for random coefficients variance must be either \"invChisq\", \"non-informative power\", \"uniform shrinkage\", \"du Mouchel\", or \"invWishart\" \n" )
+      stop( "bhlm: distribution for random coefficients variance must be either \"invChisq\", \"nonInformative power\", \"uniform shrinkage\", \"du Mouchel\", or \"invWishart\" \n" )
       )#end switch
     }
   }#end random effects prior
@@ -970,7 +971,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
   ##fixed effects prior
   if ( fixed.effects )
   {
-    if ( valid.prior$fixed.coef@name == "non-informative" )
+    if ( valid.prior$fixed.coef$name == "nonInformative" )
     {
       fixed.coef.mean <- rep( 0.0, ncol( M ) )
       fixed.coef.Cov <- diag( ncol( M ) )
@@ -978,15 +979,15 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
     }
     else
     {
-      fixed.coef.mean <- valid.prior$fixed.coef@parameters[["mean vector"]]
-      fixed.coef.Cov <- valid.prior$fixed.coef@parameters[["covariance matrix"]]
+      fixed.coef.mean <- valid.prior$fixed.coef$parameters[["mean"]]
+      fixed.coef.Cov <- valid.prior$fixed.coef$parameters[["S"]]
 
       fixed.coef.mean <- valid.mean.specification( fixed.coef.mean, ncol( M ) )
       fixed.coef.Cov <- valid.Cov.specification( fixed.coef.Cov, ncol( M ) )
 
-      if ( valid.prior$fixed.coef@name == "t" )
+      if ( valid.prior$fixed.coef$name == "t" )
       {
-        fixed.coef.df <- valid.prior$fixed.coef@parameters[["t degrees of freedom"]]
+        fixed.coef.df <- valid.prior$fixed.coef$parameters[["df"]]
       }
       fixed.coef.type <- 0
     }
@@ -1005,39 +1006,39 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
   {
     # common prior parameters for error variance
 
-    error.var.type <- switch( valid.prior$error.var@name,
+    error.var.type <- switch( valid.prior$error.var$name,
       "invChisq" =
       {
-        error.var.scale <- valid.prior$error.var@parameters[["sigma0.sq"]]
-        error.var.nu <- valid.prior$error.var@parameters[["df"]]
+        error.var.scale <- valid.prior$error.var$parameters[["sigma0.sq"]]
+        error.var.nu <- valid.prior$error.var$parameters[["df"]]
         0
       },
 
-      "non-informative power" =
+      "nonInfoPower" =
       {
-        error.var.power <- valid.prior$error.var@parameters[["power"]]
+        error.var.power <- valid.prior$error.var$parameters[["power"]]
         1
       },
 
-      "uniform shrinkage" =
+      "uniformShrinkage" =
       {
-        error.var.scale <- valid.prior$error.var@parameters[["median"]]
+        error.var.scale <- valid.prior$error.var$parameters[["median"]]
         2
       },
 
-      "du Mouchel" =
+      "duMouchel" =
       {
-        error.var.scale <- valid.prior$error.var@parameters[["dispersion"]]
+        error.var.scale <- valid.prior$error.var$parameters[["dispersion"]]
         3
       },
 
       "mass point" =
       {
-        error.var.scale <- valid.prior$error.var@parameters[["value"]]
+        error.var.scale <- valid.prior$error.var$parameters[["value"]]
         4
       },
 
-      stop( "bhlm: distribution for error variance must be either \"invChisq\", \"non-informative power\", \"uniform shrinkage\", \"du Mouchel\", or \"mass point\" \n" )
+      stop( "bhlm: distribution for error variance must be either \"invChisq\", \"nonInformative power\", \"uniform shrinkage\", \"du Mouchel\", or \"mass point\" \n" )
 
     )#end switch
   }
@@ -1058,39 +1059,39 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
 
       for ( i in seq( 1, length( valid.prior$error.var ) ) )
       {
-        error.var.type <- switch( valid.prior$error.var[[i]]@name,
+        error.var.type <- switch( valid.prior$error.var[[i]]$name,
           "invChisq" =
           {
-            error.var.scale[i] <- valid.prior$error.var[[i]]@parameters[["sigma0.sq"]]
-            error.var.nu[i] <- valid.prior$error.var[[i]]@parameters[["df"]]
+            error.var.scale[i] <- valid.prior$error.var[[i]]$parameters[["sigma0.sq"]]
+            error.var.nu[i] <- valid.prior$error.var[[i]]$parameters[["df"]]
             0
           },
 
-          "non-informative power" =
+          "nonInfoPower" =
           {
-            error.var.power[i] <- valid.prior$error.var[[i]]@parameters[["power"]]
+            error.var.power[i] <- valid.prior$error.var[[i]]$parameters[["power"]]
             1
           },
 
-          "uniform shrinkage" =
+          "uniformShrinkage" =
           {
-            error.var.scale[i] <- valid.prior$error.var[[i]]@parameters[["median"]]
+            error.var.scale[i] <- valid.prior$error.var[[i]]$parameters[["median"]]
             2
           },
 
-          "du Mouchel" =
+          "duMouchel" =
           {
-            error.var.scale[i] <- valid.prior$error.var[[i]]@parameters[["dispersion"]]
+            error.var.scale[i] <- valid.prior$error.var[[i]]$parameters[["dispersion"]]
             3
           },
 
           "mass point" =
           {
-            error.var.scale[i] <- valid.prior$error.var[[i]]@parameters[["value"]]
+            error.var.scale[i] <- valid.prior$error.var[[i]]$parameters[["value"]]
             4
           },
 
-          stop( "bhlm: distribution for error variance must be either \"invChisq\", \"non-informative power\", \"uniform shrinkage\", \"du Mouchel\", or \"mass point\" \n" )
+          stop( "bhlm: distribution for error variance must be either \"invChisq\", \"nonInformative power\", \"uniform shrinkage\", \"du Mouchel\", or \"mass point\" \n" )
         )#end switch
 
         if ( i == 1 )
