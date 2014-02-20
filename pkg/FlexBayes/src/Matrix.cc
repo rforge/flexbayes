@@ -1057,8 +1057,9 @@ CVector CMatrix::choleskyDecomposition() throw( rtErr )
 
   try
   {
-    Algebra::choldc( working_matrix, (long) m_iRow, working_diagonal, 0.0 );
-  } 
+    Algebra::choldc( working_matrix, m_iRow, working_diagonal, 0.0 );
+    //Algebra::choldc( working_matrix, (long) m_iRow, working_diagonal, 0.0 );
+  }
   catch( rtErr choldcError )
   {
     printf( "CMatrix::choleskyDecomposition: Matrix does not seem to be symmetric positive definite.\n" );
@@ -1109,7 +1110,8 @@ bool CMatrix::exploreCholeskyDecomposition(  CVector * cholesky_dec )
     }
   }
 
-  is_chol_OK = Algebra::isCholdcOK( working_matrix, (long) m_iRow, working_diagonal, 0.0 );
+  is_chol_OK = Algebra::isCholdcOK( working_matrix, m_iRow, working_diagonal, 0.0 );
+  //is_chol_OK = Algebra::isCholdcOK( working_matrix, (long) m_iRow, working_diagonal, 0.0 );
 
   if ( is_chol_OK )
   {  

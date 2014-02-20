@@ -1524,7 +1524,7 @@ fit.bayeshlm <- function( n.groups, sorted.by.group.idx, n.responses, dim.random
     gibbs.stats <- 0
   }
 
-  if(is.na(starting.random.var)) starting.random.var <- NULL
+  if(is.na(starting.random.var[1])) starting.random.var <- NULL
 
   #call the function
   if (debug){
@@ -1562,7 +1562,6 @@ fit.bayeshlm <- function( n.groups, sorted.by.group.idx, n.responses, dim.random
     cat("burnInLength:", burnInLength, "\n")
     cat("simulationsToPerform:", simulationsToPerform, "\n")
     cat("sampleFrequency:", sampleFrequency, "\n")
-
   }
 
   fit <- .C( "fitBayesianHLM",

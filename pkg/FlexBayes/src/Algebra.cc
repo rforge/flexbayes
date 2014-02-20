@@ -19,7 +19,7 @@
    Algorithm looks similar to that one in Num. Recipes in C, except
    that here several checks for numerical errors are made.
 */
-void Algebra::choldc(double *a, long n, double *p, double mxff)  
+void Algebra::choldc(double *a, int n, double *p, double mxff)  
 throw(rtErr) 
 {
     int i, j, k;
@@ -96,7 +96,7 @@ throw(rtErr)
 
 
 
-bool Algebra::isCholdcOK( double *a, long n, double *p, double mxff )  
+bool Algebra::isCholdcOK( double *a, int n, double *p, double mxff )  
 {
     bool is_chol_OK;
     int i, j, k;
@@ -182,11 +182,11 @@ bool Algebra::isCholdcOK( double *a, long n, double *p, double mxff )
    The solution is returned in x.
 */
 
-void Algebra::cholsl(double *a, long n, double *p, double *b, double *x) {
+void Algebra::cholsl(double *a, int n, double *p, double *b, double *x) {
 
     double sum;
-		long i = 0;
-		long j = 0;
+		int i = 0;
+		int j = 0;
     
     for(i = 0; i < n; i++) {
       sum = b[i];

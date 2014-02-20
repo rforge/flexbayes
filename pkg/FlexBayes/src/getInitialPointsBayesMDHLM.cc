@@ -15,20 +15,20 @@ extern "C" {
 
 
 void getInitialPointsBayesMDHLM( 
-                     long * number_draws,
-                     long * number_groups,
-                     long * number_data,
-                     long * dim_response,
-                     long * dim_beta,
-                     long * dim_gamma,
-                     long * dim_alpha,
+                     int * number_draws,
+                     int * number_groups,
+                     int * number_data,
+                     int * dim_response,
+                     int * dim_beta,
+                     int * dim_gamma,
+                     int * dim_alpha,
 
                      double * data_response,
 
                      double * betamean,
                      double * betaCov,
                      double * betaDF,
-                     long * prior_beta_type,
+                     int * prior_beta_type,
 
                      double * gammamean,
                      double * gammaCov,
@@ -40,13 +40,13 @@ void getInitialPointsBayesMDHLM(
 
                      double * sigmaDF,
                      double * sigmaScale,
-                     long * dim_sigmaScale,
-                     long * prior_sigma_type,
-                     long * common_sigma,
+                     int * dim_sigmaScale,
+                     int * prior_sigma_type,
+                     int * common_sigma,
 
                      double * tauDF,
                      double * tauScale,
-                     long * prior_tau_type,
+                     int * prior_tau_type,
 
                      double * output_points ) throw( rtErr )
 {

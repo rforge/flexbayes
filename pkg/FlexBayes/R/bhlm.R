@@ -966,7 +966,7 @@ bhlm <- function( fixed.formula = NULL,
       {
         found.response <- TRUE
         #if ( charmatch( "cbind(", dimnames( terms( random.formula )@factors )[[1]][1], nomatch = - 1 ) == 1 )
-        if ( charmatch( "cbind(", dimnames( attrib@factors )[[1]][1], nomatch = - 1 ) == 1 )
+        if ( charmatch( "cbind(", dimnames( attrib$factors )[[1]][1], nomatch = - 1 ) == 1 )
         {
           #if ( grep( ",", dimnames( terms( random.formula )@factors )[[1]][1] ) >= 1 )
           if ( grep( ",", dimnames( attrib$factors )[[1]][1] ) >= 1 )

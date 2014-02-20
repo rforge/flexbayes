@@ -86,12 +86,12 @@ extern "C" {
          Simulations for sigma_j (not sigma2_j) are returned.
 
 */
-void fitBayesianHPMIL( long * number_groups,
-                     long * number_data,
-                     long * dim_beta,
-                     long * dim_gamma,
-                     long * dim_alpha,
-                     long * exposures_flag,
+void fitBayesianHPMIL( int * number_groups,
+                     int * number_data,
+                     int * dim_beta,
+                     int * dim_gamma,
+                     int * dim_alpha,
+                     int * exposures_flag,
 
                      double * random_data,
                      double * fixed_data,
@@ -102,30 +102,30 @@ void fitBayesianHPMIL( long * number_groups,
                      double * gammamean,
                      double * gammaCov,
                      double * gammaDF,
-                     long * prior_gamma_type,
+                     int * prior_gamma_type,
 
                      double * betamean,
                      double * betaCov,
                      double * betaDF,
-                     long * prior_beta_type,
+                     int * prior_beta_type,
 
                      double * alphamean,
                      double * alphaCov,
                      double * alphaDF,
-                     long * prior_alpha_type,
+                     int * prior_alpha_type,
 
                      double * tauDF,
                      double * tauScale,
                      double * tauPower,
-                     long * prior_tau_type,
+                     int * prior_tau_type,
 
                      double * sigmaDF,
                      double * sigmaScale,
                      double * sigmaPower,
-                     long * common_sigma,
-                     long * prior_sigma_type,
+                     int * common_sigma,
+                     int * prior_sigma_type,
 
-                     long * read_init_point,
+                     int * read_init_point,
                      double * betaInit,
                      double * gammaInit,
                      double * alphaInit,
@@ -133,12 +133,12 @@ void fitBayesianHPMIL( long * number_groups,
 
                      double * sigma2Init,
 
-                     long * burnInLength,
-                     long * simulationsToPerform,
-                     long * sampleFrequency,
+                     int * burnInLength,
+                     int * simulationsToPerform,
+                     int * sampleFrequency,
 
-                     long * model_type,
-                     long * print_statistics,
+                     int * model_type,
+                     int * print_statistics,
                      double * output_simulations,
                      double * mh_drawing_stats ) throw( rtErr ) 
 {

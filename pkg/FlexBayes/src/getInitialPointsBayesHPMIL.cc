@@ -15,13 +15,13 @@ extern "C" {
 
 
 void getInitialPointsBayesHPMIL( 
-                     long * number_draws,
-                     long * number_groups,
-                     long * number_data,
-                     long * dim_beta,
-                     long * dim_gamma,
-                     long * dim_alpha,
-                     long * exposure_flag,
+                     int * number_draws,
+                     int * number_groups,
+                     int * number_data,
+                     int * dim_beta,
+                     int * dim_gamma,
+                     int * dim_alpha,
+                     int * exposure_flag,
 
                      double * random_data,
                      double * fixed_data,
@@ -32,7 +32,7 @@ void getInitialPointsBayesHPMIL(
                      double * betamean,
                      double * betaCov,
                      double * betaDF,
-                     long * prior_beta_type,
+                     int * prior_beta_type,
 
                      double * gammamean,
                      double * gammaCov,
@@ -44,13 +44,13 @@ void getInitialPointsBayesHPMIL(
 
                      double * tauDF,
                      double * tauScale,
-                     long * prior_tau_type,
+                     int * prior_tau_type,
 
                      double * sigmaDF,
                      double * sigmaScale,
-                     long * dim_sigmaScale,
-                     long * prior_sigma_type,
-                     long * common_sigma,
+                     int * dim_sigmaScale,
+                     int * prior_sigma_type,
+                     int * common_sigma,
 
                      double * output_points ) throw( rtErr )
 {

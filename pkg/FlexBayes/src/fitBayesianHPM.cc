@@ -81,12 +81,12 @@ extern "C" {
          otherwise, the matrices tau2 are returned.
 
 */
-void fitBayesianHPM( long * number_groups,
-                     long * number_data,
-                     long * dim_beta,
-                     long * dim_gamma,
-                     long * dim_alpha,
-                     long * exposures_flag,
+void fitBayesianHPM( int * number_groups,
+                     int * number_data,
+                     int * dim_beta,
+                     int * dim_gamma,
+                     int * dim_alpha,
+                     int * exposures_flag,
 
                      double * random_data,
                      double * fixed_data,
@@ -97,41 +97,41 @@ void fitBayesianHPM( long * number_groups,
                      double * gammamean,
                      double * gammaCov,
                      double * gammaDF,
-                     long * prior_gamma_type,
+                     int * prior_gamma_type,
 
                      double * betamean,
                      double * betaCov,
                      double * betaDF,
-                     long * prior_beta_type,
+                     int * prior_beta_type,
 
                      double * alphamean,
                      double * alphaCov,
                      double * alphaDF,
-                     long * prior_alpha_type,
+                     int * prior_alpha_type,
 
                      double * tauDF,
                      double * tauScale,
                      double * tauPower,
-                     long * prior_tau_type,
+                     int * prior_tau_type,
 
                      double * xi_z0,
-                     long * common_xi,
+                     int * common_xi,
 
-                     long * read_init_point,
+                     int * read_init_point,
                      double * betaInit,
                      double * gammaInit,
                      double * alphaInit,
                      double * tau2Init,
 
-                     long * xiInit_type,
+                     int * xiInit_type,
                      double * xiInit,
 
-                     long * burnInLength,
-                     long * simulationsToPerform,
-                     long * sampleFrequency,
+                     int * burnInLength,
+                     int * simulationsToPerform,
+                     int * sampleFrequency,
 
-                     long * update_cov_flag,
-                     long * print_statistics,
+                     int * update_cov_flag,
+                     int * print_statistics,
                      double * output_simulations,
                      double * mh_drawing_stats ) throw( rtErr ) 
 {

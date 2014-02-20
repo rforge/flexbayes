@@ -527,7 +527,8 @@ CVector CVector::asCholeskyDecompositionSolve( CVector & b )
   }
 
   //solve A vx = vb
-  Algebra::cholsl( working_matrix, (long) b.Len(), working_diagonal, vb, vx );
+  //Algebra::cholsl( working_matrix, (long) b.Len(), working_diagonal, vb, vx );
+  Algebra::cholsl( working_matrix, b.Len(), working_diagonal, vb, vx );
   CVector x( vx, b.Len() );
 
   delete [] working_matrix;

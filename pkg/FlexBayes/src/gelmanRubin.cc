@@ -141,9 +141,9 @@ void gelmanRubin( CMatrix * x,
 
 
 void gelmanRubinDiagnostics( double * data,
-                             long * number_chains,
-                             long * number_samples,
-                             long * sample_period,
+                             int * number_chains,
+                             int * number_samples,
+                             int * sample_period,
                              double * gelman_rubin_sqrt_R,
                              double * gelman_rubin_sqrt_upper_quartile )
 {

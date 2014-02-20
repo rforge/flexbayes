@@ -9,10 +9,12 @@ summary.posterior <- function(x, maxVars = 30, digits=4){
 	paramSd <- rep(0, nParams)
 	probs <- c(0.025, 0.25, 0.50, 0.75, 0.975)
 	paramQuantiles <- matrix(0, nrow=nParams, ncol=length(probs))
-	for (i in (1:nParams)){
-		samples <- getSamples(x=x, param=i)
-		paramMean[i] <- mean(samples)
-		paramSd[i] <- stdev(samples)
+
+  for (i in (1:nParams)){
+		#samples <- getSamples(x=x, param=i)
+    samples <- as.vector(sapply(x, function(u, idx) u[, idx], idx = i))
+    paramMean[i] <- mean(samples)
+		paramSd[i] <- sqrt(var(samples))
 		paramQuantiles[i,] <- quantile(samples, probs = probs)
 	}
 	
@@ -62,9 +64,7 @@ print.summary.posterior <- function(x){
 }
 
 # The print function for objects of class posterior
-printPosterior <-  function(x, ...){
+print.posterior <- function(x, ...)
 	print(summary(x))
-}
 
-setMethod ("print", signature = "posterior", definition = printPosterior)
 

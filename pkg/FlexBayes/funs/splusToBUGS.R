@@ -24,3 +24,5 @@ splusToBUGS <- function(data){
 	}
 	return(dataBUGS)
 }
+
+

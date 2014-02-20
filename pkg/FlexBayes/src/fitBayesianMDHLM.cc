@@ -9,12 +9,12 @@
 
 extern "C" {
 
-void  transformResponseAndPredictorsMD( long * number_groups, 
+void  transformResponseAndPredictorsMD( int * number_groups, 
                                         CMatrix ** response, 
-                                        long * dim_beta, 
-                                        long * dim_gamma, 
-                                        long * unique_error_Cov, 
-                                        long * dim_error_Cov, 
+                                        int * dim_beta, 
+                                        int * dim_gamma, 
+                                        int * unique_error_Cov, 
+                                        int * dim_error_Cov, 
 		 			double * error_Cov ) throw( rtErr );
 
 /*
@@ -93,64 +93,64 @@ void  transformResponseAndPredictorsMD( long * number_groups,
          otherwise, the matrices tau2 are returned.
 
 */
-void fitBayesianMDHLM( long * number_groups,
-                     long * number_data,
-                     long * dim_response,
-                     long * dim_beta,
-                     long * dim_gamma,
-                     long * dim_alpha,
+void fitBayesianMDHLM( int * number_groups,
+                     int * number_data,
+                     int * dim_response,
+                     int * dim_beta,
+                     int * dim_gamma,
+                     int * dim_alpha,
 
                      double * data_response,
 
-                     long * total_missing_data,
-                     long * number_response_missing,
-                     long * response_missing,
+                     int * total_missing_data,
+                     int * number_response_missing,
+                     int * response_missing,
 
-                     long * unique_error_Cov,
-                     long * dim_error_Cov,
+                     int * unique_error_Cov,
+                     int * dim_error_Cov,
                      double * error_Cov,
 
                      double * degreesOfFreedom_likelihood,
-                     long * likelihood_type,
+                     int * likelihood_type,
 
                      double * gammamean,
                      double * gammaCov,
                      double * gammaDF,
-                     long * prior_gamma_type,
+                     int * prior_gamma_type,
 
                      double * betamean,
                      double * betaCov,
                      double * betaDF,
-                     long * prior_beta_type,
+                     int * prior_beta_type,
 
                      double * alphamean,
                      double * alphaCov,
                      double * alphaDF,
-                     long * prior_alpha_type,
+                     int * prior_alpha_type,
 
                      double * sigmaDF,
                      double * sigmaScale,
                      double * sigmaPower,
-                     long * common_sigma,
-                     long * prior_sigma_type,
+                     int * common_sigma,
+                     int * prior_sigma_type,
 
                      double * tauDF,
                      double * tauScale,
                      double * tauPower,
-                     long * prior_tau_type,
+                     int * prior_tau_type,
 
-                     long * read_init_point,
+                     int * read_init_point,
                      double * betaInit,
                      double * gammaInit,
                      double * alphaInit,
                      double * sigma2Init,
                      double * tau2Init,
 
-                     long * burnInLength,
-                     long * simulationsToPerform,
-                     long * sampleFrequency,
+                     int * burnInLength,
+                     int * simulationsToPerform,
+                     int * sampleFrequency,
 
-                     long * print_statistics,
+                     int * print_statistics,
                      double * output_simulations,
 		     double * gibbs_drawing_stats ) throw( rtErr )
 {
@@ -677,12 +677,12 @@ void fitBayesianMDHLM( long * number_groups,
 
     
 
-void  transformResponseAndPredictorsMD( long * number_groups, 
+void  transformResponseAndPredictorsMD( int * number_groups, 
                                       CMatrix ** response, 
-                                      long * dim_beta, 
-                                      long * dim_gamma, 
-                                      long * unique_error_Cov, 
-                                      long * dim_error_Cov, 
+                                      int * dim_beta, 
+                                      int * dim_gamma, 
+                                      int * unique_error_Cov, 
+                                      int * dim_error_Cov, 
                                       double * error_Cov ) throw( rtErr )
 {
   //construct appropriate error covariance matrix (if needed)

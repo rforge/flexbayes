@@ -9,10 +9,10 @@ class Algebra {
 public:
 
   /* Cholesky decomposition  */
-  static void choldc(double *a, long n, double *p, double mxff) 
+  static void choldc(double *a, int n, double *p, double mxff) 
 	  throw(rtErr);
-  static bool isCholdcOK( double *a, long n, double *p, double mxff );
-  static void cholsl(double *a, long n, double *p, double *b, double *x);
+  static bool isCholdcOK( double *a, int n, double *p, double mxff );
+  static void cholsl(double *a, int n, double *p, double *b, double *x);
 
   /* LU decomposition */
   static void ludcmp(double *a, int n, int *indx, double *d, double *vv)
