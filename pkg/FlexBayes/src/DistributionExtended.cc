@@ -99,7 +99,7 @@ void InvChisqDistribution::update( DistributionParameter * par_list, int list_si
   }
   else
   {
-    printf( "InvChisqDistribution::update: wrong number of paramaters [%d].\n", list_size );
+    Rprintf( "InvChisqDistribution::update: wrong number of paramaters [%d].\n", list_size );
   }
 }//end
 
@@ -153,7 +153,7 @@ double InvChisqDistribution::drawOneItem()
   }
   else
   {
-    printf( "InvChisqDistribution::drawOneItem: degrees of freedom [%f] parameter is too small. Using instead [%f] df.\n", dfreedom_updated, NON_INFORMATIVE_SIGMA_DF );
+    Rprintf( "InvChisqDistribution::drawOneItem: degrees of freedom [%f] parameter is too small. Using instead [%f] df.\n", dfreedom_updated, NON_INFORMATIVE_SIGMA_DF );
     x = rchisq( NON_INFORMATIVE_SIGMA_DF );
     last_item_drawn = NON_INFORMATIVE_SIGMA_DF * scale_updated / x;
   }
@@ -191,7 +191,7 @@ DistributionParameter InvChisqDistribution::mean()
   }
   else
   {
-    printf( "InvChisqDistribution::mean: degrees of freedom [%f < 2.0]. Mean is infinity.\n", dfreedom_updated );
+    Rprintf( "InvChisqDistribution::mean: degrees of freedom [%f < 2.0]. Mean is infinity.\n", dfreedom_updated );
     val = 1.0 / DELTA;
   }
 
@@ -212,7 +212,7 @@ DistributionParameter InvChisqDistribution::variance()
   }
   else
   {
-    printf( "InvChisqDistribution::variance: degrees of freedom [%f < 4.0]. Variance is infinity.\n", dfreedom_updated );
+    Rprintf( "InvChisqDistribution::variance: degrees of freedom [%f < 4.0]. Variance is infinity.\n", dfreedom_updated );
     val = 1.0 / DELTA;
   }
 
@@ -421,7 +421,7 @@ void NormalDistribution::setCovariance( CMatrix * cov ) throw( rtErr )
   }
   catch( rtErr choldcError )
   {
-    printf( "NormalDistribution::setCovariance: Covariance matrix does not seem to be symmetric positive definite.\n" ); fflush(stdout);
+    Rprintf( "NormalDistribution::setCovariance: Covariance matrix does not seem to be symmetric positive definite.\n" );
     char the_error[] = "NormalDistribution::setCovariance: Covariance matrix does not seem to be symmetric positive definite.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -503,7 +503,7 @@ void NormalDistribution::updateInitialCovariance( CMatrix * cov ) throw( rtErr )
   }
   catch( rtErr choldcError )
   {
-    printf( "NormalDistribution::updateInitialCovariance: Covariance matrix does not seem to be symmetric positive definite.\n" );
+    Rprintf( "NormalDistribution::updateInitialCovariance: Covariance matrix does not seem to be symmetric positive definite.\n" );
 
     char the_error[] = "NormalDistribution::updateInitialCovariance: Covariance matrix does not seem to be symmetric positive definite.";
     rtErr runtime_error( the_error );
@@ -603,7 +603,7 @@ void NormalDistribution::scaleLastDraw( double scale )
   }
   else
   {
-    printf( " NormalDistribution::scaleLastDraw: negative or zero scale [%f] is not allowed.", scale );
+    Rprintf( " NormalDistribution::scaleLastDraw: negative or zero scale [%f] is not allowed.", scale );
   }
 }
 
@@ -616,7 +616,7 @@ void NormalDistribution::updateScale( double scale )
   }
   else
   {
-    printf( " NormalDistribution::updateScale: negative or zero scale is not allowed." );
+    Rprintf( " NormalDistribution::updateScale: negative or zero scale is not allowed." );
   }
 }//end
 
@@ -677,7 +677,7 @@ void NormalDistribution::update( CVector & mean_shift, CMatrix & cov_shift )
 
     (*cholesky_invCov_updated) = ( cov_shift + (*inv_cov_init) ).choleskyDecomposition();
 #ifdef DEBUG2
-  printf("Updating normal.  inv_cov_init = \n");
+  Rprintf("Updating normal.  inv_cov_init = \n");
   inv_cov_init->Print();
 #endif
 
@@ -821,11 +821,11 @@ CVector NormalDistribution::drawOneItem()
   (*last_item_drawn) =  (*mean_updated) + cholesky_invCov_updated->asUpperTriangularSolve( standard_normal );
 
 #ifdef DEBUG2
-  printf("normal draw.  Mean = \n");
+  Rprintf("normal draw.  Mean = \n");
   mean_updated->Print();
-  printf("standard normal draw = \n");
+  Rprintf("standard normal draw = \n");
   standard_normal.Print();
-  printf("transformed draw = \n");
+  Rprintf("transformed draw = \n");
   last_item_drawn->Print();
 #endif
 
@@ -856,7 +856,7 @@ CVector NormalDistribution::drawItemFromPrior()
   }
   catch( rtErr choldcError )
   {
-    printf( "NormalDistribution::drawItemFromPrior: Covariance matrix does not seem to be symmetric positive definite.\n" ); fflush(stdout);
+    Rprintf( "NormalDistribution::drawItemFromPrior: Covariance matrix does not seem to be symmetric positive definite.\n" );
 
     char the_error[] = "NormalDistribution::DrawItemFromPrior: Covariance matrix does not seem to be symmetric positive definite.";
     rtErr runtime_error( the_error );
@@ -1165,7 +1165,7 @@ DistributionParameter StudentTDistribution::variance()
   }
   else
   {
-    printf( "StudentTDistribution::variance: degrees of freedom [%f < 2.0]. Variance is infinity.\n", degreesOfFreedom() );
+    Rprintf( "StudentTDistribution::variance: degrees of freedom [%f < 2.0]. Variance is infinity.\n", degreesOfFreedom() );
     cov.multiplyByScalar( 1.0 / DELTA );
   }
 
@@ -1404,7 +1404,7 @@ void ConstrainedInvChisqDistribution::update( DistributionParameter * par_list, 
   }
   else
   {
-    printf( "ConstrainedInvChisqDistribution::update: wrong number of paramaters [%d].\n", list_size );
+    Rprintf( "ConstrainedInvChisqDistribution::update: wrong number of paramaters [%d].\n", list_size );
   }
 }//end
 
@@ -1504,7 +1504,7 @@ double ConstrainedInvChisqDistribution::inverseCDFInvChisq( double val ) throw( 
   }
   else
   {
-    printf( "ConstrainedInvChisqDistribution::inverseCDFInvChisq: value provided [%f] is not valid.\n", val );
+    Rprintf( "ConstrainedInvChisqDistribution::inverseCDFInvChisq: value provided [%f] is not valid.\n", val );
     char the_error[] = "ConstrainedInvChisqDistribution::inverseCDFInvChisq: value provided is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1975,7 +1975,7 @@ void WishartDistribution::update( DistributionParameter * par_list, int list_siz
   }
   else
   {
-    printf( "WishartDistribution::update: wrong number of paramaters [%d].\n", list_size );
+    Rprintf( "WishartDistribution::update: wrong number of paramaters [%d].\n", list_size );
   }
 
 }//end
@@ -2363,7 +2363,7 @@ CMatrix InvWishartDistribution::drawOneItem() throw( rtErr )
 
   if ( k < dim )
   {
-    printf( "InvWishartDistribution::drawOneItem: degrees of freedom are smaller than dimension.\n" );
+    Rprintf( "InvWishartDistribution::drawOneItem: degrees of freedom are smaller than dimension.\n" );
     char the_error[] = "InvWishartDistribution::drawOneItem: degrees of freedom are smaller than dimension.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -2535,7 +2535,7 @@ void InvWishartDistribution::update( DistributionParameter * par_list, int list_
   }
   else
   {
-    printf( "InvWishartDistribution::update: wrong number of paramaters [%d].\n", list_size );
+    Rprintf( "InvWishartDistribution::update: wrong number of paramaters [%d].\n", list_size );
   }
 
 }//end
@@ -2603,7 +2603,7 @@ DistributionParameter InvWishartDistribution::mode()
   }
   else
   {
-    printf( "InvWishartDistribution::mode: cannot compute it when degrees of freedom is not larger than the dimension + 1.\n" );
+    Rprintf( "InvWishartDistribution::mode: cannot compute it when degrees of freedom is not larger than the dimension + 1.\n" );
 #ifdef FIX1
     CMatrix tmpmat = scaleMatrix();
     DistributionParameter val( tmpmat );
@@ -2637,7 +2637,7 @@ DistributionParameter InvWishartDistribution::mean()
   }
   else
   {
-    printf( "InvWishartDistribution::mean: cannot compute it when degrees of freedom is not larger than the dimension + 1.\n" );
+    Rprintf( "InvWishartDistribution::mean: cannot compute it when degrees of freedom is not larger than the dimension + 1.\n" );
 #ifdef FIX1
     CMatrix tmpmat = scaleMatrix();
     DistributionParameter val( tmpmat );
@@ -2998,7 +2998,7 @@ ProperNonInfoPosteriorHLM::ProperNonInfoPosteriorHLM( double tau2, double df ) t
 {
   if ( tau2 <= 0.0 )
   {
-    printf( "ProperNonInfoPosteriorHLM: invalid parameter tau02 [%f].\n", tau2 );
+    Rprintf( "ProperNonInfoPosteriorHLM: invalid parameter tau02 [%f].\n", tau2 );
     char the_error[] = "ProperNonInfoPosteriorHLM: invalid parameter tau02.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -3029,7 +3029,7 @@ void ProperNonInfoPosteriorHLM::initialize( double tau2, double df ) throw( rtEr
 {
   if ( tau2 <= 0.0 )
   {
-    printf( "ProperNonInfoPosteriorHLM: invalid parameter tau02 [%f].\n", tau2 );
+    Rprintf( "ProperNonInfoPosteriorHLM: invalid parameter tau02 [%f].\n", tau2 );
     char the_error[] = "ProperNonInfoPosteriorHLM: invalid parameter tau02.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -3170,7 +3170,7 @@ void ProperNonInfoPosteriorHLM::setPriorDistribution( char * type ) throw( rtErr
   }
   else
   {
-    printf( "ProperNonInfoPosteriorHLM::setDistribution: type [%s] is unknown.\n", type );
+    Rprintf( "ProperNonInfoPosteriorHLM::setDistribution: type [%s] is unknown.\n", type );
     char the_error[] = "ProperNonInfoPosteriorHLM::setDistribution: type is unknown.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -3295,7 +3295,7 @@ double ProperNonInfoPosteriorHLM::inverseCDF( double p ) throw( rtErr )
         }
         else
 	{
-          printf( "ProperNonInfoPosteriorHLM::inverseCDF: something wrong with input value [%f]\n", p );
+          Rprintf( "ProperNonInfoPosteriorHLM::inverseCDF: something wrong with input value [%f]\n", p );
           char the_error[] = "ProperNonInfoPosteriorHLM::inverseCDF: something wrong with input value.";
           rtErr runtime_error( the_error );
           throw runtime_error;
@@ -3317,7 +3317,7 @@ double ProperNonInfoPosteriorHLM::inverseCDF( double p ) throw( rtErr )
   }
   else
   {
-    printf( "ProperNonInfoPosteriorHLM::inverseCDF: value provided [%f] is not valid.\n", p );
+    Rprintf( "ProperNonInfoPosteriorHLM::inverseCDF: value provided [%f] is not valid.\n", p );
     char the_error[] = "ProperNonInfoPosteriorHLM::inverseCDF: value provided is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;

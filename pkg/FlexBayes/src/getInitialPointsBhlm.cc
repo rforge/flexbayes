@@ -138,7 +138,7 @@ void getInitialPointsBayesHLM(
 
   if ( !random_effects && !fixed_effects )
   {
-    printf( "getInitialPointsBhlm: No fixed effects nor random effects provided. This model is not valid.\n" );
+    Rprintf( "getInitialPointsBhlm: No fixed effects nor random effects provided. This model is not valid.\n" );
     char the_error[] = "getInitialPointsBhlm: No fixed effects nor random effects provided. This model is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -258,7 +258,7 @@ void getInitialPointsBayesHLM(
     }
     else if ( ((int) (*dim_sigmaScale) ) > 1 )
     {
-      printf( "getInitialPointsBhlm: Wrong dimensions in error variance hyperparameter array.\n" );
+      Rprintf( "getInitialPointsBhlm: Wrong dimensions in error variance hyperparameter array.\n" );
       char the_error[] = "getInitialPointsBhlm: Wrong dimensions in error variance hyperparameter array.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -388,7 +388,7 @@ void getInitialPointsBayesHLM(
   if ( random_effects && ((int) (*prior_beta_type)) != 3 )
   {
   	#ifdef DEBUG_INITGEN
-  	  printf("number_draws = %d, dim_beta = %d, ", ((int)(*number_draws)), ((int)(*dim_beta))  );
+  	  Rprintf("number_draws = %d, dim_beta = %d, ", ((int)(*number_draws)), ((int)(*dim_beta))  );
   	#endif
     tauInit = new CMatrix * [ ((int) (*number_draws) ) ];
     if ( ( (int) (*prior_tau_type) ) != 4 )
@@ -405,7 +405,7 @@ void getInitialPointsBayesHLM(
     	}
     }
   	#ifdef DEBUG_INITGEN
-  	  printf("tau_scale[0] = %f, tau_df[0] = %f", tau_scale.Val(0), tau_df.Val(0));
+  	  Rprintf("tau_scale[0] = %f, tau_df[0] = %f", tau_scale.Val(0), tau_df.Val(0));
   	#endif
     		
 /*      if ( (*tauScale) > 0 )

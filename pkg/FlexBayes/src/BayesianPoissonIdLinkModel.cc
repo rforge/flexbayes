@@ -1,6 +1,6 @@
 #include <math.h>
 #include <string.h>
-#include "S.h"
+#include "R.h"
 
 #include "Const.h"
 #include "DistributionParameter.h"
@@ -595,7 +595,7 @@ void BayesianPoissonIdLinkModel::sigma2PriorNonInformative( double p_power ) thr
   {
     if ( p_power <= -0.5 * number_of_observations )
     {
-      printf( "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -627,7 +627,7 @@ void BayesianPoissonIdLinkModel::sigma2PriorNonInformative( double p_power ) thr
     {
       if ( p_power <= -0.5 * counts[i]->Len() )
       {
-        printf( "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+        Rprintf( "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
 	char the_error[] = "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -653,7 +653,7 @@ void BayesianPoissonIdLinkModel::sigma2PriorNonInformative( double * p_power ) t
   {
     if ( p_power[0] <= -0.5 * number_of_observations )
     {
-      printf( "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -685,7 +685,7 @@ void BayesianPoissonIdLinkModel::sigma2PriorNonInformative( double * p_power ) t
     {
       if ( p_power[i] <= -0.5 * counts[i]->Len() )
       {
-        printf( "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+        Rprintf( "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
         char the_error[] = "BayesianPoissonIdLinkModel::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -888,7 +888,7 @@ void BayesianPoissonIdLinkModel::updateResiduals( int j, int i )
   residuals[j]->Val( i ) = ( log_lambda[j][i]->lastDraw().getScalar() - mu_linear[j]->Val(i) );
 
 #ifdef DEBUGBETA
-  printf("residuals[%d][%d] changed to %f\n", j, i, residuals[j]->Val( i ) );
+  Rprintf("residuals[%d][%d] changed to %f\n", j, i, residuals[j]->Val( i ) );
 #endif
 }//end
 
@@ -903,7 +903,7 @@ void BayesianPoissonIdLinkModel::updateResiduals( int j )
   }
 
 #ifdef DEBUGBETA
-  printf("residuals[%d] changed to:\n", j );  residuals[j]->Print(); fflush(stdout);
+  Rprintf("residuals[%d] changed to:\n", j );  residuals[j]->Print();
 #endif
 }//end
 
@@ -932,14 +932,14 @@ void BayesianPoissonIdLinkModel::gibbsUpdateSigma2() throw( rtErr )
     {
       scale = 0;
 #ifdef DEBUGGLM
-      printf("residuals = \n");
+      Rprintf("residuals = \n");
 #endif
       for ( i = 0; i < number_of_groups; i++ )
       {    
         local_scale = ( *(residuals[i]) * ( *(residuals[i]) ) );
         scale += local_scale;
 #ifdef DEBUGGLM
-        residuals[i]->Print(); printf("local_scale = %f\n", local_scale); fflush(stdout);
+        residuals[i]->Print(); Rprintf("local_scale = %f\n", local_scale);
 #endif
       }//end loop
 
@@ -956,21 +956,21 @@ void BayesianPoissonIdLinkModel::gibbsUpdateSigma2() throw( rtErr )
 
         sigma2ICS[0]->update( add_df, scale );
 #ifdef DEBUGGLM
-        printf("Calling sigma2ICS[0]->update( %f, %f )\n", add_df, scale ); fflush(stdout);
+        Rprintf("Calling sigma2ICS[0]->update( %f, %f )\n", add_df, scale );
 #endif
       }
       else 
       {
         sigma2PNIP[0]->setScale( scale );
 #ifdef DEBUGGLM
-        printf("Calling sigma2PNIP[0]->setScale( %f )\n", scale ); fflush(stdout);
+        Rprintf("Calling sigma2PNIP[0]->setScale( %f )\n", scale );
 #endif
       }
     }
   }
   else
   {
-    printf( "BayesianPoissonIdLinkModel::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.\n" );
+    Rprintf( "BayesianPoissonIdLinkModel::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.\n" );
     char the_error[] = "BayesianPoissonIdLinkModel::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -999,21 +999,21 @@ void BayesianPoissonIdLinkModel::gibbsUpdateSigma2( int index ) throw( rtErr )
 
         sigma2ICS[ index ]->update( add_df, scale );
 #ifdef DEBUGSIGMA2
-        printf("Calling sigma2ICS[%d]->update( %f, %f )\n", index, add_df, scale ); fflush(stdout);
+        Rprintf("Calling sigma2ICS[%d]->update( %f, %f )\n", index, add_df, scale );
 #endif
       }
       else 
       {
         sigma2PNIP[ index ]->setScale( scale );
 #ifdef DEBUGSIGMA2
-        printf("Calling sigma2PNIP[%d]->setScale( %f )\n", index, scale ); fflush(stdout);
+        Rprintf("Calling sigma2PNIP[%d]->setScale( %f )\n", index, scale );
 #endif
       }
     }//end if
   }
   else
   {
-    printf( "BayesianPoissonIdLinkModel::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.\n" );
+    Rprintf( "BayesianPoissonIdLinkModel::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.\n" );
     char the_error[] = "BayesianPoissonIdLinkModel::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1060,14 +1060,14 @@ void BayesianPoissonIdLinkModel::metropolisHastingsUpdateModel( int j, CVector &
   }
 
 #ifdef DEBUGBETA
-  printf("\n\nresiduals[%d] changed to \n", j );
+  Rprintf("\n\nresiduals[%d] changed to \n", j );
   residuals[j]->Print();
 #endif
 #ifdef DEBUGGAMMA
-  printf("\n\nresiduals[%d] changed to \n", j );
+  Rprintf("\n\nresiduals[%d] changed to \n", j );
   residuals[j]->Print();
 
-  printf( "mu linear[%d] changed to \n", j );
+  Rprintf( "mu linear[%d] changed to \n", j );
   mu_linear[j]->Print();
 #endif
 
@@ -1146,14 +1146,14 @@ void BayesianPoissonIdLinkModel::metropolisHastingsUpdateLogLambda( int g, int o
   log_lambda[g ][ obs ]->setCovariance( &lcov );
   
 #ifdef DEBUGGLM
-  printf("Calling log_lambda_previous[%d][%d]->updateParameter with \n", g, obs);
+  Rprintf("Calling log_lambda_previous[%d][%d]->updateParameter with \n", g, obs);
   tmpvec.Print();
-  printf("Calling log_lambda[%d][%d]->setMean with \n", g, obs);
+  Rprintf("Calling log_lambda[%d][%d]->setMean with \n", g, obs);
   lmean.Print();
-  printf("Calling log_lambda[%d][%d]->setCovariance with \n", g, obs);
+  Rprintf("Calling log_lambda[%d][%d]->setCovariance with \n", g, obs);
   lcov.Print();
-  printf("mu_linear[ g ]->Val( obs ) = %f\n", mu_linear[ g ]->Val( obs ));
-  printf("log lambda old = %f\n", log_lambda_previous[ g ][ obs ]->getScalar());
+  Rprintf("mu_linear[ g ]->Val( obs ) = %f\n", mu_linear[ g ]->Val( obs ));
+  Rprintf("log lambda old = %f\n", log_lambda_previous[ g ][ obs ]->getScalar());
 #endif
 
 }//end
@@ -1206,13 +1206,13 @@ CVector BayesianPoissonIdLinkModel::metropolisHastingsMean( int n_pars, Distribu
           CVector proposal_mean( par_vals[ j + 2 ]->getMatrix().T() * theta );
           proposal_mean.multiplyByScalar( 1.0 / scale );
 #ifdef DEBUGBETA
-          printf("residuals[%d] = \n", j);
+          Rprintf("residuals[%d] = \n", j);
           residuals[j]->Print();
-          printf("current value of beta = \n");
+          Rprintf("current value of beta = \n");
           b_star.Print();
-          printf("sigma2= %f\n", sigma2->lastDraw().getScalar());
-          printf("random predictors matrix = \n"); par_vals[ j + 2 ]->getMatrix().Print();
-          printf("proposal_mean = \n"); proposal_mean.Print(); fflush(stdout);
+          Rprintf("sigma2= %f\n", sigma2->lastDraw().getScalar());
+          Rprintf("random predictors matrix = \n"); par_vals[ j + 2 ]->getMatrix().Print();
+          Rprintf("proposal_mean = \n"); proposal_mean.Print();
 #endif       
           return (proposal_mean);
         }
@@ -1230,11 +1230,11 @@ CVector BayesianPoissonIdLinkModel::metropolisHastingsMean( int n_pars, Distribu
               scale = sigma2->lastDrawFromComponent( 0 ).getScalar();
             }
 #ifdef DEBUGGAMMA
-            printf("b_star = \n");
+            Rprintf("b_star = \n");
             b_star.Print();
-            printf("residuals[0] = \n" );
+            Rprintf("residuals[0] = \n" );
             (*residuals[0]).Print();
-            printf("par_vals[ 2 ]->getMatrix() = \n");
+            Rprintf("par_vals[ 2 ]->getMatrix() = \n");
             par_vals[ 2 ]->getMatrix().Print();
 #endif
             // Here par_vals[ 2 ]->getMatrix() is the fixed effect predictor matrix for the 
@@ -1260,9 +1260,9 @@ CVector BayesianPoissonIdLinkModel::metropolisHastingsMean( int n_pars, Distribu
                 // match previous computations in this function.
                 CVector tmpvec = par_vals[ j + 2 ]->getMatrix().T() * theta;
 #ifdef DEBUGGAMMA
-                printf("proposal_mean = ");
+                Rprintf("proposal_mean = ");
                 proposal_mean.Print();
-                printf("tmpvec = ");
+                Rprintf("tmpvec = ");
                 tmpvec.Print();
 #endif
                 proposal_mean.add( tmpvec );
@@ -1277,23 +1277,23 @@ CVector BayesianPoissonIdLinkModel::metropolisHastingsMean( int n_pars, Distribu
           }
           else
 	  {
-            printf( " BayesianPoissonIdLinkModel::metropolisHastingsMean: Wrong number of parameters for Gamma [%d].\n", n_pars );
+            Rprintf( " BayesianPoissonIdLinkModel::metropolisHastingsMean: Wrong number of parameters for Gamma [%d].\n", n_pars );
           }
         }//end gamma
       }//end if not null
       else
       {
-        printf( " BayesianPoissonIdLinkModel::metropolisHastingsMean: Null array.\n" );
+        Rprintf( " BayesianPoissonIdLinkModel::metropolisHastingsMean: Null array.\n" );
       }
     }//end if par_vector
     else
     {
-      printf( " BayesianPoissonIdLinkModel::metropolisHastingsMean: Null array.\n" );
+      Rprintf( " BayesianPoissonIdLinkModel::metropolisHastingsMean: Null array.\n" );
     }
   }//end if > 0
   else
   {
-    printf( " BayesianPoissonIdLinkModel::metropolisHastingsMean: No parameters passed.\n" );
+    Rprintf( " BayesianPoissonIdLinkModel::metropolisHastingsMean: No parameters passed.\n" );
   }
 
   CVector null_mean( 1 );
@@ -1367,18 +1367,18 @@ CMatrix BayesianPoissonIdLinkModel::metropolisHastingsHessian( int n_pars, Distr
         }
         else
 	  {
-          printf( " BayesianPoissonIdLinkModel::metropolisHastingsProposalHessian: Wrong number of parameters for Gamma [%d].\n", n_pars );
+          Rprintf( " BayesianPoissonIdLinkModel::metropolisHastingsProposalHessian: Wrong number of parameters for Gamma [%d].\n", n_pars );
         }
       }//end gamma
     }//end if not null
     else
     {
-      printf( " BayesianPoissonIdLinkModel::metropolisHastingsProposalHessian: Null array.\n" );
+      Rprintf( " BayesianPoissonIdLinkModel::metropolisHastingsProposalHessian: Null array.\n" );
     }
   }//end if > 0
   else
   {
-    printf( " BayesianPoissonIdLinkModel::metropolisHastingsProposalHessian: No parameters passed.\n" );
+    Rprintf( " BayesianPoissonIdLinkModel::metropolisHastingsProposalHessian: No parameters passed.\n" );
   }
 
   CMatrix null_hessian( 1, 1 );
@@ -1571,7 +1571,7 @@ void BayesianPoissonIdLinkModel::dataAugmentationInitialDraws()
   int i, j;
 
   #ifdef DEBUG1
-    printf( "PoissonIDModel: Sampling initial lambdas.\n" ); fflush( stdout );
+    Rprintf( "PoissonIDModel: Sampling initial lambdas.\n" );
   #endif
 
   //draw initial lambda's
@@ -1598,7 +1598,7 @@ void BayesianPoissonIdLinkModel::dataAugmentationInitialDraws()
         lcov.Val( 0, 0 ) = sigma2->lastDrawFromComponent( j ).getScalar();
       }
       #ifdef DEBUG_LAMBDA
-        printf( "PoissonIDModel: log_lambda variance = %f \n", lcov.Val(0,0) ); fflush( stdout );
+        Rprintf( "PoissonIDModel: log_lambda variance = %f \n", lcov.Val(0,0) );
       #endif
 
       log_lambda[j][i]->setMean( &lmean );
@@ -1615,7 +1615,7 @@ void BayesianPoissonIdLinkModel::dataAugmentationInitialDraws()
     }
   }
   #ifdef DEBUG1
-    printf( "PoissonIDModel: Finished sampling initial lambdas\n" ); fflush( stdout );
+    Rprintf( "PoissonIDModel: Finished sampling initial lambdas\n" );
   #endif
 
   updateResiduals();
@@ -1632,10 +1632,9 @@ void BayesianPoissonIdLinkModel::drawVariableFromProposal( int index )
     {
       sigma2->draw();
 #ifdef DEBUGGLM
-      printf("Calling sigma2->draw()\n"); 
-      printf("sigma2->mean() = %f\n", sigma2->mean().getScalar());
-      printf("sigma2->variance() = %f\n", sigma2->variance().getScalar());
-      fflush(stdout); 
+      Rprintf("Calling sigma2->draw()\n");
+      Rprintf("sigma2->mean() = %f\n", sigma2->mean().getScalar());
+      Rprintf("sigma2->variance() = %f\n", sigma2->variance().getScalar());
 #endif
     }
     else if ( !strncmp( distr_map[ index ], "sigma:", 6 )  ||
@@ -1660,7 +1659,7 @@ void BayesianPoissonIdLinkModel::drawVariableFromProposal( int index )
 	          {
               sigma2->drawFromComponent( group_index );
 #ifdef DEBUGGLM
-              printf("Calling sigma2->drawFromComponent( %d )\n", group_index); fflush(stdout); 
+              Rprintf("Calling sigma2->drawFromComponent( %d )\n", group_index);
 #endif
             }
             else if ( !strncmp( distr_map[ index ], "lambda", 6 ) || !strncmp( distr_map[ index ], "theta", 5 ) )
@@ -1675,48 +1674,48 @@ void BayesianPoissonIdLinkModel::drawVariableFromProposal( int index )
 		{
                   log_lambda[ group_index ][ obs ]->draw();
 #ifdef DEBUGGLM
-                  printf("Calling log_lambda[%d][%d]->draw()\n", group_index, obs); fflush(stdout); 
+      Rprintf("Calling log_lambda[%d][%d]->draw()\n", group_index, obs);
 #endif
                 }
                 else
 		{
-                  printf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
+                  Rprintf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
                 }
               }
               else
               {
-                printf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+                Rprintf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
               }
             }//end if lambda
             else
 	    {
-              printf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Unknown variable in [%s].\n", distr_map[ index ] );
+              Rprintf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Unknown variable in [%s].\n", distr_map[ index ] );
             }
           }//end if group index
           else
 	  {
-            printf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }
         }//end if null
         else
         {
-          printf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if not null
       else
       {
-        printf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if valid variable
     else
     {
-      printf( " BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument index [%d].\n", index );
+      Rprintf( " BayesianPoissonIdLinkModel::drawVariableFromProposal: Wrong argument index [%d].\n", index );
     }
   }
   else
   {
-    printf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Index [%d] out of range.\n", index );
+    Rprintf( "BayesianPoissonIdLinkModel::drawVariableFromProposal: Index [%d] out of range.\n", index );
   }
 }//end
 
@@ -1765,43 +1764,43 @@ void BayesianPoissonIdLinkModel::updateVariableForProposal( int index )
                 }
                 else
 		{
-                  printf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
+                  Rprintf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
                 }
               }
               else
               {
-                printf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+                Rprintf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
               }
             }//end if lambda
             else
 	    {
-              printf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Unknown variable in [%s].\n", distr_map[ index ] );
+              Rprintf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Unknown variable in [%s].\n", distr_map[ index ] );
             }
           }//end if group index
           else
 	  {
-            printf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }
         }//end if null
         else
         {
-          printf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if not null
       else
       {
-        printf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if valid variable
     else
     {
-      printf( " BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument index [%d].\n", index );
+      Rprintf( " BayesianPoissonIdLinkModel::updateVariableForProposal: Wrong argument index [%d].\n", index );
     }
   }
   else
   {
-    printf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Index [%d] out of range.\n", index );
+    Rprintf( "BayesianPoissonIdLinkModel::updateVariableForProposal: Index [%d] out of range.\n", index );
   }
 }//end
 
@@ -1816,7 +1815,7 @@ void BayesianPoissonIdLinkModel::setCurrentVariableFromProposal( int index )
     {
       //do nothing
 #ifdef DEBUG1
-      printf("New value of sigma^2 is %f\n ", sigma2->lastDraw().getScalar() ); fflush(stdout);
+      Rprintf("New value of sigma^2 is %f\n ", sigma2->lastDraw().getScalar() );
 #endif
     }
     else if ( !strncmp( distr_map[ index ], "sigma:", 6 )  ||
@@ -1853,49 +1852,49 @@ void BayesianPoissonIdLinkModel::setCurrentVariableFromProposal( int index )
                   //just update the residuals
                   metropolisHastingsUpdateModel( group_index, obs );
 #ifdef DEBUG1
-                  printf("Updating lambda [%d][%d]\n", group_index, obs);
-                  printf("New log lambda = %f \n", log_lambda[ group_index ][ obs ]->lastDraw().getScalar());
+                  Rprintf("Updating lambda [%d][%d]\n", group_index, obs);
+                  Rprintf("New log lambda = %f \n", log_lambda[ group_index ][ obs ]->lastDraw().getScalar());
 #endif
                 }
                 else
                 {
-                  printf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
+                  Rprintf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
                 }
               }
               else
               {
-                printf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+                Rprintf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
               }
             }//end if lambda
             else
 	    {
-              printf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Unknown variable in [%s].\n", distr_map[ index ] );
+              Rprintf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Unknown variable in [%s].\n", distr_map[ index ] );
             }
           }//end if group index
           else
 	  {
-            printf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }
         }//end if null
         else
         {
-          printf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if not null
       else
       {
-        printf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if valid variable
     else
     {
-      printf( " BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument index [%d].\n", index );
+      Rprintf( " BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Wrong argument index [%d].\n", index );
     }
   }
   else
   {
-    printf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Index [%d] out of range.\n", index );
+    Rprintf( "BayesianPoissonIdLinkModel::setCurrentVariableFromProposal: Index [%d] out of range.\n", index );
   }
 }//end
 
@@ -1909,8 +1908,7 @@ void BayesianPoissonIdLinkModel::keepCurrentVariable( int index )
     {
       //do nothing; this is a Gibbs sampling
 #ifdef DEBUG1 
-      printf("Rejecting proposed value of sigma^2, which is wrong since it was a Gibbs step.\n"); 
-      fflush(stdout);
+      Rprintf("Rejecting proposed value of sigma^2, which is wrong since it was a Gibbs step.\n");
 #endif
     }
     else if ( !strncmp( distr_map[ index ], "sigma:", 6 )  ||
@@ -1947,49 +1945,49 @@ void BayesianPoissonIdLinkModel::keepCurrentVariable( int index )
 			            // set log_lambda back to the previous value
                   log_lambda[ group_index ][ obs ]->setLastDraw( (*(log_lambda_previous[ group_index ][ obs ])) );
 #ifdef DEBUG1
-                  printf("Setting log_lambda[%d][%d] back to previous value, %f\n", group_index, obs, 
+                  Rprintf("Setting log_lambda[%d][%d] back to previous value, %f\n", group_index, obs,
                     log_lambda_previous[ group_index ][ obs ]->getScalar() );
 #endif
                 }
                 else
 		{
-                  printf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
+                  Rprintf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
                 }
               }
               else
               {
-                printf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+                Rprintf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
               }
             }//end if lambda
             else
 	    {
-              printf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Unknown variable in [%s].\n", distr_map[ index ] );
+              Rprintf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Unknown variable in [%s].\n", distr_map[ index ] );
             }
           }//end if group index
           else
 	  {
-            printf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }
         }//end if null
         else
         {
-          printf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if not null
       else
       {
-        printf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if valid variable
     else
     {
-      printf( " BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument index [%d].\n", index );
+      Rprintf( " BayesianPoissonIdLinkModel::keepCurrentVariable: Wrong argument index [%d].\n", index );
     }
   }
   else
   {
-    printf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Index [%d] out of range.\n", index );
+    Rprintf( "BayesianPoissonIdLinkModel::keepCurrentVariable: Index [%d] out of range.\n", index );
   }
 }//end
 
@@ -2054,53 +2052,53 @@ double BayesianPoissonIdLinkModel::logRatioProposal( int index )
                   ratio = (-0.5) * diff * ( sum - 2 * mu_linear[ group_index ]->Val( obs ) );
                   ratio /= scale;
 #ifdef DEBUGGLM
-  printf("group=%d, obs = %d\n", group_index, obs);
-  printf("mu = %f, sigma^2 = %f\n", mu_linear[ group_index ]->Val( obs ), scale);
-  printf("log lambda new %f and old %f \n", 
+  Rprintf("group=%d, obs = %d\n", group_index, obs);
+  Rprintf("mu = %f, sigma^2 = %f\n", mu_linear[ group_index ]->Val( obs ), scale);
+  Rprintf("log lambda new %f and old %f \n",
     log_lambda[ group_index ][ obs ]->lastDraw().getScalar(), 
     log_lambda_previous[ group_index ][ obs ]->getScalar());
-  printf("log proposal ratio = %f\n", ratio);
+  Rprintf("log proposal ratio = %f\n", ratio);
 #endif
                 }
                 else
 		{
-                  printf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
+                  Rprintf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
                 }
               }
               else
               {
-                printf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+                Rprintf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
               }
             }//end if lambda
             else
 	    {
-              printf( "BayesianPoissonIdLinkModel::logRatioProposal: Unknown variable in [%s].\n", distr_map[ index ] );
+              Rprintf( "BayesianPoissonIdLinkModel::logRatioProposal: Unknown variable in [%s].\n", distr_map[ index ] );
             }
           }//end if group index
           else
 	  {
-            printf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }
         }//end if null
         else
         {
-          printf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if not null
       else
       {
-        printf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( "BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if valid variable
     else
     {
-      printf( " BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument index [%d].\n", index );
+      Rprintf( " BayesianPoissonIdLinkModel::logRatioProposal: Wrong argument index [%d].\n", index );
     }
   }
   else
   {
-    printf( "BayesianPoissonIdLinkModel::logRatioProposal: Index [%d] out of range.\n", index );
+    Rprintf( "BayesianPoissonIdLinkModel::logRatioProposal: Index [%d] out of range.\n", index );
   }
 
   return ( ratio );
@@ -2182,48 +2180,48 @@ double BayesianPoissonIdLinkModel::logRatioTargetDensity( int index )
                     ratio -= ( exposures[ group_index ]->Val( obs ) * log( wy / wx ) );
                   }
 #ifdef DEBUGGLM
-  printf("log target ratio = %f\n", ratio);
+  Rprintf("log target ratio = %f\n", ratio);
 #endif
                 }
                 else
 		{
-                  printf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
+                  Rprintf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s]. Observation number [%d] out of range.\n", distr_map[ index ], obs );
                 }
               }
               else
               {
-                printf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
+                Rprintf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
               }
             }//end if lambda
             else
 	    {
-              printf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Unknown variable in [%s].\n", distr_map[ index ] );
+              Rprintf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Unknown variable in [%s].\n", distr_map[ index ] );
             }
           }//end if group index
           else
 	  {
-            printf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }
         }//end if null
         else
         {
-          printf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if not null
       else
       {
-        printf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if valid variable
     else
     {
-      printf( " BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument index [%d].\n", index );
+      Rprintf( " BayesianPoissonIdLinkModel::logRatioTargetDensity: Wrong argument index [%d].\n", index );
     }
   }
   else
   {
-    printf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Index [%d] out of range.\n", index );
+    Rprintf( "BayesianPoissonIdLinkModel::logRatioTargetDensity: Index [%d] out of range.\n", index );
   }
 
   return ( ratio );

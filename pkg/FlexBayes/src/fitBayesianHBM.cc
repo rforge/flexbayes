@@ -167,7 +167,7 @@ void fitBayesianHBM( int * number_groups,
     number_obs += ((int) number_data[i]);
 
 #ifdef DEBUG1
-    printf( "fit: counts[%d] = \n",i );
+    Rprintf( "fit: counts[%d] = \n",i );
     counts[i]->Print();
 #endif
 
@@ -210,7 +210,7 @@ void fitBayesianHBM( int * number_groups,
       start_index += dim * counts[i]->Len();
 
 #ifdef DEBUG1
-      printf( "fit: random[%d] = \n",i );
+      Rprintf( "fit: random[%d] = \n",i );
       random_predictors[i]->Print();
 #endif
 
@@ -237,7 +237,7 @@ void fitBayesianHBM( int * number_groups,
       }//end for j
       start_index += dim * counts[i]->Len();
 #ifdef DEBUG1
-      printf( "fit: fixed[%d] = \n",i );
+      Rprintf( "fit: fixed[%d] = \n",i );
       fixed_predictors[i]->Print();
 #endif
     }//end for i
@@ -245,7 +245,7 @@ void fitBayesianHBM( int * number_groups,
 
   if ( !random_effects && !fixed_effects )
   {
-    printf( "fitBayesianHBM: No fixed effects nor random effects provided. This model is not valid.\n" );
+    Rprintf( "fitBayesianHBM: No fixed effects nor random effects provided. This model is not valid.\n" );
     char the_error[] = "fitBayesianHBM: No fixed effects nor random effects provided. This model is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -280,7 +280,7 @@ void fitBayesianHBM( int * number_groups,
   BayesianHierarchicalGlmModel bayes_HGlm;
   
 #ifdef DEBUG1
-  printf( "counts[0] = \n");
+  Rprintf( "counts[0] = \n");
   counts[0]->Print();
 #endif
   // Just sets the number of groups and number of obs in each group
@@ -442,8 +442,8 @@ void fitBayesianHBM( int * number_groups,
       CMatrix p_betaCov( tauScale, ((int) (*dim_beta) ), ((int) (*dim_beta) ), by_column );
 
 #ifdef DEBUG1
-      printf("fit: setting invWishart. original df = %f. original cov dim is %d, cov is\n",  (*tauDF), ((int) (*dim_beta) ) );
-      p_betaCov.Print(); fflush(stdout);
+      Rprintf("fit: setting invWishart. original df = %f. original cov dim is %d, cov is\n",  (*tauDF), ((int) (*dim_beta) ) );
+      p_betaCov.Print();
 #endif      
       bayes_HGlm.betaCovPriorInvWishart( (*tauDF), &p_betaCov );
     }
@@ -483,7 +483,7 @@ void fitBayesianHBM( int * number_groups,
         CVector init_alpha( alphaInit, ((int) (*dim_alpha) ) );
 
 #ifdef DEBUG1
-        printf( "BHL: init alpha \n" );
+        Rprintf( "BHL: init alpha \n" );
         init_alpha.Print();
 #endif
 
@@ -501,7 +501,7 @@ void fitBayesianHBM( int * number_groups,
         CMatrix init_beta( betaInit, ((int) (*dim_beta) ), ((int) (*number_groups) ), by_column );
 
 #ifdef DEBUG1
-        printf( "BHL: init beta \n" );
+        Rprintf( "BHL: init beta \n" );
         init_beta.Print();
 #endif
 
@@ -518,7 +518,7 @@ void fitBayesianHBM( int * number_groups,
         {
           CMatrix init_tau2( tau2Init, ((int) (*dim_beta) ), ((int) (*dim_beta) ), by_column );
 #ifdef DEBUG1
-          printf( "BHL: init random var \n" );
+          Rprintf( "BHL: init random var \n" );
           init_tau2.Print();
 #endif
 
@@ -532,7 +532,7 @@ void fitBayesianHBM( int * number_groups,
       CVector init_gamma( gammaInit, ((int) (*dim_gamma) ) );
 
 #ifdef DEBUG1
-      printf( "BHL: init gamma \n" );
+      Rprintf( "BHL: init gamma \n" );
       init_gamma.Print();
 #endif
 
@@ -584,7 +584,7 @@ void fitBayesianHBM( int * number_groups,
   	   ( ( (int) (*common_xi) ) == 2 ) )
   {
     #ifdef DEBUG1
-      printf( "*xi_z0 = %f\n", *xi_z0 );
+      Rprintf( "*xi_z0 = %f\n", *xi_z0 );
     #endif
     bayes_BinomialLL.logXiPrior( (*xi_z0) );
   }
@@ -601,7 +601,7 @@ void fitBayesianHBM( int * number_groups,
     else
     {
 #ifdef DEBUG1
-      printf( "xiInit = %f\n", *xiInit );
+      Rprintf( "xiInit = %f\n", *xiInit );
 #endif
       CVector init_xi( xiInit, ((int) (*number_groups)) );
       bayes_BinomialLL.samplerXiInitialPoint( init_xi );
@@ -650,7 +650,7 @@ void fitBayesianHBM( int * number_groups,
   }
 
   #ifdef DEBUG1
-    printf( "fitBayesHPM: total simulations = %d\n", simulations_kept );
+    Rprintf( "fitBayesHPM: total simulations = %d\n", simulations_kept );
   #endif
 
   //get the output simulation samples 

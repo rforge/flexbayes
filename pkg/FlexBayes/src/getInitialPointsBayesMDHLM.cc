@@ -95,7 +95,7 @@ void getInitialPointsBayesMDHLM(
 
   if ( !random_effects && !fixed_effects )
   {
-    printf( "getInitialPointsBhlm: No fixed effects nor random effects provided. This model is not valid.\n" );
+    Rprintf( "getInitialPointsBhlm: No fixed effects nor random effects provided. This model is not valid.\n" );
     char the_error[] = "getInitialPointsBhlm: No fixed effects nor random effects provided. This model is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -197,7 +197,7 @@ void getInitialPointsBayesMDHLM(
     }
     else if ( ((int) (*dim_sigmaScale) ) > 1 )
     {
-      printf( "getInitialPointsBhlm: Wrong dimensions in error variance hyperparameter array.\n" );
+      Rprintf( "getInitialPointsBhlm: Wrong dimensions in error variance hyperparameter array.\n" );
       char the_error[] = "getInitialPointsBhlm: Wrong dimensions in error variance hyperparameter array.";
       rtErr runtime_error( the_error );
       throw runtime_error;

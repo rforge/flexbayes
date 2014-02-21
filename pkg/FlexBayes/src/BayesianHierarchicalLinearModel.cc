@@ -967,7 +967,7 @@ void BayesianHierarchicalLinearModel::alphaPrior( CVector * p_alpha, CMatrix * p
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::alphaPrior: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::alphaPrior: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::alphaPrior: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -990,7 +990,7 @@ void BayesianHierarchicalLinearModel::alphaPriorNonInformative( int dim ) throw(
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::alphaPriorNonInformative: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::alphaPriorNonInformative: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::alphaPriorNonInformative: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1256,7 +1256,7 @@ void BayesianHierarchicalLinearModel::sigma2PriorNonInformative( double p_power 
   {
     if ( p_power <= -0.5 * number_of_observations )
     {
-      printf( "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -1288,7 +1288,7 @@ void BayesianHierarchicalLinearModel::sigma2PriorNonInformative( double p_power 
     {
       if ( p_power <= -0.5 * response[i]->Len() )
       {
-        printf( "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+        Rprintf( "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
 	char the_error[] = "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -1314,7 +1314,7 @@ void BayesianHierarchicalLinearModel::sigma2PriorNonInformative( double * p_powe
   {
     if ( p_power[0] <= -0.5 * number_of_observations )
     {
-      printf( "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -1346,7 +1346,7 @@ void BayesianHierarchicalLinearModel::sigma2PriorNonInformative( double * p_powe
     {
       if ( p_power[i] <= -0.5 * response[i]->Len() )
       {
-        printf( "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+        Rprintf( "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
         char the_error[] = "BayesianHierarchicalLinearModel::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -1452,7 +1452,7 @@ void BayesianHierarchicalLinearModel::tau2PriorInvChisq( double *p_nuTau2, doubl
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::tau2PriorInvChisq: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::tau2PriorInvChisq: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::tau2PriorInvChisq: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1488,7 +1488,7 @@ void BayesianHierarchicalLinearModel::tau2PriorDuMouchel( double *p_tau2 ) throw
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::tau2PriorDuMouchel: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::tau2PriorDuMouchel: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::tau2PriorDuMouchel: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1524,7 +1524,7 @@ void BayesianHierarchicalLinearModel::tau2PriorUniformShrinkage( double *p_tau2 
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1550,7 +1550,7 @@ void BayesianHierarchicalLinearModel::tau2PriorNonInformative( double *p_power )
   	
       if ( p_power[i] <= -0.5 * number_of_groups * dim_beta )
       {
-        printf( "BayesianHierarchicalLinearModel::tau2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power[i] );  
+        Rprintf( "BayesianHierarchicalLinearModel::tau2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power[i] );
         char the_error[] = "BayesianHierarchicalLinearModel::tau2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -1570,7 +1570,7 @@ void BayesianHierarchicalLinearModel::tau2PriorNonInformative( double *p_power )
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1597,7 +1597,7 @@ void BayesianHierarchicalLinearModel::betaCovPriorInvWishart( double p_nuV, CMat
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1655,7 +1655,7 @@ void BayesianHierarchicalLinearModel::gammaTPrior( double p_nuGamma ) throw( rtE
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::gammaTPrior: gamma is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::gammaTPrior: gamma is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::gammaTPrior: gamma is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1683,7 +1683,7 @@ void BayesianHierarchicalLinearModel::betaTPrior( double p_nuBeta ) throw( rtErr
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::betaTPrior: beta is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::betaTPrior: beta is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::betaTPrior: beta is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1703,7 +1703,7 @@ void BayesianHierarchicalLinearModel::alphaTPrior( double p_nuAlpha ) throw( rtE
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::alphaTPrior: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::alphaTPrior: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::alphaTPrior: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1854,7 +1854,7 @@ void BayesianHierarchicalLinearModel::samplerTau2InitialPoint( double *init_tau2
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::samplerTau2InitialPoint: Initial point should be a matrix, not a vector.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::samplerTau2InitialPoint: Initial point should be a matrix, not a vector.\n" );
   }
 }//end
 
@@ -1872,7 +1872,7 @@ void BayesianHierarchicalLinearModel::samplerTau2InitialPoint( CMatrix & init_ta
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::samplerTau2InitialPoint: Initial point should not be a matrix, but a scalar.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::samplerTau2InitialPoint: Initial point should not be a matrix, but a scalar.\n" );
   }
 }//end
 
@@ -2450,7 +2450,7 @@ void BayesianHierarchicalLinearModel::updateRegressionWeight( int index ) throw(
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::updateRegressionWeight: Index [%d] out of range.\n", index );
+    Rprintf( "BayesianHierarchicalLinearModel::updateRegressionWeight: Index [%d] out of range.\n", index );
     char the_error[] = "BayesianHierarchicalLinearModel::updateRegressionWeight: Index out of range.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -2871,14 +2871,14 @@ void BayesianHierarchicalLinearModel::gibbsUpdateSecondStageWorkingMatrices()
   {
   	tmpVec = beta[ index ]->lastDraw().getVector();
   	#ifdef DEBUGALPHA
-  	  printf( "Last beta[%d] sample = \n", index ); tmpVec.Print();
+  	  Rprintf( "Last beta[%d] sample = \n", index ); tmpVec.Print();
   	#endif
   	if ( !invWishart_betaCov ) {
       for( j = 0; j < dim_beta; j++ )
         tmpVec.Val(j) = tmpVec.Val(j) / tau2[ j ]->lastDraw().getScalar();
     }
     #ifdef DEBUGALPHA
-  	  printf( "After dividing each element by tau2[%d] = \n", index ); tmpVec.Print();
+  	  Rprintf( "After dividing each element by tau2[%d] = \n", index ); tmpVec.Print();
   	#endif
   	// In the following line, for invWishart_betaCov = F it simplifies to: beta_predictors[index]->T() * tmpVec
     ( *(zTb[ index ]) ) = beta_predictors[ index ]->T() * ( beta[ index ]->initialInverseCovariance() * tmpVec );
@@ -2899,8 +2899,8 @@ void BayesianHierarchicalLinearModel::gibbsUpdateSecondStageWorkingMatrices()
           tmpMat.Val(j, j) = tmpMat.Val(j, j) / tau2[ j ]->lastDraw().getScalar();
       }
   	  #ifdef DEBUGALPHA
-  	    printf( "The diagonal matrix with elements 1/tau2[j], or the matrix tau2^-1 = \n" ); tmpMat.Print();
-  	    printf( "beta predictors = \n" ); beta_predictors[index]->Print();
+  	    Rprintf( "The diagonal matrix with elements 1/tau2[j], or the matrix tau2^-1 = \n" ); tmpMat.Print();
+  	    Rprintf( "beta predictors = \n" ); beta_predictors[index]->Print();
   	  #endif
       ( *(zTz[ index ]) ) = beta_predictors[ index ]->T() * ( tmpMat * (*beta_predictors[ index ] ) );
 
@@ -3015,7 +3015,7 @@ void BayesianHierarchicalLinearModel::gibbsUpdateBeta( int index )
       CMatrix tmpmat = tau2[0]->lastDraw().getMatrix();
       beta[ index ]->updateVeryFirstCovariance( tmpmat );
       #ifdef DEBUGBETA
-        printf("tau2 covar matrix:\n");
+        Rprintf("tau2 covar matrix:\n");
         tmpmat.Print(); 
       #endif
   }
@@ -3039,7 +3039,7 @@ void BayesianHierarchicalLinearModel::gibbsUpdateBeta( int index )
     CVector * initMean = new CVector( (*(beta_predictors[ index ])) * alpha->lastItemDrawn() );
     beta[ index ]->updateInitialMean( initMean );
     #ifdef DEBUGBETA
-      printf("beta predictors * alpha vec:\n");
+      Rprintf("beta predictors * alpha vec:\n");
       initMean->Print(); 
     #endif
     delete initMean;
@@ -3048,14 +3048,14 @@ void BayesianHierarchicalLinearModel::gibbsUpdateBeta( int index )
   if ( invWishart_betaCov )
   {
     #ifdef DEBUGBETA
-      printf("beta[%d] prior precision matrix:\n", index );
+      Rprintf("beta[%d] prior precision matrix:\n", index );
       beta[ index ]->initialInverseCovariance().Print();
-      printf("and prec mat * prior mean vector:\n" );
+      Rprintf("and prec mat * prior mean vector:\n" );
       beta[ index ]->initialInvCovBeta().Print();  
-      printf("and updating precision matrix:\n" );
+      Rprintf("and updating precision matrix:\n" );
       sigma_beta.Print();
-      printf("and updating mean vector:\n" );
-      mu_beta.Print();  fflush(stdout);
+      Rprintf("and updating mean vector:\n" );
+      mu_beta.Print();
     #endif
     beta[ index ]->update( mu_beta, sigma_beta );
   }
@@ -3125,10 +3125,9 @@ void BayesianHierarchicalLinearModel::gibbsUpdateGamma()
   else
   {
   	#ifdef DEBUGGAMMA
-  	  printf( "Updating gamma with mu and sigma = \n" );
+  	  Rprintf( "Updating gamma with mu and sigma = \n" );
   	  mu_gamma.Print();
   	  sigma_gamma.Print();
-  	  fflush( stdout );
   	#endif
     gamma->update( mu_gamma, sigma_gamma );
   }
@@ -3173,9 +3172,9 @@ void BayesianHierarchicalLinearModel::gibbsUpdateAlpha()
   }
 
   #ifdef DEBUGALPHA
-    printf("update alpha: new mean: \n" );
+    Rprintf("update alpha: new mean: \n" );
     alpha->mean().Print();
-    printf("update alpha: new Cov: \n" );
+    Rprintf("update alpha: new Cov: \n" );
     alpha->covariance().Print();
   #endif
   
@@ -3234,7 +3233,7 @@ void BayesianHierarchicalLinearModel::gibbsUpdateSigma2() throw( rtErr )
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -3287,7 +3286,7 @@ void BayesianHierarchicalLinearModel::gibbsUpdateSigma2( int index ) throw( rtEr
   }
   else
   {
-    printf( "BayesianHierarchicalLinearModel::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.\n" );
+    Rprintf( "BayesianHierarchicalLinearModel::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.\n" );
     char the_error[] = "BayesianHierarchicalLinearModel::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -3350,9 +3349,9 @@ void BayesianHierarchicalLinearModel::gibbsUpdateTau2()
       resid.setRow( 0, diff );
 
       #ifdef DEBUGTAU2
-        printf( "bhlm: resid is \n");
+        Rprintf( "bhlm: resid is \n");
         resid.Print();
-        printf("bhlm: update: resid.xTx is \n" );
+        Rprintf("bhlm: update: resid.xTx is \n" );
         resid.xTransposedX().Print();
       #endif
 
@@ -3375,9 +3374,9 @@ void BayesianHierarchicalLinearModel::gibbsUpdateTau2()
 
     add_df = number_of_groups;
     #ifdef DEBUGTAU2
-      printf( "bhlm:update tau2: add_df = %f, scale matrix is \n", add_df ); fflush(stdout);
-      scale_matrix.Print(); fflush(stdout);
-      printf( "bhlm:update tau2: prior_df = %f, prior precision matrix is \n", tau2InvWishart->initialDegreesOfFreedom() ); fflush(stdout);
+      Rprintf( "bhlm:update tau2: add_df = %f, scale matrix is \n", add_df );
+      scale_matrix.Print();
+      Rprintf( "bhlm:update tau2: prior_df = %f, prior precision matrix is \n", tau2InvWishart->initialDegreesOfFreedom() );
       tau2InvWishart->inverseInitialScaleMatrix().Print();
     #endif
 
@@ -3748,7 +3747,7 @@ void BayesianHierarchicalLinearModel::drawMissingFixedPredictors( int index )
 void BayesianHierarchicalLinearModel::fullConditionalUpdateVariable( int index )
 {
 	#ifdef DEBUG1
-    printf( "BHL:full conditional update for variable %s.\n  ", distr_map[ index ] ); fflush( stdout );
+    Rprintf( "BHL:full conditional update for variable %s.\n  ", distr_map[ index ] );
   #endif
 
   if ( index < number_of_variables && index >= 0 )
@@ -3808,7 +3807,7 @@ void BayesianHierarchicalLinearModel::fullConditionalUpdateVariable( int index )
             }
             else
 	    {
-              printf( " BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else
@@ -3834,25 +3833,25 @@ void BayesianHierarchicalLinearModel::fullConditionalUpdateVariable( int index )
             }
             else
             {
-              printf( " BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
         }//end if not null
         else
         {
-          printf( " BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianHierarchicalLinearModel::fullConditionalUpdateVariable: Variable index [%d] does not exist.\n", index );
   }
 
   //printf("bhlm: update full conditinal: out\n\n"); fflush( stdout );
@@ -3864,7 +3863,7 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
 {
 	int i;
   #ifdef DEBUG2
-    printf( "bhlm: will draw variable %d: [ %s ]\n", index, distr_map[ index ] ); fflush(stdout);
+    Rprintf( "bhlm: will draw variable %d: [ %s ]\n", index, distr_map[ index ] );
   #endif
 
   if ( index < number_of_variables && index >= 0 )
@@ -3874,11 +3873,10 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
       gamma->draw();
 
     	#ifdef DEBUGGAMMA
-    	  printf("drew gamma with mean and covar = \n"); 
+    	  Rprintf("drew gamma with mean and covar = \n");
     	  gamma->mean().Print();  gamma->covariance().Print();  
-    	  printf("new gamma = \n");  gamma->lastItemDrawn().Print();
-    	  fflush( stdout );
-    	#endif
+    	  Rprintf("new gamma = \n");  gamma->lastItemDrawn().Print();
+      #endif
 
       //printf( "BHL: gamma draw = \n" );
       //gamma->lastItemDrawn().Print();
@@ -3890,12 +3888,12 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
       alpha->draw();
       gibbsUpdateSecondStageResiduals();
       #ifdef DEBUGALPHA
-        printf("drew alpha with mean \n"); alpha->mean().getVector().Print();
-        printf("alpha = \n"); alpha->lastItemDrawn().Print();
+        Rprintf("drew alpha with mean \n"); alpha->mean().getVector().Print();
+        Rprintf("alpha = \n"); alpha->lastItemDrawn().Print();
       #endif
       #ifdef DEBUGTAU2
-        printf("drew alpha with mean \n"); alpha->mean().getVector().Print();
-        printf("alpha = \n"); alpha->lastItemDrawn().Print();
+        Rprintf("drew alpha with mean \n"); alpha->mean().getVector().Print();
+        Rprintf("alpha = \n"); alpha->lastItemDrawn().Print();
       #endif
     }
     else if ( !strcmp( distr_map[ index ], "sigma" ) )
@@ -3903,8 +3901,8 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
       sigma2->draw();
 
       #ifdef DEBUGSIGMA
-        printf("drew sigma with df = %f and scale = %f\n", sigma2ICS[0]->degreesOfFreedom(), sigma2ICS[0]->scale() );
-        printf( "BHL: sigma draw = %f\n", sqrt( sigma2->lastDraw().getScalar() ) );
+        Rprintf("drew sigma with df = %f and scale = %f\n", sigma2ICS[0]->degreesOfFreedom(), sigma2ICS[0]->scale() );
+        Rprintf( "BHL: sigma draw = %f\n", sqrt( sigma2->lastDraw().getScalar() ) );
       #endif
     }
     else if ( !strcmp( distr_map[ index ], "tau2" ) )
@@ -3912,11 +3910,11 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
     	if( invWishart_betaCov ){
     		tau2[0]->draw();
     		#ifdef DEBUGTAU2
-        	printf("drew tau2 matrix with df = %f\n", tau2InvWishart->degreesOfFreedom() );
-        	printf("sample[0][0]: %f \n", tau2[0]->lastDraw().getScalar() );
+        	Rprintf("drew tau2 matrix with df = %f\n", tau2InvWishart->degreesOfFreedom() );
+        	Rprintf("sample[0][0]: %f \n", tau2[0]->lastDraw().getScalar() );
         #endif
     		#ifdef DEBUGALPHA
-        	printf("drew tau2 matrix = \n" );
+        	Rprintf("drew tau2 matrix = \n" );
           tau2[0]->lastDraw().getMatrix().Print();
         #endif
     	} else {
@@ -3924,8 +3922,8 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
           tau2[i]->draw();
           #ifdef DEBUGTAU2
             if( invChisq_tau2 ){
-          	  printf("drew tau2[%d] with df = %f and scale = %f\n", i, tau2ICS[i]->degreesOfFreedom(), tau2ICS[i]->scale() );
-        	    printf("sample: %f \n", sqrt( tau2[i]->lastDraw().getScalar() ) );
+          	  Rprintf("drew tau2[%d] with df = %f and scale = %f\n", i, tau2ICS[i]->degreesOfFreedom(), tau2ICS[i]->scale() );
+        	    Rprintf("sample: %f \n", sqrt( tau2[i]->lastDraw().getScalar() ) );
         	  }
         	#endif
         }
@@ -3967,7 +3965,7 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else if ( !strncmp( distr_map[ index ], "missingR:", 9 ) )
@@ -3979,7 +3977,7 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else if ( !strncmp( distr_map[ index ], "missingRP", 9 ) )
@@ -3991,7 +3989,7 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else if ( !strncmp( distr_map[ index ], "missingFP", 9 ) )
@@ -4003,7 +4001,7 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else
@@ -4016,8 +4014,8 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
                 gibbsUpdateSecondStageResiduals( group_index );
                 gibbsUpdateResiduals( group_index );
                 #ifdef DEBUGTAU2
-                  printf("drew beta[%d] with mean \n", group_index); beta[ group_index ]->mean().getVector().Print();
-                  printf("beta = \n"); beta[ group_index ]->lastItemDrawn().Print();
+                  Rprintf("drew beta[%d] with mean \n", group_index); beta[ group_index ]->mean().getVector().Print();
+                  Rprintf("beta = \n"); beta[ group_index ]->lastItemDrawn().Print();
                 #endif
               }
               else if ( !strncmp( distr_map[ index ], "sigma", 5 ) )
@@ -4041,25 +4039,25 @@ void BayesianHierarchicalLinearModel::drawVariable( int index )
             }
             else
             {
-              printf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
         }//end if not null
         else
         {
-          printf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalLinearModel::drawVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianHierarchicalLinearModel::drawVariable: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianHierarchicalLinearModel::drawVariable: Variable index [%d] does not exist.\n", index );
   }
 
 }//end

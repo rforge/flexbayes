@@ -6,22 +6,22 @@
 
 
 
+
 #####################################################################################
 ##
-##  BAYESIAN MultiVariate (Response) HIERARCHICAL LINEAR MODEL
+##  BAYESIAN Missing Data (Response) HIERARCHICAL LINEAR MODEL
 ##
 #####################################################################################
 
-#random.formula, fixed.formula, level2.formula and group are of type "formula"
-bhlmMV <- function( response.formula = NULL, random.formula = NULL, 
-                    fixed.formula = NULL, level2.formula = NULL, group = NULL, data = sys.parent(),
+#random.formula, fixed, level2 and group are of type "formula"
+bhlmMD <- function( response.formula = NULL, group = NULL, data = sys.parent(),
+                    random.effects = T, fixed.effects = F, second.effects = T,
                     prior = bhlm.prior(), 
                     likelihood  = bhlm.likelihood(),
 	            sampler = bhlm.sampler(), 
                     random.seed = .Random.seed, na.action = NULL, contrasts = NULL,
-                    debug = F)
+                    debug = F )
 {
-
 
   #get all stats from Gibbs sampling
   print.stats <- 1
@@ -55,16 +55,15 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
   }
 
 
-
   if ( is.null( response.formula ) )
   {
     stop( "You must provide a formula with the response variables\n" )
   }
     
-
-  missing.data <- is.na( data )
-  sum.missing.data <- sum( missing.data )
-  if ( sum.missing.data > 0 )
+  data.copy <- data
+  missing.response <- is.na( data )
+  sum.missing.response <- sum( missing.response )
+  if ( sum.missing.response > 0 )
   {
     data[ is.na( data ) ] <- 0 
   }
@@ -77,214 +76,29 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
   used.contrasts <- contrasts( Y )
   response.names <- dimnames( Y )[[2]]
 
-  #name of variables must be preserved for output
-  random.names <- NULL
-  fixed.names <- NULL
-  level2.names <- NULL
-
-  X <- 0
-  M <- 0
-  Z <- 0
-
-  random.effects <- F
-  fixed.effects <- F
-  random.vars <- -1
-  fixed.vars <- -1
-
-  if ( !is.null( random.formula ) )
-  {
-    if ( length( terms( random.formula )@term.labels ) == 0 )
-    {
-      #may contain only the intercept
-      if ( terms( random.formula )@intercept != 1 )
-      {
-        stop( "bhlm: formula for random effects must contain at least one variable or intercept." )
-      }
-      else
-      {
-        #formula contains the intercept
-        random.vars <- 0
-      }
-    }
-    else if ( length( terms( random.formula )@term.labels ) > 0 )
-    {
-      #formula contains predictors other than intercept
-      random.vars <- 1
-    }
-  }
-
-  if ( !is.null( fixed.formula ) )
-  {
-    if ( length( terms( fixed.formula )@term.labels ) == 0 )
-    {
-      #may contain only the intercept
-      if ( terms( fixed.formula )@intercept != 1 )
-      {
-        stop( "bhlm: formula for fixed effects must contain at least one variable or intercept." )
-      }
-      else
-      {
-        #formula contains the intercept
-        fixed.vars <- 0
-      }
-    }
-    else if ( length( terms( fixed.formula )@term.labels ) > 0 )
-    {
-      #formula contains predictors other than just intercept
-      fixed.vars <- 1
-    }
-  }
-    
-
-  if ( random.vars >= 0 )
-  {
-    if ( random.vars > 0 )
-    {
-      model.random <- call( "model.frame", formula = random.formula, data = data )
-      model.random <- eval( model.random, sys.parent() )
-      Terms <- attr( model.random, "terms" )
-  
-      X <- model.matrix( Terms, model.random, contrasts )
-      used.contrasts <- c( used.contrasts, contrasts( X ) )
-
-      random.names <- dimnames( X )[[2]]
-
-      random.effects <- T
-    }
-    else #random effects contain only the intercept
-    {
-      X <- matrix( rep( 1, nrow( data ) ), nrow = nrow( data ) )
-      random.effects <- T
-      random.names <- "(Intercept)"
-    }
-
-    dimnames( X ) <- list( dimnames( data )[[1]], random.names )
-
-  }#end if random formula
-
-
-  if ( fixed.vars >= 0 )
-  {
-    if ( fixed.vars > 0 )
-    {
-      model.fixed <- call( "model.frame", formula = fixed.formula, data = data )
-      model.fixed <- eval( model.fixed, sys.parent() )
-      Terms <- attr( model.fixed, "terms" )
-
-      M <- model.matrix( Terms, model.fixed, contrasts )
-      used.contrasts <- c( used.contrasts, contrasts( M ) )
-
-      fixed.names <- dimnames( M )[[2]]
-
-      fixed.effects <- T
-    }    
-    else #fixed effects contain only the intercept
-    {
-      M <- matrix( rep( 1, nrow( data ) ), nrow = nrow( data ) )
-      fixed.effects <- T
-      fixed.names <- "(Intercept)"
-    }
-
-    dimnames( M ) <- list( dimnames( data )[[1]], fixed.names )
-
-  }#end if fixed formula
-
-
-  second.effects <- F
-  if ( !is.null( level2.formula ) && random.effects )
-  {
-    level2.vars <- -1
-    if ( length( terms( level2.formula )@term.labels ) == 0 )
-    {
-      #may contain only the intercept
-      if ( terms( level2.formula )@intercept != 1 )
-      {
-        stop( "bhlm: formula for second level effects must contain at least one variable or intercept." )
-      }
-      else
-      {
-        #formula contains the intercept
-        level2.vars <- 0
-      }
-    }
-    else
-    {
-      level2.vars <- 1
-    }
-  
-    if ( level2.vars == 1 )
-    {
-      model.level2 <- call( "model.frame", formula = level2.formula, data = data )
-
-      model.level2 <- eval( model.level2, sys.parent() )
-      Terms <- attr( model.level2, "terms" )
-  
-      Z <- model.matrix( Terms, model.level2, contrasts )
-      used.contrasts <- c( used.contrasts, contrasts( Z ) )
-
-      second.effects <- T
-
-      level2.names <- dimnames( Z )[[2]]
-
-    }
-    else if ( level2.vars == 0 )
-    {
-      #only the intercept
-      Z <- matrix( rep( 1, nrow( data ) ), nrow = nrow( data ) )
-
-      second.effects <- T
-      level2.names <- "(Intercept)"
-    }
-  }#end if level2 effects
-  else if ( !is.null( level2.formula ) )
-  {
-    stop( "bhlm: second level effects are not allowed when there are no random effects in the model\n")
-  }
-  
+  #response.names <- attr( Terms, "term.labels" )
 
   #sort data by group
-  idx <- seq( 1, nrow( data ) )
+
   if ( is.null( Y ) )
   {
     stop( "bhlm: response variable must be provided.\n" )
   }
 
+
+  idx <- seq( 1, nrow( data ) )
   if ( !is.null( group ) )
   {
     group.var <- attr( terms( group ), "term.labels" )
 
     idx <- order( data[[ group.var ]] )
 
-    if ( is.matrix( Y ) )
-    {
-      Y <- Y[ idx, ]
-    }
-    else if ( is.vector( Y ) )
-    {
-      Y <- Y[ idx ]
-    }
-    else
-    {
-      stop( "bhlm: Response is not in the right format.\n" )
-      print( Y )
-    }
+    Y <- Y[ idx, ]
 
-    #now sort missing data
-    if ( sum.missing.data > 0 )
+    #now sort missing response
+    if ( sum.missing.response > 0 )
     {
-      missing.data <- as.matrix( missing.data[ idx, ] )
-    }
-
-    if ( random.effects )
-    {
-      X <- as.matrix( X[ idx, ] )
-      dimnames( X ) <- list( dimnames( data )[[1]][idx], random.names )
-    }
-    
-    if ( fixed.effects )
-    {
-      M <- as.matrix( M[ idx, ] )
-      dimnames( M ) <- list( dimnames( data )[[1]][idx], fixed.names )
+      missing.response <- as.matrix( missing.response[ idx, ] )
     }
 
     #counts by groups
@@ -294,132 +108,39 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
     group.names <- data[[ group.var ]][ idx ] 
     group.names <- group.names[ cumsum( n.responses ) ]
 
-
-    if ( second.effects )
-    {
-      Z <- as.matrix( Z[ idx, ] )
-      #one row per group
-      Z <- as.matrix( Z[ cumsum( n.responses ), ] )
-
-      #now arrange Z 
-
-      Id <- diag( ncol( X ) )
-      Z.X <- matrix( 0, ncol = ncol( Z ) * ncol( X ), nrow = ncol( X ) * n.groups )
-      i1 <- 1
-      for ( i in seq( 1, n.groups ) )
-      {
-        i2 <- i1 + ncol( X ) - 1
-        Z.X[ seq( i1, i2 ), ] <- t( matrix( Z[ i, ] %o% Id, nrow = ncol( Z ) * ncol( X ) ) )
-
-
-        i1 <- i1 + ncol( X )
-
-      }
-      Z <- Z.X
-
-    }    
-
   }#end if group
   else
   {
-    if ( is.vector( Y ) )
-    {
-      n.responses <- length( Y )
-    }
-    else
-    {
-      n.responses <- nrow( Y ) 
-    }
-
+    n.responses <- length( Y ) / length( response.names )
     n.groups <- 1
     group.names <- 1
-
-    if ( second.effects )
-    {
-      #one row per group
-      Z <- matrix( Z[ 1, ], nrow = 1 )
-      Z <- t( matrix( Z[ 1, ] %o% diag( ncol( X ) ), nrow = ncol( Z ) * ncol( X ) ) )
-
-    }
   }
 
   number.data <- length( Y )
 
-####end Data-------------------------------------------------------
-
   #transpose Y
   Y <- t(Y)
-
-  missing.response <- 0
-  missing.random <- 0
-  missing.fixed <- 0
-  if ( sum.missing.data > 0 )
+  if ( sum.missing.response > 0 )
   {
-    missing.response <- t( missing.data[ , dimnames( Y )[[1]] ] )
-
-    if ( random.effects )
-    {
-      if ( length( dimnames( X )[[2]] ) > 1 || dimnames( X )[[2]][1] != "(Intercept)" )
-      {
-        missing.random <- t( missing.data[ , dimnames( X )[[2]][ dimnames( X )[[2]] != "(Intercept)" ] ] )
-        if ( is.element( "(Intercept)", dimnames( X )[[2]] ) )
-        {
-          missing.random <- rbind( rep( F, nrow( X ) ), missing.random )
-          dimnames( missing.random ) <- dimnames( t( X ) )
-        }
-      }  
-    }
-
-    if ( fixed.effects )
-    {
-      if ( length( dimnames( M )[[2]] ) > 1 || dimnames( M )[[2]][1] != "(Intercept)" )
-      {
-        missing.fixed <- t( missing.data[ , dimnames( M )[[2]][ dimnames( M )[[2]] != "(Intercept)" ] ] )
-        if ( is.element( "(Intercept)", dimnames( M )[[2]] ) )
-        {
-          missing.fixed <- rbind( rep( F, nrow( M ) ), missing.fixed )
-          dimnames( missing.fixed ) <- dimnames( t( M ) )
-        }
-      }
-    }
-
+    missing.response <- t( missing.response[ , dimnames( Y )[[1]] ] )
   }
-
 
   if ( is.vector( Y ) )
   {
     Y <- matrix( Y, nrow = 1 )
 
-    if ( sum( missing.response ) > 0 )
+    if ( sum.missing.response > 0 )
     {
       missing.response <- matrix( missing.response, nrow = 1 )
     }
   }
-
-  if ( is.vector( X ) )
-  {
-    if ( sum( missing.random ) > 0 )
-    {
-      missing.random <- matrix( missing.random, nrow = 1 )
-    }
-  }
-
-  if ( is.vector( M ) )
-  {
-    if ( sum( missing.fixed ) > 0 )
-    {
-      missing.fixed <- matrix( missing.fixed, nrow = 1 )
-    }
-  }
-
-
 
   dim.response <- nrow( Y )
 
   missing.response.components <- 0 
   missing.response.counts <- 0
   total.missing.response <- 0
-  if ( sum( missing.response ) > 0 )
+  if ( sum.missing.response > 0 )
   {
     missing.response.counts <- apply( missing.response, 2, sum )
     total.missing.response <- sum( missing.response.counts )
@@ -434,61 +155,11 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
     }
   }
 
-  missing.random.components <- 0 
-  missing.random.counts <- 0
-  total.missing.random <- 0
-  if ( sum( missing.random ) > 0 )
-  {
-    missing.random.counts <- apply( missing.random, 2, sum )
-    total.missing.random <- sum( missing.random.counts )
-    if ( total.missing.random > 0 )
-    {
-      missing.random.components <- apply( missing.random, 2, 
-                                            FUN = function( x, p ) 
-                                                    { seq( 1, p )[x == T] }, 
-                                            p = nrow( missing.random ) )
-    
-      missing.random.components <- unlist( missing.random.components )
-    }
-  }
 
 
 
-  missing.fixed.components <- 0 
-  missing.fixed.counts <- 0
-  total.missing.fixed <- 0
-  if ( sum( missing.fixed ) > 0 )
-  {
-    missing.fixed.counts <- apply( missing.fixed, 2, sum )
-    total.missing.fixed <- sum( missing.fixed.counts )
-    if ( total.missing.fixed > 0 )
-    {
-      missing.fixed.components <- apply( missing.fixed, 2, 
-                                            FUN = function( x, p ) 
-                                                    { seq( 1, p )[x == T] }, 
-                                            p = nrow( missing.fixed ) )
-    
-      missing.fixed.components <- unlist( missing.fixed.components )
-    }
-  }
 
 ####end Data-------------------------------------------------------
-
-
-  if ( ( length( M ) == 1 && M == 0 ) && ( ncol( X ) == 1 && random.names[1] == "(Intercept)" ) )
-  {
-    random.names <- "MEAN"
-    dimnames( X )[[2]] <- random.names
-
-    if ( second.effects )
-    {
-      if ( length( level2.names ) == 1 && level2.names[1] == "(Intercept)" )
-      {
-        level2.names <- "MEAN"
-      }
-    }
-  }
-
 
 
 ####----------------------------------------------------------------------
@@ -529,7 +200,6 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
   }
   else if ( is.name( likelihood$errorCov ) )
   {
-
     errorCov <- as.vector( eval( call( likelihood$errorCov, p = dim.response ) ) )
     if ( n.groups > 1 )
     {
@@ -543,7 +213,6 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
   }#end name
   else if ( is.function( likelihood$errorCov ) )
   {
-
     errorCov <- as.vector( likelihood$errorCov( dim.response ) )
     if ( n.groups > 1 )
     {
@@ -557,7 +226,6 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
   }#end function
   else if ( is.vector( likelihood$errorCov ) ) 
   {
-
 
     if ( length( likelihood$errorCov ) == 1 ) 
     {
@@ -663,8 +331,8 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
     {
       if ( valid.prior$level2.coef@name == "non-informative" )
       {
-        level2.coef.mean <- rep( 0.0, nrow( Y ) * ncol( Z ) )
-        level2.coef.Cov <- diag( nrow( Y ) * ncol( Z ) )
+        level2.coef.mean <- rep( 0.0, nrow( Y ) )
+        level2.coef.Cov <- diag( nrow( Y ) )
         level2.coef.type <- 1
       }
       else
@@ -672,8 +340,8 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
         level2.coef.mean <- valid.prior$level2.coef@parameters[["mean vector"]]
         level2.coef.Cov <- valid.prior$level2.coef@parameters[["covariance matrix"]]
 
-        level2.coef.mean <- valid.mean.specification( level2.coef.mean, nrow( Y ) * ncol( Z ) )
-        level2.coef.Cov <- valid.Cov.specification( level2.coef.Cov, nrow( Y ) * ncol( Z ) )
+        level2.coef.mean <- valid.mean.specification( level2.coef.mean, nrow( Y ) )
+        level2.coef.Cov <- valid.Cov.specification( level2.coef.Cov, nrow( Y ) )
 
         if ( valid.prior$level2.coef@name == "t" )
         {
@@ -687,16 +355,16 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
 
       if ( valid.prior$random.coef@name == "non-informative" )
       {
-        random.coef.mean <- rep( 0.0, nrow( Y ) * ncol( X ) )
-        random.coef.Cov <- diag( nrow( Y ) * ncol( X ) )
+        random.coef.mean <- rep( 0.0, nrow( Y ) )
+        random.coef.Cov <- diag( nrow( Y ) )
       }
       else
       {
         #ignore prior mean in this case
 
-        random.coef.mean <- rep( 0.0, nrow( Y ) * ncol( X ) )
+        random.coef.mean <- rep( 0.0, nrow( Y ) )
         random.coef.Cov <- valid.prior$random.coef@parameters[["covariance matrix"]]
-        random.coef.Cov <- valid.Cov.specification( random.coef.Cov, nrow( Y ) * ncol( X ) )
+        random.coef.Cov <- valid.Cov.specification( random.coef.Cov, nrow( Y ) )
 
         if ( valid.prior$random.coef@name == "t" )
         {
@@ -716,16 +384,16 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
         if ( valid.prior$random.coef@name == "non-informative" )
         {
           random.coef.type <- 3
-          random.coef.mean <- rep( 0, nrow( Y ) * ncol( X ) )
-          random.coef.Cov <- diag( nrow( Y ) * ncol( X ) )
+          random.coef.mean <- rep( 0, nrow( Y ) )
+          random.coef.Cov <- diag( nrow( Y ) )
         }
         else
         {
           random.coef.mean <- valid.prior$random.coef@parameters[["mean"]]
           random.coef.Cov <- valid.prior$random.coef@parameters[["covariance matrix"]]
 
-          random.coef.mean <- valid.mean.specification( random.coef.mean, nrow( Y ) * ncol( X ) )
-          random.coef.Cov <- valid.Cov.specification( random.coef.Cov, nrow( Y ) * ncol( X ) )
+          random.coef.mean <- valid.mean.specification( random.coef.mean, nrow( Y ) )
+          random.coef.Cov <- valid.Cov.specification( random.coef.Cov, nrow( Y ) )
 
           if ( valid.prior$random.coef@name == "t" )
           {
@@ -746,14 +414,14 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
 
         if ( valid.prior$random.coef[[1]]@name == "non-informative" )
         {
-          random.coef.Cov <- diag( nrow( Y ) * ncol( X ) )
-          random.coef.mean <- rep ( 0, nrow( Y ) * ncol( X ) )
+          random.coef.Cov <- diag( nrow( Y ) )
+          random.coef.mean <- rep ( 0, nrow( Y ) )
           random.coef.type <- 1
         }
         else
         {
           random.coef.Cov <- valid.prior$random.coef[[1]]@parameters[["covariance matrix"]]
-          random.coef.Cov <- valid.Cov.specification( random.coef.Cov, nrow( Y ) * ncol( X ) )         
+          random.coef.Cov <- valid.Cov.specification( random.coef.Cov, nrow( Y ) )         
 
           random.coef.mean <- apply( matrix( seq( 1, length( valid.prior$random.coef ) ), nrow = 1 ), 
                                      MARGIN = 2, 
@@ -771,7 +439,7 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
                                        r.mean
                                      },
                                      y = valid.prior$random.coef,
-                                     dim = nrow( Y ) * ncol( X ) )
+                                     dim = nrow( Y ) )
 
         }
  
@@ -784,7 +452,6 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
       }#end several prior parameters
 
     }#end no second effects
-
 
     #if beta has an informative prior
     if ( random.coef.type != 3 )
@@ -817,11 +484,10 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
 
       "invWishart" =
       {
-        random.var.scale <- valid.Cov.specification( valid.prior$random.var@parameters[["scale"]], nrow( Y ) * ncol( X ) )
+        random.var.scale <- valid.Cov.specification( valid.prior$random.var@parameters[["scale"]], nrow( Y ) )
         random.var.nu <- valid.prior$random.var@parameters[["degrees of freedom"]]
         4
       },
-
 
       stop( "bhlm: distribution for random coefficients variance must be either \"invChisq\", \"non-informative power\", \"uniform shrinkage\", \"du Mouchel\", or \"invWishart\" \n" )
       )#end switch
@@ -836,8 +502,8 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
   {
     if ( valid.prior$fixed.coef@name == "non-informative" )
     {
-      fixed.coef.mean <- rep( 0.0, nrow( Y ) * ncol( M ) )
-      fixed.coef.Cov <- diag( nrow( Y ) * ncol( M ) )
+      fixed.coef.mean <- rep( 0.0, nrow( Y ) )
+      fixed.coef.Cov <- diag( nrow( Y ) )
       fixed.coef.type <- 1
     }
     else
@@ -845,8 +511,8 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
       fixed.coef.mean <- valid.prior$fixed.coef@parameters[["mean vector"]]
       fixed.coef.Cov <- valid.prior$fixed.coef@parameters[["covariance matrix"]]
 
-      fixed.coef.mean <- valid.mean.specification( fixed.coef.mean, nrow( Y ) * ncol( M ) )
-      fixed.coef.Cov <- valid.Cov.specification( fixed.coef.Cov, nrow( Y ) * ncol( M ) )
+      fixed.coef.mean <- valid.mean.specification( fixed.coef.mean, nrow( Y ) )
+      fixed.coef.Cov <- valid.Cov.specification( fixed.coef.Cov, nrow( Y ) )
 
       if ( valid.prior$fixed.coef@name == "t" )
       {
@@ -911,9 +577,10 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
         5
       },
 
+
       stop( "bhlm: distribution for error variance must be either \"invChisq\", \"non-informative power\", \"uniform shrinkage\", \"du Mouchel\", \"invWishart\", or \"mass point (known)\" \n" )
     )#end switch
-  } 
+  }
   else
   {
     # different prior parameters for error variance
@@ -968,9 +635,10 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
           {
             error.var.scale[[i]] <- valid.prior$error.var[[i]]@parameters[["value"]]
             error.var.scale[[i]] <- valid.Cov.specification( error.var.scale[[i]], nrow( Y ) )
-            error.var.nu[i] <- nrow( Y )           
+            error.var.nu[i] <- nrow( Y )
             5
           },
+
 
           stop( "bhlm: distribution for error variance must be either \"invChisq\", \"non-informative power\", \"uniform shrinkage\", \"du Mouchel\", \"invWishart\", or \"mass point (known)\" \n" )
         )#end switch
@@ -1042,7 +710,7 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
 
   if ( random.effects )
   {
-    dim.random <- ncol( X )
+    dim.random <- nrow( Y )
   }
   else
   {
@@ -1051,7 +719,7 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
 
   if ( fixed.effects )
   {
-    dim.fixed <- ncol( M )
+    dim.fixed <- nrow( Y )
   }
   else
   {
@@ -1060,7 +728,7 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
 
   if ( second.effects )
   {
-    dim.level2 <- ncol( Z )
+    dim.level2 <- nrow( Y )
   }
   else
   {
@@ -1078,7 +746,7 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
     read.init.point = 1
 
     # draw number.chains initial values at random from "prior"
-    starting.points <- generateInitPoints.bhlmMV( number.chains, n.responses, X, M, Z, Y, dim.response,
+    starting.points <- generateInitPoints.bhlmMD( number.chains, n.responses, Y, dim.response,
                                                   dim.random, dim.fixed, dim.level2,
                                                   error.var.nu, error.var.scale, error.var.type, error.var.common,
                                                   random.coef.df, random.coef.mean, random.coef.Cov, random.coef.type,
@@ -1092,7 +760,7 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
   {
     read.init.point <- 1
 
-    starting.points <- validate.initial.points.bhlmMV( n.groups, dim.response, dim.random * dim.response, dim.fixed * dim.response, dim.level2 * dim.response, init.point$values[[ 1 ]], random.effects, fixed.effects, second.effects, error.var.common, random.coef.type, error.var.type, random.var.type )
+    starting.points <- validate.initial.points.bhlm( n.groups, dim.response, dim.random, dim.fixed, dim.level2, init.point$values[[ 1 ]], random.effects, fixed.effects, second.effects, error.var.common, random.coef.type, error.var.type, random.var.type )
 
     if ( !is.null( starting.points$random.var ) )    
     {
@@ -1110,7 +778,7 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
     {
       for ( i in seq( 2, number.chains ) )
       {
-        s.points <- validate.initial.points.bhlmMV( n.groups, dim.response, dim.random * dim.response, dim.fixed * dim.response, dim.level2 * dim.response, init.point$values[[ i ]], random.effects, fixed.effects, second.effects, error.var.common, random.coef.type, error.var.type, random.var.type )
+        s.points <- validate.initial.points.bhlm( n.groups, dim.response, dim.random, dim.fixed, dim.level2, init.point$values[[ i ]], random.effects, fixed.effects, second.effects, error.var.common, random.coef.type, error.var.type, random.var.type )
         if ( !is.null( starting.points$error.var ) )
         {
           s.error.var[[i]] <- s.points$error.var
@@ -1209,7 +877,6 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
 ####end Initial Points------------------------------------------------------------------------------------------
 
 
-
 ####-------------------------------------------------------------------------------------------
   ##Fit the model
   ##
@@ -1227,23 +894,37 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
     stop( "bhlm: sampler type [", sampler$sampler, "] has not been implemented." )
   }  
 
+  #prepare formula outputs
+  random.formula <- NULL
+  fixed.formula <- NULL
+  level2.formula <- NULL
+  if ( random.effects )
+  {
+    random.formula <- ~ 1
+  }
+  if ( fixed.effects )
+  {
+    fixed.formula <- ~ 1
+  }
+  if ( second.effects )
+  {
+    level2.formula <- ~ 1
+  }
+
 
   bhlmodel <- vector( "list", number.chains )
-
 
 
   for ( i in seq( 1, number.chains ) )
   {
     simulation.seed <- .Random.seed
-    fit <- fit.bayeshlmMV( n.groups, idx, n.responses, dim.response, dim.random, dim.fixed, dim.level2, X, M, Z, Y, random.names, fixed.names, level2.names, response.names, group.names, total.missing.response, missing.response.counts, missing.response.components, total.missing.random, missing.random.counts, missing.random.components, total.missing.fixed, missing.fixed.counts, missing.fixed.components, unique.lklhd.Cov, dim.error.Cov, likelihood$errorCov, likelihood$df, likelihood$type, random.coef.mean, random.coef.Cov, random.coef.df, random.coef.type, fixed.coef.mean, fixed.coef.Cov, fixed.coef.df, fixed.coef.type, level2.coef.mean, level2.coef.Cov, level2.coef.df, level2.coef.type, error.var.nu, error.var.scale, error.var.power, error.var.common, error.var.type, random.var.nu, random.var.scale, random.var.power, random.var.type, read.init.point, starting.points$random.coef[,i], starting.points$fixed.coef[,i], starting.points$level2.coef[,i], starting.points$error.var[[i]], starting.points$random.var[[i]], sampler.type, burnInLength, simulationsToPerform, sampleFrequency, print.stats, dimnames( Y )[[2]] )
+    fit <- fit.bayeshlmMD( n.groups, idx, n.responses, dim.response, dim.random, dim.fixed, dim.level2, group.names, Y, response.names, total.missing.response, missing.response.counts, missing.response.components, unique.lklhd.Cov, dim.error.Cov, likelihood$errorCov, likelihood$df, likelihood$type, random.coef.mean, random.coef.Cov, random.coef.df, random.coef.type, fixed.coef.mean, fixed.coef.Cov, fixed.coef.df, fixed.coef.type, level2.coef.mean, level2.coef.Cov, level2.coef.df, level2.coef.type, error.var.nu, error.var.scale, error.var.power, error.var.common, error.var.type, random.var.nu, random.var.scale, random.var.power, random.var.type, read.init.point, starting.points$random.coef[,i], starting.points$fixed.coef[,i], starting.points$level2.coef[,i], starting.points$error.var[[i]], starting.points$random.var[[i]], sampler.type, burnInLength, simulationsToPerform, sampleFrequency, print.stats )
     bhlmodel[[i]] <- fit
 
   }#end for chains
 
-	posterior(mcmc.list(bhlmodel))
+	return(posterior(mcmc.list(bhlmodel)))
 }#end
-
-
 
 
 
@@ -1253,11 +934,9 @@ bhlmMV <- function( response.formula = NULL, random.formula = NULL,
 ##
 ############################################################################################
 
-fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.response, dim.random, dim.fixed, dim.level2, 
-                          X, M, Z, Y, random.names, fixed.names, level2.names, response.names, group.names,
+fit.bayeshlmMD <- function( n.groups, sorted.by.group.idx, n.responses, dim.response, dim.random, dim.fixed, dim.level2, 
+                          group.names, Y, response.names, 
                           total.missing.response, missing.response.counts, missing.response.components,
-                          total.missing.random, missing.random.counts, missing.random.components,
-                          total.missing.fixed, missing.fixed.counts, missing.fixed.components,
                           unique.lklhd.Cov, dim.error.Cov, likelihood.errorCov, likelihood.df, likelihood.type, 
                           random.coef.mean, random.coef.Cov, random.coef.df, random.coef.type, 
                           fixed.coef.mean, fixed.coef.Cov, fixed.coef.df, fixed.coef.type, 
@@ -1268,7 +947,7 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
                           starting.fixed.coef, starting.level2.coef, 
                           starting.error.var, starting.random.var, 
                           sampler.type = 0, burnInLength, simulationsToPerform, sampleFrequency, 
-                          print.stats, observation.names = NULL )
+                          print.stats )
 {
 
   #if there are t distributions then report their augmented data tau ~ IvChisq( nu, 1 )
@@ -1276,14 +955,11 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
 
   number.data <- sum( n.responses )
 
-
-
   #now count how many variables there are
   n.vars <- 0
   output.dim <- 0
 
-  #if not known
-  if ( error.var.type != 5 )
+  if (  error.var.type != 5 )
   {
     if ( error.var.common == 0 || error.var.common == 1 )
     {
@@ -1307,6 +983,7 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
     output.dim <- n.vars * dim.error.var
   }
 
+
   #now account for other variables including t distributed variables
   if ( dim.random > 0 )
   {
@@ -1314,12 +991,12 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
     if ( random.coef.df == 0 )
     {
       n.vars <- n.vars + n.groups
-      output.dim <- output.dim + n.groups * dim.random * dim.response
+      output.dim <- output.dim + n.groups * dim.random 
     }
     else
     {
       n.vars <- n.vars + 2 * n.groups
-      output.dim <- output.dim + n.groups * ( dim.random * dim.response + 1 )
+      output.dim <- output.dim + n.groups * ( dim.random + 1 )
     }
 
 
@@ -1329,23 +1006,23 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
       if ( level2.coef.df == 0 )
       {
         n.vars <- n.vars + 1
-        output.dim <- output.dim + dim.level2 * dim.response
+        output.dim <- output.dim + dim.level2
       }
       else
       {
         n.vars <- n.vars + 2
-        output.dim <- output.dim + dim.level2 * dim.response + 1 
+        output.dim <- output.dim + dim.level2 + 1 
       }
     }
 
-    #if beta has informative prior
+    #if beta has an informative prior
     if ( random.coef.type != 3 )
     {
       #account for random coef variance
       n.vars <- n.vars + 1
       if ( random.var.type == 4 )
       {
-        dim.random.var <- dim.random * dim.response * dim.random * dim.response
+        dim.random.var <- dim.random * dim.random
       }
       else
       {
@@ -1361,12 +1038,12 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
     if ( fixed.coef.df == 0 )
     {
       n.vars <- n.vars + 1
-      output.dim <- output.dim + dim.fixed * dim.response
+      output.dim <- output.dim + dim.fixed
     }
     else
     {
       n.vars <- n.vars + 2
-      output.dim <- output.dim + dim.fixed * dim.response + 1
+      output.dim <- output.dim + dim.fixed + 1
     }
 
   }
@@ -1392,20 +1069,6 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
     output.dim <- output.dim + total.missing.response
   }
 
-  #account for missing random predictors
-  if ( total.missing.random > 0 )
-  {
-    n.vars <- n.vars + sum( missing.random.counts > 0 ) 
-    output.dim <- output.dim + total.missing.random
-  }
-
-  #account for missing fixed predictors
-  if ( total.missing.fixed > 0 )
-  {
-    n.vars <- n.vars + sum( missing.fixed.counts > 0 ) 
-    output.dim <- output.dim + total.missing.fixed
-  }
-
       
   #now create output array with the right dimensions
   output.samples <- matrix( 0, nrow = simulationsToPerform, ncol = output.dim )
@@ -1421,7 +1084,7 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
 
   #call the function
 
-  fit <- .C( "fitBayesianMVHLM",
+  fit <- .C( "fitBayesianMDHLM",
              as.integer( n.groups ),
              as.integer( n.responses ),
              as.integer( dim.response ), 
@@ -1430,21 +1093,10 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
              as.integer( dim.level2 ), 
              #
              as.double( Y ), 
-             as.double( t( X ) ),
-             as.double( t( M ) ),
-             as.double( t( Z ) ),
              #
              as.integer( total.missing.response ),
              as.integer( missing.response.counts ),
              as.integer( missing.response.components ),
-             #
-             as.integer( total.missing.random ),
-             as.integer( missing.random.counts ),
-             as.integer( missing.random.components ),
-             #
-             as.integer( total.missing.fixed ),
-             as.integer( missing.fixed.counts ),
-             as.integer( missing.fixed.components ),
              #
              as.integer( unique.lklhd.Cov ), 
              as.integer( dim.error.Cov ), 
@@ -1492,7 +1144,9 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
              #
              as.integer( print.stats ),
              output.samples = as.double( output.samples ),
-             gibbs.stats = as.double( gibbs.stats ) )
+             gibbs.stats = as.double( gibbs.stats ),
+             #
+             PACKAGE = "FlexBayes")
 
 
   # OUTPUT
@@ -1526,45 +1180,39 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
   #       otherwise, the matrices tau2 are returned.
   #
 
-
   out.samples <- matrix( fit$output.samples, nrow = simulationsToPerform, ncol = output.dim )
 
   Y.imputed <- Y
-  X.imputed <- t( X )
-  M.imputed <- t( M )
-
   group.names <- as.character( group.names )
-  orig.random.names <- random.names
-  orig.fixed.names <- fixed.names
-  orig.level2.names <- level2.names
-
+  
   end.index <- 0
   if ( dim.random > 0 )
   {
-    random.coef <- matrix( out.samples[ , seq( 1, n.groups * dim.random * dim.response ) ], nrow = simulationsToPerform )
-    random.names <- as.vector( outer( outer( orig.random.names, response.names, paste, sep = ":" ), group.names, paste, sep = ":" ) )
+    random.coef <- matrix( out.samples[ , seq( 1, n.groups * dim.random ) ], nrow = simulationsToPerform )
 
-    end.index <- n.groups * dim.random * dim.response
+    random.names <- as.vector( outer( outer( c("Mean" ), response.names, paste, sep = ":" ), group.names, paste, sep = ":" ) )
+
+    #random.names <- as.vector( outer( response.names, group.names, paste, sep = ":" ) )
+
+    end.index <- n.groups * dim.random
   }
 
   if ( dim.fixed > 0 )
   {
-    fixed.coef <- matrix( out.samples[ , end.index + seq( 1, dim.fixed * dim.response ) ], nrow = simulationsToPerform )
-    fixed.names <- as.vector( outer( fixed.names, response.names, paste, sep = ":" ) )
-    end.index <- end.index + dim.fixed * dim.response
+    fixed.coef <- matrix( out.samples[ , end.index + seq( 1, dim.fixed ) ], nrow = simulationsToPerform )
+    fixed.names <- response.names
+    end.index <- end.index + dim.fixed
   }
 
   if ( dim.random > 0 && dim.level2 > 0 )
   {
-    level2.coef <- matrix( out.samples[ , end.index + seq( 1, dim.level2 * dim.response ) ], nrow = simulationsToPerform )
+    level2.coef <- matrix( out.samples[ , end.index + seq( 1, dim.level2 ) ], nrow = simulationsToPerform )
+    level2.names <- response.names
 
-    level2.names <- as.vector( outer( outer( level2.names, orig.random.names, paste, sep = ":" ), response.names, paste, sep = ":" ) )
-
-    end.index <- end.index + dim.level2 * dim.response
+    end.index <- end.index + dim.level2
   }
 
 
-  #not known error var
   if ( error.var.type != 5 )
   {
     if ( error.var.common == 0 ||  error.var.common == 1 )
@@ -1584,7 +1232,7 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
  
         error.var.names <- c( as.vector( t( outer( outer( paste( "MEASUREMENT ERROR [ SIGMA ]:", group.names, sep = "" ), seq( 1, dim.response ), paste, sep = ":" ), seq( 1, dim.response ), paste, sep = "." ) ) ) )
 
-        #remainder groups
+        #remainder groups 
         if ( n.groups > 1 )
         {
           for ( i in seq( 2, n.groups ) )
@@ -1598,7 +1246,7 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
     else
     {
       if ( error.var.type != 4 )
-      {     
+      {    
         #same error variance prior
         error.var <- matrix( out.samples[ , end.index + 1 ], nrow = simulationsToPerform )
         error.var.names <- "MEASUREMENT ERROR [ SIGMA ]"
@@ -1611,7 +1259,7 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
         end.index <- end.index + dim.response * dim.response
       }
     }
-  }#end if not known
+  }
   else
   {
     error.var <- NULL
@@ -1619,26 +1267,14 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
   }
 
 
-  #if beta has informative prior
+  #if beta has an informative prior
   if ( dim.random > 0 && random.coef.type != 3 )
   {
     if ( random.var.type == 4 )
     {
-      random.var <- matrix( out.samples[ , end.index + seq( 1, dim.random * dim.response * dim.random * dim.response ) ], nrow = simulationsToPerform )
-
-      random.var.names <- as.vector( t( outer( as.vector( t( outer( paste( "RANDOM:TAU:", seq( 1, dim.random), sep = "" ), seq( 1, dim.random ), paste, sep = "." ) ) ), response.names, paste, sep = ":" ) ) )
-
-
-      random.var.names <- NULL
-      for ( i in seq( 1, dim.response ) )
-      {
-        for ( j in seq( 1, dim.random ) )
-        {
-          random.var.names <- c( random.var.names, as.vector( outer( paste( j, seq( 1, dim.random ), sep = "." ), paste( response.names[i], response.names, sep = "." ), paste, sep = ":" ) ) )
-        }
-      }
-
-      end.index <- end.index + dim.random * dim.response * dim.random * dim.response
+      random.var <- matrix( out.samples[ , end.index + seq( 1, dim.random * dim.random ) ], nrow = simulationsToPerform )
+      random.var.names <- as.vector( t( outer( paste( "RANDOM:TAU:", seq( 1, dim.random), sep = "" ), seq( 1, dim.random ), paste, sep = "." ) ) )
+      end.index <- end.index + dim.random * dim.random
 
     }
     else
@@ -1653,6 +1289,7 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
     random.var <- NULL
     random.var.names <- NULL
   }
+
 
   if ( dim.random > 0 && random.coef.df > 0 )
   {
@@ -1694,27 +1331,17 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
   }
 
   #missing data
-  imputed.values <- NULL
-  imputed.names <- NULL
   if ( total.missing.response > 0 )
   {
     imputed.values <- matrix( out.samples[ , end.index + seq( 1, total.missing.response ) ], nrow = simulationsToPerform )
-    end.index <- end.index + total.missing.response
-
+    imputed.names <- NULL
     obs.missing <- seq( 1, length( missing.response.counts ) )[ missing.response.counts > 0 ]
     k <- 1
     for ( i in seq( 1, length( obs.missing ) ) )
     {
       for ( j in seq( 1, missing.response.counts[ obs.missing[i] ] ) )
       {
-        if ( !is.null( observation.names ) )
-        {
-          imputed.names <- c( imputed.names, paste( "IMPUTED", observation.names[ obs.missing[i] ], response.names[ missing.response.components[ k ] ], sep = ":" ) )
-        }
-        else
-        {
-          imputed.names <- c( imputed.names, paste( "IMPUTED", obs.missing[i], response.names[ missing.response.components[ k ] ], sep = ":" ) )
-        }
+        imputed.names <- c( imputed.names, paste( "IMPUTED", obs.missing[i], response.names[ missing.response.components[ k ] ], sep = ":" ) )
 
         #complete data
         Y.imputed[ response.names[ missing.response.components[ k ] ], obs.missing[i] ] <- mean( imputed.values[ , k ] )
@@ -1723,83 +1350,6 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
       }
     }
   }
-
-
-  if ( total.missing.random > 0 )
-  {
-    if ( is.null( imputed.values ) )
-    {
-      imputed.values <- matrix( out.samples[ , end.index + seq( 1, total.missing.random ) ], nrow = simulationsToPerform )
-      k <- 1
-    }
-    else
-    {
-      imputed.values <- cbind( imputed.values, matrix( out.samples[ , end.index + seq( 1, total.missing.random ) ], nrow = simulationsToPerform ) )
-    }
-    
-    end.index <- end.index + total.missing.random
-    obs.missing <- seq( 1, length( missing.random.counts ) )[ missing.random.counts > 0 ]
-    k.rd <- 1
-    for ( i in seq( 1, length( obs.missing ) ) )
-    {
-      for ( j in seq( 1, missing.random.counts[ obs.missing[i] ] ) )
-      {
-        if ( !is.null( observation.names ) )
-        {
-          imputed.names <- c( imputed.names, paste( "IMPUTED", observation.names[ obs.missing[i] ], orig.random.names[ missing.random.components[ k.rd ] ], sep = ":" ) )
-        }
-        else
-        {
-          imputed.names <- c( imputed.names, paste( "IMPUTED", obs.missing[i], orig.random.names[ missing.random.components[ k.rd ] ], sep = ":" ) )
-        }
-
-        #complete data
-        X.imputed[ orig.random.names[ missing.random.components[ k.rd ] ], obs.missing[i] ] <- mean( imputed.values[ , k ] )
-
-        k.rd <- k.rd + 1
-        k <- k + 1
-      }
-    }
-  }
-
-
-  if ( total.missing.fixed > 0 )
-  {
-    if ( is.null( imputed.values ) )
-    {
-      imputed.values <- matrix( out.samples[ , end.index + seq( 1, total.missing.fixed ) ], nrow = simulationsToPerform )
-      k <- 1
-    }
-    else
-    {
-      imputed.values <- cbind( imputed.values, matrix( out.samples[ , end.index + seq( 1, total.missing.fixed ) ], nrow = simulationsToPerform ) )
-    }
-    
-    end.index <- end.index + total.missing.fixed
-    obs.missing <- seq( 1, length( missing.fixed.counts ) )[ missing.fixed.counts > 0 ]
-    k.fx <- 1
-    for ( i in seq( 1, length( obs.missing ) ) )
-    {
-      for ( j in seq( 1, missing.fixed.counts[ obs.missing[i] ] ) )
-      {
-        if ( !is.null( observation.names ) )
-        {
-          imputed.names <- c( imputed.names, paste( "IMPUTED", observation.names[ obs.missing[i] ], orig.fixed.names[ missing.fixed.components[ k.fx ] ], sep = ":" ) )
-        }
-        else
-        {
-          imputed.names <- c( imputed.names, paste( "IMPUTED", obs.missing[i], orig.fixed.names[ missing.fixed.components[ k.fx ] ], sep = ":" ) )
-        }
-
-        #complete data
-        M.imputed[ orig.fixed.names[ missing.fixed.components[ k.fx ] ], obs.missing[i] ] <- mean( imputed.values[ , k ] )
-
-        k.fx <- k.fx +1
-        k <- k + 1
-      }
-    }
-  }
-
 
   t.likelihood <- NULL
   level2.effects <- NULL
@@ -1831,7 +1381,7 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
       random.tau <- NULL
     }
 
-    random.effects <- list( dim = dim.random, names = random.names, orig.names = orig.random.names, coef = random.coef, scale = random.var, scale.names = random.var.names, tau = random.tau, level2 = level2.effects )
+    random.effects <- list( dim = dim.random, names = random.names, orig.names = "Mean", coef = random.coef, scale = random.var, scale.names = random.var.names, tau = random.tau, level2 = level2.effects )
   }
 
   if ( dim.fixed > 0 )
@@ -1863,13 +1413,13 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
   }
 
 
-  if ( total.missing.response > 0 || total.missing.random > 0 || total.missing.fixed > 0  )
+  if ( total.missing.response > 0 )
   {
-    data.imputed <- list( Y = t( Y.imputed ), X = t( X.imputed ), M = t( M.imputed ) )
-    imputed.components <- list( values = imputed.values, names = imputed.names, data = data.imputed )
+    imputed.components <- list( values = imputed.values, names = imputed.names, data = t( Y.imputed ) )
   }
 
   ######## Create a named matrix of the posterior samples.
+
 	post.samples <- matrix(nrow=simulationsToPerform, ncol=0)
   
   # First the fixed effects
@@ -1916,9 +1466,10 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
   }
 
   # Imputed values
-  if ( total.missing.response > 0 || total.missing.random > 0 || total.missing.fixed > 0  )
+  if ( total.missing.response > 0 )
   {
-    warning("Imputed values are not currently returned.")
+    dimnames( imputed.values ) <- list(NULL, imputed.names)
+    post.samples <- cbind(post.samples, imputed.values)
   }
 	
   if ( likelihood.type == 1 )
@@ -1934,7 +1485,7 @@ fit.bayeshlmMV <- function( n.groups, sorted.by.group.idx, n.responses, dim.resp
     post.samples <- cbind(post.samples, likelihood.group.tau)
   }
 
-  mcmc(post.samples)
+  return(mcmc(post.samples))
 
 }#end
 

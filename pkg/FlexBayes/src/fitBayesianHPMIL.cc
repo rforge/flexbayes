@@ -216,7 +216,7 @@ void fitBayesianHPMIL( int * number_groups,
       start_index += dim * counts[i]->Len();
 
 #ifdef DEBUG1
-      printf( "HPMIL: fit: random[%d] = \n",i );
+      Rprintf( "HPMIL: fit: random[%d] = \n",i );
       random_predictors[i]->Print();
 #endif
 
@@ -244,7 +244,7 @@ void fitBayesianHPMIL( int * number_groups,
       start_index += dim * counts[i]->Len();
 
 #ifdef DEBUG1
-      printf( "HPMIL: fit: fixed[%d] = \n",i );
+      Rprintf( "HPMIL: fit: fixed[%d] = \n",i );
       fixed_predictors[i]->Print();
 #endif
     }//end for i
@@ -252,7 +252,7 @@ void fitBayesianHPMIL( int * number_groups,
 
   if ( !random_effects && !fixed_effects )
   {
-    printf( "fitBayesianHPM: No fixed effects nor random effects provided. This model is not valid.\n" );
+    Rprintf( "fitBayesianHPM: No fixed effects nor random effects provided. This model is not valid.\n" );
     char the_error[] = "fitBayesianHPM: No fixed effects nor random effects provided. This model is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -287,7 +287,7 @@ void fitBayesianHPMIL( int * number_groups,
   BayesianHierarchicalGlmModel bayes_HGlm;
   
 #ifdef DEBUG1
-  printf( "HPMIL: counts[0] = \n");
+  Rprintf( "HPMIL: counts[0] = \n");
   counts[0]->Print();
 #endif
   // Just sets the number of groups and number of obs in each group
@@ -449,8 +449,8 @@ void fitBayesianHPMIL( int * number_groups,
       CMatrix p_betaCov( tauScale, ((int) (*dim_beta) ), ((int) (*dim_beta) ), by_column );
 
 #ifdef DEBUG1
-      printf("HPMIL: setting invWishart. original df = %f. original cov dim is %d, cov is\n",  (*tauDF), ((int) (*dim_beta) ) );
-      p_betaCov.Print(); fflush(stdout);
+      Rprintf("HPMIL: setting invWishart. original df = %f. original cov dim is %d, cov is\n",  (*tauDF), ((int) (*dim_beta) ) );
+      p_betaCov.Print();
 #endif
       bayes_HGlm.betaCovPriorInvWishart( (*tauDF), &p_betaCov );
     }
@@ -490,7 +490,7 @@ void fitBayesianHPMIL( int * number_groups,
         CVector init_alpha( alphaInit, ((int) (*dim_alpha) ) );
 
 #ifdef DEBUG1
-        printf( "HPMIL: init alpha \n" );
+        Rprintf( "HPMIL: init alpha \n" );
         init_alpha.Print();
 #endif
 
@@ -508,7 +508,7 @@ void fitBayesianHPMIL( int * number_groups,
         CMatrix init_beta( betaInit, ((int) (*dim_beta) ), ((int) (*number_groups) ), by_column );
 
 #ifdef DEBUG1
-        printf( "HPMIL: init beta \n" );
+        Rprintf( "HPMIL: init beta \n" );
         init_beta.Print();
 #endif
 
@@ -522,14 +522,14 @@ void fitBayesianHPMIL( int * number_groups,
           bayes_HGlm.samplerTau2InitialPoint( tau2Init );
 
 #ifdef DEBUG1
-          printf( "HPMIL: init random var \n %f\n", (*tau2Init) );
+          Rprintf( "HPMIL: init random var \n %f\n", (*tau2Init) );
 #endif
         }
         else
         {
           CMatrix init_tau2( tau2Init, ((int) (*dim_beta) ), ((int) (*dim_beta) ), by_column );
 #ifdef DEBUG1
-          printf( "HPMIL: init random var \n" );
+          Rprintf( "HPMIL: init random var \n" );
           init_tau2.Print();
 #endif
 
@@ -543,7 +543,7 @@ void fitBayesianHPMIL( int * number_groups,
       CVector init_gamma( gammaInit, ((int) (*dim_gamma) ) );
 
 #ifdef DEBUG1
-      printf( "HPMIL: init gamma \n" );
+      Rprintf( "HPMIL: init gamma \n" );
       init_gamma.Print();
 #endif
 
@@ -667,9 +667,8 @@ void fitBayesianHPMIL( int * number_groups,
       if ( ((int) (*common_sigma) ) != 0 )
       {
       	#ifdef DEBUG_LAMBDA
-      	  printf( "fitBayesianHPMIL: Initial sigma2 value= %f\n", (*sigma2Init) ); 
-      	  fflush(stdout);
-      	#endif
+      	  Rprintf( "fitBayesianHPMIL: Initial sigma2 value= %f\n", (*sigma2Init) );
+        #endif
       	// Sets the sigma2 first draw.
         bayes_PoissonIL.samplerSigma2InitialPoint( (*sigma2Init) );
       }

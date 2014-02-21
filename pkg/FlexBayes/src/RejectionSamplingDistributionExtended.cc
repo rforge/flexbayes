@@ -313,7 +313,7 @@ void ProperNonInfoPosteriorForBHLM::setPriorDistribution( char * type )
   }
   else
   {
-    printf( "ProperNonInfoPosteriorForBHLM::setDistribution: type [%s] is unknown.\n", type );
+    Rprintf( "ProperNonInfoPosteriorForBHLM::setDistribution: type [%s] is unknown.\n", type );
     // Bug fix by Dawn:  the following was:   exit(1);    which causes problems within SPLUS
     MESSAGE "ProperNonInfoPosteriorForBHLM::setDistribution: type [%s] is unknown.\n" ERROR;
   }
@@ -500,7 +500,7 @@ void ProperNonInfoPosteriorForBHLM::setScale( double val )
 {
   double p_a, p_b;
 
-  printf( "PNIP: setScale val = %f\n", val ); fflush(stdout);
+  Rprintf( "PNIP: setScale val = %f\n", val );
 
   if ( val > 0 )
   {
@@ -528,7 +528,7 @@ void ProperNonInfoPosteriorForBHLM::setScale( double val )
   }
   else
   {
-    printf( "ProperNonInfoPosteriorForBHLM::setScale: Zero or negative scale [%f] is not valid.\n", val );
+    Rprintf( "ProperNonInfoPosteriorForBHLM::setScale: Zero or negative scale [%f] is not valid.\n", val );
     // Bug fix by Dawn:  the following was:    exit(1);  which causes problems within SPLUS
     MESSAGE "ProperNonInfoPosteriorForBHLM::setScale: Zero or negative scale [%f] is not valid.\n" ERROR;
   }
@@ -573,21 +573,21 @@ DistributionParameter ProperNonInfoPosteriorForBHLM::draw()
 {
   double U, val;
 
-  printf( "PNIP: draw \n"); fflush( stdout);
+  Rprintf( "PNIP: draw \n");
 
   U = runif( 0.0, 1.0 );
   if ( U <= 0.5 )
   {
-    printf( "PNIP: will draw inv_chisq A \n"); fflush( stdout);
+    Rprintf( "PNIP: will draw inv_chisq A \n");
     val = inv_chisq_a->drawOneItem();
   }
   else
   {
-    printf( "PNIP: will draw inv_chisq B \n"); fflush( stdout);
+    Rprintf( "PNIP: will draw inv_chisq B \n");
     val = inv_chisq_b->drawOneItem();
   }    
 
-  printf( "PNIP: item drawn is %f\n", val ); fflush( stdout);
+  Rprintf( "PNIP: item drawn is %f\n", val );
 
   last_item_drawn = val;
 

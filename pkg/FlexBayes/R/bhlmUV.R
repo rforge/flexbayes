@@ -215,7 +215,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
 
       if ( !response.in.response && is.element( random.vars, c( 1, 2 ) ) )
       {
-        Y <- model.extract( model.random, response )
+        Y <- model.extract( model.random, "response" )
         response.names <- dimnames( attr( Terms, "factors" ) )[[1]][1]
       }
 
@@ -260,7 +260,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
 
       if ( !response.in.response && is.element( fixed.vars, c( 1, 2 ) ) && !is.element( random.vars, c( 1, 2 ) ) )
       {
-        Y <- model.extract( model.fixed, response ) 
+        Y <- model.extract( model.fixed, "response" )
         response.names <- dimnames( attr( Terms, "factors" ) )[[1]][1]
       }
 

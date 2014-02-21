@@ -259,7 +259,7 @@ void fitBayesianHLM( int * number_groups,
 
   if ( !random_effects && !fixed_effects )
   {
-    printf( "fitBayesianHLM: No fixed effects nor random effects provided. This model is not valid.\n" );
+    Rprintf( "fitBayesianHLM: No fixed effects nor random effects provided. This model is not valid.\n" );
     char the_error[] = "fitBayesianHLM: No fixed effects nor random effects provided. This model is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -594,7 +594,7 @@ void fitBayesianHLM( int * number_groups,
       
       bayes_HLinear.betaCovPriorInvWishart( (*tauDF), &p_betaCov );
       #ifdef DEBUG1
-        printf("Inverse Wishart prior set\n"); fflush(stdout);
+        Rprintf("Inverse Wishart prior set\n");
       #endif
     }
   }
@@ -739,7 +739,7 @@ void fitBayesianHLM( int * number_groups,
   //initialize missing data points
   bayes_HLinear.samplerMissingVariablesInitialPoint();
   #ifdef DEBUG1
-     printf("Initial values set\n"); fflush(stdout);
+     Rprintf("Initial values set\n");
   #endif
    
   //get ready to start Gibbs sampler
@@ -819,7 +819,7 @@ void  transformResponseAndPredictors( int * number_groups,
       }
       else if ( (*error_Cov) <= 0 )
       {
-        printf( "fitBayesianHierarchicalLinearModel: Negative or zero error covariance argument.\n" );
+        Rprintf( "fitBayesianHierarchicalLinearModel: Negative or zero error covariance argument.\n" );
         char the_error[] = "fitBayesianHierarchicalLinearModel: Negative or zero error covariance argument.";
         rtErr runtime_error( the_error );
         throw runtime_error;        
@@ -827,7 +827,7 @@ void  transformResponseAndPredictors( int * number_groups,
     }
     else
     {
-      printf( "fitBayesianHierarchicalLinearModel: wrong error covariance argument.\n" );
+      Rprintf( "fitBayesianHierarchicalLinearModel: wrong error covariance argument.\n" );
       char the_error[] = "fitBayesianHierarchicalLinearModel: wrong error covariance argument.";
       rtErr runtime_error( the_error );
       throw runtime_error;

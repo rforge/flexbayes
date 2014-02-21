@@ -189,14 +189,14 @@ void Gibbs::printDrawingStats()
 
   if ( vars_stats != NULL )
   {
-    printf( "\nGibbs: Drawing Statistics: \n" );
+    Rprintf( "\nGibbs: Drawing Statistics: \n" );
     total = vars_stats->Len() * vars_stats->Mean();
     for ( i = 0; i < vars_stats->Len(); i++ )
     {
-      printf( "variable[ %d ] = %f (%f out of %f).\n", i, vars_stats->Val(i) / total, vars_stats->Val(i), total );
+      Rprintf( "variable[ %d ] = %f (%f out of %f).\n", i, vars_stats->Val(i) / total, vars_stats->Val(i), total );
     }
 
-    printf( "\n" );
+    Rprintf( "\n" );
 
   }
 

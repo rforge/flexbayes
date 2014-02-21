@@ -300,7 +300,7 @@ void BayesianBinomialLogitLinkModel::logXiPrior( double p_xi )
 {
   int i;
 #ifdef DEBUG1
-  printf( "p_xi = %f\n", p_xi );  fflush(stdout);
+  Rprintf( "p_xi = %f\n", p_xi );
 #endif
 
   if( xi_type == 1 ){  // single overdispersion param
@@ -381,7 +381,7 @@ void BayesianBinomialLogitLinkModel::samplerXiInitialPoint( double init_xi )
 {
   int i;
 #ifdef DEBUG1
-  printf( "init_xi = %f\n", init_xi );  fflush(stdout);
+  Rprintf( "init_xi = %f\n", init_xi );
 #endif
   if ( xi_type == 1 ){    // single overdispersion param.
   	DistributionParameter init_log_xi( log( init_xi ) );
@@ -408,7 +408,7 @@ void BayesianBinomialLogitLinkModel::samplerXiInitialPoint( CVector & init_xi )
     for ( i = 0; i < number_of_groups; i++ )
     {
 #ifdef DEBUG1
-      printf( "init_xi[%d] = %f\n", i, init_xi.Val(i) );  fflush(stdout);
+      Rprintf( "init_xi[%d] = %f\n", i, init_xi.Val(i) );
 #endif
       DistributionParameter init_log_xi( log( init_xi.Val( i ) ) );
       log_xi[ i ]->setLastDraw( init_log_xi );
@@ -525,8 +525,8 @@ void BayesianBinomialLogitLinkModel::metropolisHastingsUpdateModel( int j, CVect
   	xi = 1.0;  // This is just a placeholder; the calculations using xi never get used
 
   #ifdef DEBUGGLM
-    printf("mhUpdateModel: enter j = %d, xi = %f, mu = \n", j, xi  );  
-    mu.Print();  fflush(stdout);
+    Rprintf("mhUpdateModel: enter j = %d, xi = %f, mu = \n", j, xi  );
+    mu.Print();
   #endif
 
   for ( i = 0; i < mu_linear[ j ]->Len(); i++ )
@@ -590,8 +590,8 @@ void BayesianBinomialLogitLinkModel::metropolisHastingsUpdateModel( int j )
   	           // get used 
 
   #ifdef DEBUGGLM
-    printf("mhUpdateModel: enter j = %d, xi = %f, mu_linear = \n", j, xi  );  
-    mu_linear[j]->Print();  fflush(stdout);
+    Rprintf("mhUpdateModel: enter j = %d, xi = %f, mu_linear = \n", j, xi  );
+    mu_linear[j]->Print();
   #endif
   for ( i = 0; i < mu_linear[ j ]->Len(); i++ )
   {
@@ -749,7 +749,7 @@ double BayesianBinomialLogitLinkModel::logXiGradient( int j, double xi )
 void BayesianBinomialLogitLinkModel::computeHessianForLogXi(  int j, double xi )
 {
   if( xi_type == 2 ){
-    printf( "computeHessianForLogXi: Attempt to compute Hessian for nonexistent parameter xi[%d]\n", j );  fflush(stdout);
+    Rprintf( "computeHessianForLogXi: Attempt to compute Hessian for nonexistent parameter xi[%d]\n", j );
   	MESSAGE "" ERROR;
   } 
   
@@ -840,23 +840,23 @@ CMatrix BayesianBinomialLogitLinkModel::metropolisHastingsProposalHessian( int n
           }
           else
 	  {
-            printf( " BayesianBinomialLogitLinkModel::metropolisHastingsProposalHessian: Wrong number of parameters for Gamma [%d].\n", n_pars );
+            Rprintf( " BayesianBinomialLogitLinkModel::metropolisHastingsProposalHessian: Wrong number of parameters for Gamma [%d].\n", n_pars );
           }
         }//end gamma
       }//end if not null
       else
       {
-        printf( " BayesianBinomialLogitLinkModel::metropolisHastingsProposalHessian: Null array.\n" );
+        Rprintf( " BayesianBinomialLogitLinkModel::metropolisHastingsProposalHessian: Null array.\n" );
       }
     }//end if par_vector
     else
     {
-      printf( " BayesianBinomialLogitLinkModel::metropolisHastingsProposalHessian: Null array.\n" );
+      Rprintf( " BayesianBinomialLogitLinkModel::metropolisHastingsProposalHessian: Null array.\n" );
     }
   }//end if > 0
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::metropolisHastingsProposalHessian: No parameters passed.\n" );
+    Rprintf( " BayesianBinomialLogitLinkModel::metropolisHastingsProposalHessian: No parameters passed.\n" );
   }
 
   CMatrix null_hessian( 1, 1 );
@@ -956,18 +956,18 @@ CMatrix BayesianBinomialLogitLinkModel::metropolisHastingsHessian( int n_pars, D
         }
         else
 	{
-          printf( " BayesianBinomialLogitLinkModel::metropolisHastingsHessian: Wrong number of parameters for Gamma [%d].\n", n_pars );
+          Rprintf( " BayesianBinomialLogitLinkModel::metropolisHastingsHessian: Wrong number of parameters for Gamma [%d].\n", n_pars );
         }
       }//end gamma
     }//end if not null
     else
     {
-      printf( " BayesianBinomialLogitLinkModel::metropolisHastingsHessian: Null array.\n" );
+      Rprintf( " BayesianBinomialLogitLinkModel::metropolisHastingsHessian: Null array.\n" );
     }
   }//end if > 0
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::metropolisHastingsHessian: No parameters passed.\n" );
+    Rprintf( " BayesianBinomialLogitLinkModel::metropolisHastingsHessian: No parameters passed.\n" );
   }
 
   CMatrix null_hessian( 1, 1 );
@@ -980,7 +980,7 @@ CMatrix BayesianBinomialLogitLinkModel::metropolisHastingsHessian( int n_pars, D
 double BayesianBinomialLogitLinkModel::hessianForlogXi( int i )
 {
   if( xi_type == 2 ){
-    printf( "hessianForLogXi: Attempt to compute Hessian for nonexistent parameter xi[%d]\n", i );  fflush(stdout);
+    Rprintf( "hessianForLogXi: Attempt to compute Hessian for nonexistent parameter xi[%d]\n", i );
   	MESSAGE "" ERROR;
   } 
   if( xi_type == 1 )  // common overdispersion param. case
@@ -1004,7 +1004,7 @@ void BayesianBinomialLogitLinkModel::metropolisHastingsUpdateLogXi( int j )
   xi = exp( log_xi[ j ]->lastDraw().getScalar() );
 
   #ifdef DEBUGGLM
-    printf( "Update Log Xi: xi = %f, m0 = %f, exposure = \n", xi, m0->Val(j) ); fflush(stdout);
+    Rprintf( "Update Log Xi: xi = %f, m0 = %f, exposure = \n", xi, m0->Val(j) );
     exposures[j]->Print();
   #endif
 
@@ -1073,13 +1073,11 @@ void BayesianBinomialLogitLinkModel::metropolisHastingsUpdateLogXi( int j )
   else
   {
     //keep the same covariance
-    printf( "BayesianBinomialLogitLinkModel::metropolisHastingsUpdateLogXi: Keeping previous covariance. Current one is %f\n", 
-      xi_var.Val(0,0) );
-    fflush( stdout );
+    Rprintf( "BayesianBinomialLogitLinkModel::metropolisHastingsUpdateLogXi: Keeping previous covariance. Current one is %f\n", xi_var.Val(0,0) );
   }
 
   #ifdef DEBUGGLM
-    printf( "log xi proposal mean = %f, var = %f\n", xi_mean.Val(0), xi_var.Val(0,0) );  fflush(stdout);
+    Rprintf( "log xi proposal mean = %f, var = %f\n", xi_mean.Val(0), xi_var.Val(0,0) );
   #endif
   
 }//end
@@ -1130,7 +1128,7 @@ void BayesianBinomialLogitLinkModel::simulationsToArray( double * simul_output,
 void BayesianBinomialLogitLinkModel::generateThetas( CMatrix * simulated_mu )
 {
 	if( xi_type == 2 ){
-		printf("BayesianBinomialLogitLinkModel::generateThetas: There are no theta parameters to sample\n");
+		Rprintf("BayesianBinomialLogitLinkModel::generateThetas: There are no theta parameters to sample\n");
 		return;
 	}
   int i, j, k, s, simulations_to_keep;
@@ -1231,7 +1229,7 @@ void BayesianBinomialLogitLinkModel::dataAugmentationInitialDraws()
 void BayesianBinomialLogitLinkModel::drawVariableFromProposal( int var_index )
 {
 	if( xi_type == 2 ){
-		printf("BayesianBinomialLogitLinkModel::drawVariableFromProposal: There is no parameter to draw\n");
+		Rprintf("BayesianBinomialLogitLinkModel::drawVariableFromProposal: There is no parameter to draw\n");
 		return;
 	}
 	if( (var_index > 0) && (xi_type == 1) ){
@@ -1244,7 +1242,7 @@ void BayesianBinomialLogitLinkModel::drawVariableFromProposal( int var_index )
   }
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::drawVariableFromProposal: Wrong argument index [%d].\n", var_index );
+    Rprintf( " BayesianBinomialLogitLinkModel::drawVariableFromProposal: Wrong argument index [%d].\n", var_index );
   }
 }//end
 
@@ -1253,7 +1251,7 @@ void BayesianBinomialLogitLinkModel::drawVariableFromProposal( int var_index )
 void BayesianBinomialLogitLinkModel::updateVariableForProposal( int var_index )
 {
 	if( xi_type == 2 ){
-		printf("BayesianBinomialLogitLinkModel::updateVariableForProposal: There is no parameter to update\n");
+		Rprintf("BayesianBinomialLogitLinkModel::updateVariableForProposal: There is no parameter to update\n");
 		return;
 	}
   if ( var_index < number_of_variables )
@@ -1262,7 +1260,7 @@ void BayesianBinomialLogitLinkModel::updateVariableForProposal( int var_index )
   }
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::updateVariableForProposal: Wrong argument index [%d].\n", var_index );
+    Rprintf( " BayesianBinomialLogitLinkModel::updateVariableForProposal: Wrong argument index [%d].\n", var_index );
   }
 }//end
 
@@ -1273,7 +1271,7 @@ void BayesianBinomialLogitLinkModel::updateVariableForProposal( int var_index )
 void BayesianBinomialLogitLinkModel::setCurrentVariableFromProposal( int var_index )
 {
   if( xi_type == 2 ){
-		printf("BayesianBinomialLogitLinkModel::updateVariableForProposal: There is no parameter to update\n");
+		Rprintf("BayesianBinomialLogitLinkModel::updateVariableForProposal: There is no parameter to update\n");
 		return;
 	}
   if ( var_index < number_of_variables )
@@ -1289,13 +1287,13 @@ void BayesianBinomialLogitLinkModel::setCurrentVariableFromProposal( int var_ind
       metropolisHastingsUpdateModel( var_index );
     }
     #ifdef DEBUG1
-      printf(" Accepted proposed change in xi[%d].  New value is %f.\n", var_index, 
+      Rprintf(" Accepted proposed change in xi[%d].  New value is %f.\n", var_index,
         exp( log_xi[ var_index ]->lastDraw().getScalar() ) );
     #endif
   }
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::setCurrentVariableFromProposal: Wrong argument index [%d].\n", var_index );
+    Rprintf( " BayesianBinomialLogitLinkModel::setCurrentVariableFromProposal: Wrong argument index [%d].\n", var_index );
   }
 }//end
 
@@ -1305,14 +1303,14 @@ void BayesianBinomialLogitLinkModel::setCurrentVariableFromProposal( int var_ind
 void BayesianBinomialLogitLinkModel::keepCurrentVariable( int var_index )
 {
 	if( xi_type == 2 ){
-		printf("BayesianBinomialLogitLinkModel::keepCurrentVariable: There is no parameter to keep\n");
+		Rprintf("BayesianBinomialLogitLinkModel::keepCurrentVariable: There is no parameter to keep\n");
 		return;
 	}
   if ( var_index < number_of_variables )
   {
   	#ifdef DEBUG1
-  	  printf("rejected proposed change in xi.  restoring xi[var_index] = %f\n", 
-  	    exp( log_xi[ var_index ]->mean().getScalar() ) );  fflush(stdout);
+  	  Rprintf("rejected proposed change in xi.  restoring xi[var_index] = %f\n",
+  	    exp( log_xi[ var_index ]->mean().getScalar() ) );
   	#endif
   	
 #ifdef FIX1
@@ -1325,7 +1323,7 @@ void BayesianBinomialLogitLinkModel::keepCurrentVariable( int var_index )
   }
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::keepCurrentVariable: Wrong argument index [%d].\n", var_index );
+    Rprintf( " BayesianBinomialLogitLinkModel::keepCurrentVariable: Wrong argument index [%d].\n", var_index );
   }
 }//end
 
@@ -1351,9 +1349,9 @@ double BayesianBinomialLogitLinkModel::logRatioTargetDensity( int var_index )
     xi_star = exp( log_xi[ var_index ]->lastDraw().getScalar() );
     xi = exp( log_xi[ var_index ]->mean().getScalar() );
 #ifdef DEBUG1
-  printf("xi = %f \n", xi );
-  printf("xi_star = %f \n", xi_star );
-  printf("xi_z0[var_index] = %f \n", xi_z0[var_index] );
+  Rprintf("xi = %f \n", xi );
+  Rprintf("xi_star = %f \n", xi_star );
+  Rprintf("xi_z0[var_index] = %f \n", xi_z0[var_index] );
 #endif
     sum1 = 0.0;
     for ( k = 0; k < ((int) max_trials->Val( var_index )); k++ )
@@ -1363,11 +1361,11 @@ double BayesianBinomialLogitLinkModel::logRatioTargetDensity( int var_index )
 
     sum4 = 0.0;
 #ifdef DEBUG1
-    printf("n_larger_equal = \n");
+    Rprintf("n_larger_equal = \n");
     n_larger_equal[ var_index ]->Print();
-    printf("mu_linear = \n");
+    Rprintf("mu_linear = \n");
     mu_linear[ var_index ]->Print();
-    printf("max_trials = %f \n", max_trials->Val( var_index ) );
+    Rprintf("max_trials = %f \n", max_trials->Val( var_index ) );
 #endif
     if( xi_type == 0 ){
 	    for ( i = 0; i < trials[ var_index ]->Len(); i++ )
@@ -1437,11 +1435,11 @@ double BayesianBinomialLogitLinkModel::logRatioTargetDensity( int var_index )
   }
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::logRatioTargetDensity: Wrong argument index [%d].\n", var_index );
+    Rprintf( " BayesianBinomialLogitLinkModel::logRatioTargetDensity: Wrong argument index [%d].\n", var_index );
   }
 #ifdef DEBUG1
-  printf("sum1 = %f, sum4 = %f \n", sum1, sum4);
-  printf("ratio = %f \n", ratio);
+  Rprintf("sum1 = %f, sum4 = %f \n", sum1, sum4);
+  Rprintf("ratio = %f \n", ratio);
 #endif
 
   return ( ratio );
@@ -1469,8 +1467,8 @@ double BayesianBinomialLogitLinkModel::logRatioTargetDensity( DistributionParame
     bdiff = b_star - b_0;
     xb = predictors[ var_index + 2 ]->getMatrix() * bdiff;
     #ifdef DEBUGBETA
-      printf("xb = \n");  xb.Print();  
-      printf("counts[ var_index ] \n");  counts[ var_index ]->Print();  fflush(stdout);
+      Rprintf("xb = \n");  xb.Print();
+      Rprintf("counts[ var_index ] \n");  counts[ var_index ]->Print();
     #endif
     if( xi_type == 1 )     // common overdispersion param. case
     	xi = exp( log_xi[ 0 ]->lastDraw().getScalar() );
@@ -1515,8 +1513,8 @@ double BayesianBinomialLogitLinkModel::logRatioTargetDensity( DistributionParame
     ratio = sum1;
 
 #ifdef DEBUG1
-    printf("\nlogRatio: var_index = %d, xi = %f, likelihood ratio = %f\n", var_index, xi, ratio );
-    printf("b_star and b_0 = \n" );
+    Rprintf("\nlogRatio: var_index = %d, xi = %f, likelihood ratio = %f\n", var_index, xi, ratio );
+    Rprintf("b_star and b_0 = \n" );
     b_star.Print();
     b_0.Print();
 #endif
@@ -1581,7 +1579,7 @@ double BayesianBinomialLogitLinkModel::logRatioTargetDensity( DistributionParame
   }//end if
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::logRatioTargetDensity: Wrong argument type [%d].\n", ((int) predictors[0]->getScalar())  );
+    Rprintf( " BayesianBinomialLogitLinkModel::logRatioTargetDensity: Wrong argument type [%d].\n", ((int) predictors[0]->getScalar())  );
   }
   return ( ratio );
 }//end
@@ -1608,8 +1606,8 @@ double BayesianBinomialLogitLinkModel::logRatioTargetNoOverdisperse( Distributio
     bdiff = b_star - b_0;
     xb = predictors[ var_index + 2 ]->getMatrix() * bdiff;
     #ifdef DEBUGBETA
-      printf("xb = \n");  xb.Print();  
-      printf("counts[ var_index ] \n");  counts[ var_index ]->Print();  fflush(stdout);
+      Rprintf("xb = \n");  xb.Print();
+      Rprintf("counts[ var_index ] \n");  counts[ var_index ]->Print();
     #endif
     yxb = (*counts[ var_index ]) * xb;
     
@@ -1627,8 +1625,8 @@ double BayesianBinomialLogitLinkModel::logRatioTargetNoOverdisperse( Distributio
     ratio = yxb - sum;
 
 #ifdef DEBUG1
-    printf("\nlogRatio: var_index = %d, likelihood ratio = %f\n", var_index, ratio );
-    printf("b_star and b_0 = \n" );
+    Rprintf("\nlogRatio: var_index = %d, likelihood ratio = %f\n", var_index, ratio );
+    Rprintf("b_star and b_0 = \n" );
     b_star.Print();
     b_0.Print();
 #endif
@@ -1651,9 +1649,8 @@ double BayesianBinomialLogitLinkModel::logRatioTargetNoOverdisperse( Distributio
       xb = predictors[ j + 2 ]->getMatrix() * bdiff;
       yxb = (*counts[ j ]) * xb;
       #ifdef DEBUGGAMMA
-        printf("counts[ j ] \n");  counts[ j ]->Print();  
-        printf("xb = \n");  xb.Print();  printf("yxb = %f\n", yxb );  
-        fflush(stdout);
+        Rprintf("counts[ j ] \n");  counts[ j ]->Print();
+        Rprintf("xb = \n");  xb.Print();  printf("yxb = %f\n", yxb );
       #endif
       
       sum = 0.0;
@@ -1672,7 +1669,7 @@ double BayesianBinomialLogitLinkModel::logRatioTargetNoOverdisperse( Distributio
   }//end if
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::logRatioTargetDensity: Wrong argument type [%d].\n", ((int) predictors[0]->getScalar())  );
+    Rprintf( " BayesianBinomialLogitLinkModel::logRatioTargetDensity: Wrong argument type [%d].\n", ((int) predictors[0]->getScalar())  );
   }
   return ( ratio );
 }//end
@@ -1707,7 +1704,7 @@ double BayesianBinomialLogitLinkModel::logRatioTargetDensity( int n_pars,
   }
   else
   {
-    printf( " BayesianBinomialLogitLinkModel::logRatioTargetDensity: No arguments passed.\n" );
+    Rprintf( " BayesianBinomialLogitLinkModel::logRatioTargetDensity: No arguments passed.\n" );
   }
 
   return ( ratio );

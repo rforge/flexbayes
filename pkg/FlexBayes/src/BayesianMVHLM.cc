@@ -1000,7 +1000,7 @@ void BayesianMVHLM::alphaPrior( CVector * p_alpha, CMatrix * p_alphaCov ) throw(
   }
   else
   {
-    printf( "BayesianMVHLM::alphaPrior: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianMVHLM::alphaPrior: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianMVHLM::alphaPrior: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1023,7 +1023,7 @@ void BayesianMVHLM::alphaPriorNonInformative( int dim ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::alphaPriorNonInformative: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianMVHLM::alphaPriorNonInformative: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianMVHLM::alphaPriorNonInformative: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1288,7 +1288,7 @@ void BayesianMVHLM::sigma2PriorNonInformative( double p_power ) throw( rtErr )
   {
     if ( p_power <= -0.5 * number_of_observations * response[0]->Row() )
     {
-      printf( "BayesianMVHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianMVHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianMVHLM::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -1320,7 +1320,7 @@ void BayesianMVHLM::sigma2PriorNonInformative( double p_power ) throw( rtErr )
     {
       if ( p_power <= -0.5 * response[i]->Row() * response[i]->Col() )
       {
-        printf( "BayesianMVHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+        Rprintf( "BayesianMVHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
         char the_error[] = "BayesianMVHLM::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -1346,7 +1346,7 @@ void BayesianMVHLM::sigma2PriorNonInformative( double * p_power ) throw( rtErr )
   {
     if ( p_power[0] <= -0.5 * number_of_observations * response[0]->Row() )
     {
-      printf( "BayesianMVHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianMVHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianMVHLM::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -1378,7 +1378,7 @@ void BayesianMVHLM::sigma2PriorNonInformative( double * p_power ) throw( rtErr )
     {
       if ( p_power[i] <= -0.5 * response[i]->Row() * response[i]->Col() )
       {
-        printf( "BayesianMVHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+        Rprintf( "BayesianMVHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
         char the_error[] = "BayesianMVHLM::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -1561,7 +1561,7 @@ void BayesianMVHLM::tau2PriorInvChisq( double p_nuTau2, double p_tau2 ) throw( r
   }
   else
   {
-    printf( "BayesianMVHLM::tau2PriorInvChisq: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMVHLM::tau2PriorInvChisq: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMVHLM::tau2PriorInvChisq: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1591,7 +1591,7 @@ void BayesianMVHLM::tau2PriorDuMouchel( double p_tau2 ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::tau2PriorDuMouchel: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMVHLM::tau2PriorDuMouchel: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMVHLM::tau2PriorDuMouchel: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1620,7 +1620,7 @@ void BayesianMVHLM::tau2PriorUniformShrinkage( double p_tau2 ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMVHLM::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMVHLM::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1637,7 +1637,7 @@ void BayesianMVHLM::tau2PriorNonInformative( double p_power ) throw( rtErr )
 
     if ( p_power <= -0.5 * number_of_groups * beta[0]->dimension() )
     {
-      printf( "BayesianMVHLM::tau2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianMVHLM::tau2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianMVHLM::tau2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -1655,7 +1655,7 @@ void BayesianMVHLM::tau2PriorNonInformative( double p_power ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMVHLM::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMVHLM::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1680,7 +1680,7 @@ void BayesianMVHLM::betaCovPriorInvWishart( double p_nuV, CMatrix * p_VCov ) thr
   }
   else
   {
-    printf( "BayesianMVHLM::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMVHLM::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMVHLM::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1736,7 +1736,7 @@ void BayesianMVHLM::gammaTPrior( double p_nuGamma ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::gammaTPrior: gamma is not a parameter of this model.\n" );
+    Rprintf( "BayesianMVHLM::gammaTPrior: gamma is not a parameter of this model.\n" );
     char the_error[] = "BayesianMVHLM::gammaTPrior: gamma is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1764,7 +1764,7 @@ void BayesianMVHLM::betaTPrior( double p_nuBeta ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::betaTPrior: beta is not a parameter of this model.\n" );
+    Rprintf( "BayesianMVHLM::betaTPrior: beta is not a parameter of this model.\n" );
     char the_error[] = "BayesianMVHLM::betaTPrior: beta is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1784,7 +1784,7 @@ void BayesianMVHLM::alphaTPrior( double p_nuAlpha ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::alphaTPrior: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianMVHLM::alphaTPrior: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianMVHLM::alphaTPrior: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1990,7 +1990,7 @@ void BayesianMVHLM::samplerTau2InitialPoint( double init_tau2 )
   }
   else
   {
-    printf( "BayesianMVHLM::samplerTau2InitialPoint: Initial point should be a matrix, not a scalar.\n" );
+    Rprintf( "BayesianMVHLM::samplerTau2InitialPoint: Initial point should be a matrix, not a scalar.\n" );
   }
 }//end
 
@@ -2005,7 +2005,7 @@ void BayesianMVHLM::samplerTau2InitialPoint( CMatrix & init_tau2 )
   }
   else
   {
-    printf( "BayesianMVHLM::samplerTau2InitialPoint: Initial point should not be a matrix, but a scalar.\n" );
+    Rprintf( "BayesianMVHLM::samplerTau2InitialPoint: Initial point should not be a matrix, but a scalar.\n" );
   }
 }//end
 
@@ -2631,7 +2631,7 @@ void BayesianMVHLM::updateRegressionWeight( int index ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::updateRegressionWeight: Index [%d] out of range.\n", index );
+    Rprintf( "BayesianMVHLM::updateRegressionWeight: Index [%d] out of range.\n", index );
     char the_error[] = "BayesianMVHLM::updateRegressionWeight: Index [%d] out of range.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -4019,7 +4019,7 @@ void BayesianMVHLM::gibbsUpdateSigma2() throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.\n" );
+    Rprintf( "BayesianMVHLM::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.\n" );
     char the_error[] = "BayesianMVHLM::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -4112,7 +4112,7 @@ void BayesianMVHLM::gibbsUpdateSigma2( int index ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMVHLM::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.\n" );
+    Rprintf( "BayesianMVHLM::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.\n" );
     char the_error[] = "BayesianMVHLM::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -4901,7 +4901,7 @@ void BayesianMVHLM::fullConditionalUpdateVariable( int index )
             }
             else
 	    {
-              printf( " BayesianMVHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMVHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else
@@ -4927,25 +4927,25 @@ void BayesianMVHLM::fullConditionalUpdateVariable( int index )
             }
             else
             {
-              printf( " BayesianMVHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMVHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
         }//end if not null
         else
         {
-          printf( " BayesianMVHLM::fullConditionalUpdateVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianMVHLM::fullConditionalUpdateVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianMVHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianMVHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianMVHLM::fullConditionalUpdateVariable: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianMVHLM::fullConditionalUpdateVariable: Variable index [%d] does not exist.\n", index );
   }
 
 }//end
@@ -5021,7 +5021,7 @@ void BayesianMVHLM::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else if ( !strncmp( distr_map[ index ], "missingR:", 9 ) )
@@ -5033,7 +5033,7 @@ void BayesianMVHLM::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else if ( !strncmp( distr_map[ index ], "missingRP", 9 ) )
@@ -5045,7 +5045,7 @@ void BayesianMVHLM::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else if ( !strncmp( distr_map[ index ], "missingFP", 9 ) )
@@ -5057,7 +5057,7 @@ void BayesianMVHLM::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else
@@ -5093,25 +5093,25 @@ void BayesianMVHLM::drawVariable( int index )
             }
             else
             {
-              printf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
         }//end if not null
         else
         {
-          printf( " BayesianMVHLM::drawVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianMVHLM::drawVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianMVHLM::drawVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianMVHLM::drawVariable: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianMVHLM::drawVariable: Variable index [%d] does not exist.\n", index );
   }
 
 }//end

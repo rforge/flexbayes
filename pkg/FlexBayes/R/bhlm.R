@@ -4,7 +4,11 @@
 # Alejandro Murua 1/03                           #
 ##################################################
 
+bhlmMV <- function(...)
+  stop("not in package yet")
 
+bhlmMD <- function(...)
+  stop("not in package yet")
 
 
 #####################################################################################
@@ -141,7 +145,7 @@ bhlm.prior <- function( error.var = fbprior("nonInfoPower"),
       }
       else if ( random.coef[[i]] == "nonInformative" )  
       {
-        random.coef[[i]] <- fpprior(")nonInformative")
+        random.coef[[i]] <- fbprior("nonInformative")
       }
     }#end for loop
   }
@@ -724,14 +728,15 @@ validate.initial.points.bhlmMV <- function( n.groups, dimR, dimX, dimM, dimZ, in
     }
     else if ( is.matrix( init.point$error.var ) )
     {
-      if ( ncol( init.point$error.var ) != dim.response * n.groups || nrow( init.point$error.var ) != dim.response )
-      {
-        stop( "bhlm: initial values for error variance should be a matirx of number of groups times number of response-variable columns and number of response-variable rows." )
-      }
-      else
-      {
-        s.error.var <- init.point$error.var
-      }
+      stop("don't know what dim.response is")
+      #if ( ncol( init.point$error.var ) != dim.response * n.groups || nrow( init.point$error.var ) != dim.response )
+      #{
+      #  stop( "bhlm: initial values for error variance should be a matirx of number of groups times number of response-variable columns and number of response-variable rows." )
+      #}
+      #else
+      #{
+      #  s.error.var <- init.point$error.var
+      #}
     }
   }
   else if ( error.var.common != 0 )
@@ -908,17 +913,13 @@ validate.initial.points.bhlmMV <- function( n.groups, dimR, dimX, dimM, dimZ, in
 #####################################################################################
 
 #response.formula, random.formula, fixed.formula, level2.formula and group.formula are of type "formula"
-bhlm <- function( fixed.formula = NULL, 
-                  random.formula = NULL, 
-                  level2.formula = NULL, 
-                  group.formula = NULL, 
-                  data,
-                  prior = bhlm.prior(), 
-                  likelihood  = bhlm.likelihood(),
-	                sampler = bhlm.sampler(), 
-                  random.seed = .Random.seed, na.action = NULL, contrasts = NULL,
-                  debug = FALSE )
+bhlm <- function(fixed.formula = NULL, random.formula = NULL,
+                 level2.formula = NULL, group.formula = NULL, data,
+                 prior = bhlm.prior(), likelihood  = bhlm.likelihood(),
+                 sampler = bhlm.sampler(), na.action = NULL,
+                 contrasts = NULL)
 {
+  debug <- FALSE
   response.formula <- NULL
 
   ####-------------------------------------------------------
@@ -944,7 +945,7 @@ bhlm <- function( fixed.formula = NULL,
       multi.variate.response <- TRUE
     }
     #else if ( length( terms( response.formula )@term.labels ) == 1 )
-    else if ( length( attribterm.labels ) == 1 )
+    else if ( length( attrib$term.labels ) == 1 )
     {
       #if ( terms( response.formula )@term.labels == "." )
       if ( attrib$term.labels == "." )
@@ -1042,8 +1043,7 @@ bhlm <- function( fixed.formula = NULL,
                 random.formula = random.formula, fixed = fixed.formula, 
                 level2 = level2.formula, group = group.formula, data = data, 
                 prior = prior, likelihood = likelihood, sampler = sampler, 
-                random.seed = random.seed, na.action = na.action, contrasts = contrasts,
-                debug = debug )
+                na.action = na.action, contrasts = contrasts)
   }
   else
   {
@@ -1115,8 +1115,7 @@ bhlm <- function( fixed.formula = NULL,
       out.bhlm <- bhlmMD( response.formula = response.formula, group = group.formula, 
                   data = data, random.effects = random.effects, fixed.effects = fixed.effects,
                   second.effects = second.effects,
-                  prior = prior, likelihood = likelihood, sampler = sampler, 
-                  random.seed = random.seed, na.action = na.action, contrasts = contrasts,
+                  prior = prior, likelihood = likelihood, sampler = sampler, na.action = na.action, contrasts = contrasts,
                   debug = debug )
 
     }
@@ -1126,7 +1125,7 @@ bhlm <- function( fixed.formula = NULL,
                   fixed.formula = fixed.formula, level2.formula = level2.formula, 
                   group = group.formula, data = data, 
                   prior = prior, likelihood = likelihood, sampler = sampler, 
-                  random.seed = random.seed, na.action = na.action, contrasts = contrasts,
+                  na.action = na.action, contrasts = contrasts,
                   debug = debug )
     }
 

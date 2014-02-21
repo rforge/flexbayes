@@ -497,7 +497,7 @@ void BayesianHierarchicalGlmModel::betaPriorNonInformative( int dim ) throw( rtE
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::betaPriorNonInformative: prior for beta cannot be non-informative when second stage effects are present in the model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::betaPriorNonInformative: prior for beta cannot be non-informative when second stage effects are present in the model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::betaPriorNonInformative: prior for beta cannot be non-informative when second stage effects are present in the model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -535,7 +535,7 @@ void BayesianHierarchicalGlmModel::alphaPrior( CVector * p_alpha, CMatrix * p_al
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::alphaPrior: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::alphaPrior: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::alphaPrior: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -554,7 +554,7 @@ void BayesianHierarchicalGlmModel::alphaPriorNonInformative( int dim ) throw( rt
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::alphaPriorNonInformative: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::alphaPriorNonInformative: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::alphaPriorNonInformative: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -572,7 +572,7 @@ void BayesianHierarchicalGlmModel::tau2PriorInvChisq( double *p_nuTau2, double *
   	tau2ICS = new InvChisqDistribution * [ dim_beta ];
   	tau2_first_draw = new DistributionParameter * [ dim_beta ];
   	#ifdef DEBUG1
-      printf("HGLM: Specifying tau2 prior; dim_beta = %d\n", dim_beta ); fflush(stdout);
+      Rprintf("HGLM: Specifying tau2 prior; dim_beta = %d\n", dim_beta );
     #endif
     for( i = 0; i < dim_beta; i++ ){
     	// for each random effect, specify the prior for the variance
@@ -582,8 +582,7 @@ void BayesianHierarchicalGlmModel::tau2PriorInvChisq( double *p_nuTau2, double *
       tau2[i]->set( 0, tau2ICS[i], 1.0 );
       tau2_first_draw[i] = new DistributionParameter( p_tau2[i] );
       #ifdef DEBUG1
-        printf("Specifying inverse-chisquared prior with nu=%f, scale=%f, for tau2[%d]\n", 
-          p_nuTau2[i], p_tau2[i], i ); fflush(stdout);
+        Rprintf("Specifying inverse-chisquared prior with nu=%f, scale=%f, for tau2[%d]\n", p_nuTau2[i], p_tau2[i], i );
       #endif
     }
     invChisq_tau2 = true;
@@ -593,7 +592,7 @@ void BayesianHierarchicalGlmModel::tau2PriorInvChisq( double *p_nuTau2, double *
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::tau2PriorInvChisq: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::tau2PriorInvChisq: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::tau2PriorInvChisq: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -629,7 +628,7 @@ void BayesianHierarchicalGlmModel::tau2PriorDuMouchel( double *p_tau2 ) throw( r
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::tau2PriorDuMouchel: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::tau2PriorDuMouchel: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::tau2PriorDuMouchel: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -665,7 +664,7 @@ void BayesianHierarchicalGlmModel::tau2PriorUniformShrinkage( double *p_tau2 ) t
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -691,7 +690,7 @@ void BayesianHierarchicalGlmModel::tau2PriorNonInformative( double *p_power ) th
   	
       if ( p_power[i] <= -0.5 * number_of_groups * dim_beta )
       {
-        printf( "BayesianHierarchicalLinearModel::tau2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power[i] );  
+        Rprintf( "BayesianHierarchicalLinearModel::tau2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power[i] );
         char the_error[] = "BayesianHierarchicalLinearModel::tau2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -712,7 +711,7 @@ void BayesianHierarchicalGlmModel::tau2PriorNonInformative( double *p_power ) th
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -739,7 +738,7 @@ void BayesianHierarchicalGlmModel::betaCovPriorInvWishart( double p_nuV, CMatrix
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -761,7 +760,7 @@ void BayesianHierarchicalGlmModel::gammaTPrior( double p_nuGamma ) throw( rtErr 
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::gammaTPrior: gamma is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::gammaTPrior: gamma is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::gammaTPrior: gamma is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -789,7 +788,7 @@ void BayesianHierarchicalGlmModel::betaTPrior( double p_nuBeta ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::betaTPrior: beta is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::betaTPrior: beta is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::betaTPrior: beta is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -809,7 +808,7 @@ void BayesianHierarchicalGlmModel::alphaTPrior( double p_nuAlpha ) throw( rtErr 
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::alphaTPrior: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::alphaTPrior: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianHierarchicalGlmModel::alphaTPrior: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -882,16 +881,16 @@ void BayesianHierarchicalGlmModel::samplerTau2InitialPoint( double * init_tau2 )
       tau2[i]->setLastDraw( *(tau2_first_draw[i]) );
     }
     #ifdef DEBUG1
-      printf( "HGLM: tau2 initialized to: " );
+      Rprintf( "HGLM: tau2 initialized to: " );
       for( i = 0; i < dim_beta; i++ ){
-        printf( " %f ", init_tau2[i] );
+        Rprintf( " %f ", init_tau2[i] );
       }
-      printf( "\n" );
+      Rprintf( "\n" );
     #endif
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::samplerTau2InitialPoint: Initial point should be a matrix, not a scalar.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::samplerTau2InitialPoint: Initial point should be a matrix, not a scalar.\n" );
   }
 }//end
 
@@ -906,7 +905,7 @@ void BayesianHierarchicalGlmModel::samplerTau2InitialPoint( CMatrix & init_tau2 
   }
   else
   {
-    printf( "BayesianHierarchicalGlmModel::samplerTau2InitialPoint: Initial point should not be a matrix, but a scalar.\n" );
+    Rprintf( "BayesianHierarchicalGlmModel::samplerTau2InitialPoint: Initial point should not be a matrix, but a scalar.\n" );
   }
 }//end
 
@@ -1111,8 +1110,8 @@ void BayesianHierarchicalGlmModel::gibbsUpdateBeta( int index )
 #endif
 
 #ifdef DEBUGBETA
-        printf("Updating beta[%d]->very_first_cov and beta[%d]->very_first_inv_cov to \n", index, index);
-        tmpmat.Print();  fflush(stdout);
+        Rprintf("Updating beta[%d]->very_first_cov and beta[%d]->very_first_inv_cov to \n", index, index);
+        tmpmat.Print();
 #endif
       }
 
@@ -1125,8 +1124,8 @@ void BayesianHierarchicalGlmModel::gibbsUpdateBeta( int index )
  
       beta[ index ]->updateInitialCovariance( &init_cov );
 #ifdef DEBUGBETA
-      printf("Calling beta[%d]->updateInitialCovariance with \n", index);
-      init_cov.Print();  fflush(stdout);
+      Rprintf("Calling beta[%d]->updateInitialCovariance with \n", index);
+      init_cov.Print();
 #endif
     }
 
@@ -1141,8 +1140,8 @@ void BayesianHierarchicalGlmModel::gibbsUpdateBeta( int index )
 #endif
       beta[ index ]->updateInitialMean( &init_mean );
 #ifdef DEBUGBETA
-      printf("Calling beta[%d]->updateInitialMean with \n", index);
-      init_mean.Print();  fflush(stdout);
+      Rprintf("Calling beta[%d]->updateInitialMean with \n", index);
+      init_mean.Print();
 #endif
     }
   }
@@ -1154,8 +1153,8 @@ void BayesianHierarchicalGlmModel::gibbsUpdateBeta( int index )
   if ( invWishart_betaCov || t_beta ){
     beta[ index ]->update( beta_shift_mean, beta_shift_cov );    
 #ifdef DEBUGBETA
-    printf("Calling beta[%d]->update with \n", index );
-    beta_shift_mean.Print(); beta_shift_cov.Print(); fflush(stdout);
+    Rprintf("Calling beta[%d]->update with \n", index );
+    beta_shift_mean.Print(); beta_shift_cov.Print();
 #endif
   } else {
     CVector *precision_tau2 = new CVector( dim_beta );
@@ -1165,8 +1164,8 @@ void BayesianHierarchicalGlmModel::gibbsUpdateBeta( int index )
   	beta[ index ]->update( (*precision_tau2), beta_shift_mean, beta_shift_cov );    
   	delete( precision_tau2 );
 #ifdef DEBUGBETA
-    printf("Calling beta[%d]->update( %f, \n", index, precision_tau2);
-    beta_shift_mean.Print(); beta_shift_cov.Print(); fflush(stdout);
+    Rprintf("Calling beta[%d]->update( %f, \n", index, precision_tau2);
+    beta_shift_mean.Print(); beta_shift_cov.Print();
 #endif
   }
 
@@ -1290,8 +1289,7 @@ void BayesianHierarchicalGlmModel::metropolisHastingsUpdateBeta( int index )
       beta[ index ]->updateInitialCovariance( &prev_beta_cov );
 
 #ifdef DEBUGBETA
-      printf( "BayesianHierarchicalGlmModel::metropolisHastingsUpdateBeta: Using previous covariance\n" );
-      fflush( stdout );
+      Rprintf( "BayesianHierarchicalGlmModel::metropolisHastingsUpdateBeta: Using previous covariance\n" );
 #endif
     }
     delete cholesky_dec;
@@ -1391,13 +1389,13 @@ void BayesianHierarchicalGlmModel::gibbsUpdateSecondStageWorkingMatrices()
   
   
 #ifdef DEBUGALPHA
-  printf("zTb = ");
+  Rprintf("zTb = ");
 #endif
   for ( index = 0; index < number_of_groups; index++ )
   {
   	tmpVec = beta[ index ]->lastDraw().getVector();
   	#ifdef DEBUGALPHA
-  	  printf( "Last beta[%d] sample = \n", index ); tmpVec.Print();
+  	  Rprintf( "Last beta[%d] sample = \n", index ); tmpVec.Print();
   	#endif
   	if ( !invWishart_betaCov ) {
       for( j = 0; j < dim_beta; j++ )
@@ -1413,7 +1411,7 @@ void BayesianHierarchicalGlmModel::gibbsUpdateSecondStageWorkingMatrices()
 
 #ifdef DEBUGALPHA
     zTb[index]->Print(); 
-    printf("beta_predictors[index] = \n");  beta_predictors[ index ]->Print();
+    Rprintf("beta_predictors[index] = \n");  beta_predictors[ index ]->Print();
 #endif
   }
   zTvIz->setToZero();
@@ -1435,7 +1433,7 @@ void BayesianHierarchicalGlmModel::gibbsUpdateSecondStageWorkingMatrices()
     zTvIz->add( ( *(zTz[ index ]) ) );
   }//end for loop
 #ifdef DEBUGALPHA
-  printf("last beta_inv_cov = \n");  beta[ number_of_groups - 1 ]->veryFirstInverseCovariance().Print();
+  Rprintf("last beta_inv_cov = \n");  beta[ number_of_groups - 1 ]->veryFirstInverseCovariance().Print();
 #endif
   
 }//end
@@ -1465,10 +1463,9 @@ void BayesianHierarchicalGlmModel::gibbsUpdateAlpha()
   //}
 
 #ifdef DEBUGALPHA
-  printf("mu_alpha = \n");  mu_alpha.Print(); 
-  printf("sigma_alpha = \n");  sigma_alpha.Print();
-  printf("zTvIz = \n"); zTvIz->Print();
-  fflush(stdout);
+  Rprintf("mu_alpha = \n");  mu_alpha.Print();
+  Rprintf("sigma_alpha = \n");  sigma_alpha.Print();
+  Rprintf("zTvIz = \n"); zTvIz->Print();
 #endif
 
   if ( t_alpha )
@@ -1495,14 +1492,14 @@ void BayesianHierarchicalGlmModel::gibbsUpdateTau2()
   	for ( j = 0; j < dim_beta; j++ ){
       scale = 0;
       #ifdef DEBUGTAU2
-        printf("beta[0]->veryFirstInvCov() = "); beta[0]->veryFirstInverseCovariance().Print(); 
-        printf("second_residuals = \n");
+        Rprintf("beta[0]->veryFirstInvCov() = "); beta[0]->veryFirstInverseCovariance().Print();
+        Rprintf("second_residuals = \n");
       #endif
       for ( i = 0; i < number_of_groups; i++ ){    
         local_scale = SQR( second_residuals[i]->Val(j) );
         #ifdef DEBUGTAU2
           second_residuals[i]->Print(); 
-          printf("local_scale = %f\n", local_scale);
+          Rprintf("local_scale = %f\n", local_scale);
         #endif
 
         if ( t_beta )
@@ -1529,15 +1526,14 @@ void BayesianHierarchicalGlmModel::gibbsUpdateTau2()
 
         tau2ICS[j]->update( add_df, scale );
         #ifdef DEBUGTAU2
-          printf("Calling tau2ICS[j]->update( %f, %f )\n", add_df, scale );
-          fflush(stdout);
+          Rprintf("Calling tau2ICS[j]->update( %f, %f )\n", add_df, scale );
         #endif
       }
       else
       {
         tau2PNIP[j]->setScale( scale );
         #ifdef DEBUGTAU2
-          printf("Calling tau2PNIP[j]->setScale( %f )\n", scale ); fflush(stdout);
+          Rprintf("Calling tau2PNIP[j]->setScale( %f )\n", scale );
         #endif
       }
     }// end j loop 
@@ -1581,8 +1577,8 @@ void BayesianHierarchicalGlmModel::gibbsUpdateTau2()
 
     tau2InvWishart->update( add_df, scale_matrix );
 #ifdef DEBUGTAU2
-    printf("Calling tau2InvWishart->update( %f, \n", add_df );
-    scale_matrix.Print(); fflush(stdout);
+    Rprintf("Calling tau2InvWishart->update( %f, \n", add_df );
+    scale_matrix.Print();
 #endif
 
   }
@@ -1646,7 +1642,7 @@ void BayesianHierarchicalGlmModel::updateVariableForProposal( int index )
 {
 	
   #ifdef DEBUG2
-    printf( "HGLM:update for proposal: index is %d.\n  ", index ); fflush( stdout );
+    Rprintf( "HGLM:update for proposal: index is %d.\n  ", index );
   #endif
   if ( index < number_of_variables && index >= 0 )
   {
@@ -1669,12 +1665,12 @@ void BayesianHierarchicalGlmModel::updateVariableForProposal( int index )
         }
         else
         {
-          printf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if null
       else
       {
-        printf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if glm
@@ -1728,29 +1724,29 @@ void BayesianHierarchicalGlmModel::updateVariableForProposal( int index )
             }          
             else
             {
-              printf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+              Rprintf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
             }
           }//end if
           else
           {
-            printf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           } 
         }//end if not null
         else
         {
-          printf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::updateVariableForProposal: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianHierarchicalGlmModel::updateVariableForProposal: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianHierarchicalGlmModel::updateVariableForProposal: Variable index [%d] does not exist.\n", index );
   }
 
 }//end
@@ -1760,7 +1756,7 @@ void BayesianHierarchicalGlmModel::updateVariableForProposal( int index )
 void BayesianHierarchicalGlmModel::drawVariableFromProposal( int index )
 {
 #ifdef DEBUG1
-  printf("Updating variable %s (index %d)\n", distr_map[ index ], index); fflush(stdout);
+  Rprintf("Updating variable %s (index %d)\n", distr_map[ index ], index);
 #endif
 
   if ( index < number_of_variables && index >= 0 )
@@ -1783,21 +1779,21 @@ void BayesianHierarchicalGlmModel::drawVariableFromProposal( int index )
         }
         else
         {
-          printf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if null
       else
       {
-        printf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if glm
     else if ( !strcmp( distr_map[ index ], "gamma" ) )
     {
 #ifdef DEBUGGAMMA
-      printf("Calling gamma->draw() where mean and Cholesky inv cov = \n");
+      Rprintf("Calling gamma->draw() where mean and Cholesky inv cov = \n");
       gamma->meanVec().Print(); 
-      gamma->choleskyInvCov().Print();  fflush(stdout); 
+      gamma->choleskyInvCov().Print();
 #endif
       gamma->draw();
     }
@@ -1805,10 +1801,9 @@ void BayesianHierarchicalGlmModel::drawVariableFromProposal( int index )
     {
       alpha->draw();
 #ifdef DEBUGALPHA
-      printf("Calling alpha->draw()\n"); 
-      printf("mean vector = \n"); alpha->mean().Print();
-      printf("Cholesky decomp of inv cov = \n"); alpha->choleskyInvCov().Print();
-      fflush(stdout); 
+      Rprintf("Calling alpha->draw()\n");
+      Rprintf("mean vector = \n"); alpha->mean().Print();
+      Rprintf("Cholesky decomp of inv cov = \n"); alpha->choleskyInvCov().Print();
 #endif
     }
     else if ( !strcmp( distr_map[ index ], "tau2" ) )
@@ -1816,11 +1811,11 @@ void BayesianHierarchicalGlmModel::drawVariableFromProposal( int index )
     	if( invWishart_betaCov ){
     		tau2[0]->draw();
     		#ifdef DEBUGTAU2
-        	printf("drew tau2 matrix with df = %f\n", tau2InvWishart->degreesOfFreedom() );
-        	printf("sample[0][0]: %f \n", tau2[0]->lastDraw().getScalar() );
+        	Rprintf("drew tau2 matrix with df = %f\n", tau2InvWishart->degreesOfFreedom() );
+        	Rprintf("sample[0][0]: %f \n", tau2[0]->lastDraw().getScalar() );
         #endif
     		#ifdef DEBUGALPHA
-        	printf("drew tau2 matrix = \n" );
+        	Rprintf("drew tau2 matrix = \n" );
           tau2[0]->lastDraw().getMatrix().Print();
         #endif
     	} else {
@@ -1828,8 +1823,8 @@ void BayesianHierarchicalGlmModel::drawVariableFromProposal( int index )
           tau2[i]->draw();
           #ifdef DEBUG1
             if( invChisq_tau2 ){
-          	  printf("drew tau2[%d] with df = %f and scale = %f\n", i, tau2ICS[i]->degreesOfFreedom(), tau2ICS[i]->scale() );
-        	    printf("sample: %f \n", sqrt( tau2[i]->lastDraw().getScalar() ) );
+          	  Rprintf("drew tau2[%d] with df = %f and scale = %f\n", i, tau2ICS[i]->degreesOfFreedom(), tau2ICS[i]->scale() );
+        	    Rprintf("sample: %f \n", sqrt( tau2[i]->lastDraw().getScalar() ) );
         	  }
         	#endif
         }
@@ -1839,14 +1834,14 @@ void BayesianHierarchicalGlmModel::drawVariableFromProposal( int index )
     {
       tau2_alpha->draw();
 #ifdef DEBUGTAU2A
-      printf("Calling tau2_alpha->draw()\n"); fflush(stdout); 
+      Rprintf("Calling tau2_alpha->draw()\n");
 #endif
     }
     else if ( !strcmp( distr_map[ index ], "tau2gm" ) )
     {
       tau2_gamma->draw();
 #ifdef DEBUGTAU2GM
-      printf("Calling tau2_gamma->draw()\n"); fflush(stdout); 
+      Rprintf("Calling tau2_gamma->draw()\n");
 #endif
     }
     else if ( !strncmp( distr_map[ index ], "beta", 4 ) 
@@ -1871,40 +1866,39 @@ void BayesianHierarchicalGlmModel::drawVariableFromProposal( int index )
             {
               beta[ group_index ]->draw();
 #ifdef DEBUGBETA
-              printf("Calling beta[%d]->draw()\n", group_index ); 
-              printf("mean vector = \n"); beta[ group_index ]->mean().Print();
-              printf("Cholesky decomp of inv cov = \n"); beta[ group_index ]->choleskyInvCov().Print();
-              fflush(stdout); 
+              Rprintf("Calling beta[%d]->draw()\n", group_index );
+              Rprintf("mean vector = \n"); beta[ group_index ]->mean().Print();
+              Rprintf("Cholesky decomp of inv cov = \n"); beta[ group_index ]->choleskyInvCov().Print();
 #endif
             }
             else if ( !strncmp( distr_map[ index ], "tau2b", 5 ) )
             {
               tau2_betas[ group_index ]->draw();
 #ifdef DEBUGTAU2B
-              printf("Calling tau2_betas[%d]->draw()\n", group_index); fflush(stdout); 
+              Rprintf("Calling tau2_betas[%d]->draw()\n", group_index);
 #endif
             }          
           }
           else
           {
-            printf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }          
         }//end if not null
         else
         {
-          printf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::drawVariableFromProposal: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianHierarchicalGlmModel::drawVariableFromProposal: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianHierarchicalGlmModel::drawVariableFromProposal: Variable index [%d] does not exist.\n", index );
   }
 
 }//end
@@ -2037,12 +2031,11 @@ void BayesianHierarchicalGlmModel::initializeTemporaryStructures()
   }
 
   #ifdef DEBUG1
-    printf( "HGLM: Finished initializing temporary structures.\n" );
-    printf( "Total vars = %d.  Number vars = %d. The map is:\n", k, number_of_variables  );
+    Rprintf( "HGLM: Finished initializing temporary structures.\n" );
+    Rprintf( "Total vars = %d.  Number vars = %d. The map is:\n", k, number_of_variables  );
     for ( i = 0; i < k; i++ ){
-      printf("map[%d] = %s\n", i, distr_map[ i ] );
+      Rprintf("map[%d] = %s\n", i, distr_map[ i ] );
     }
-    fflush( stdout );
   #endif
 
 
@@ -2075,7 +2068,7 @@ void BayesianHierarchicalGlmModel::dataAugmentationInitialDraws()
   glm_model[0]->dataAugmentationInitialDraws();
 
   #ifdef DEBUG1
-    printf( "Finished data augmentation initial draws\n" ); fflush(stdout);
+    Rprintf( "Finished data augmentation initial draws\n" );
   #endif
 }//end
 
@@ -2088,7 +2081,7 @@ void BayesianHierarchicalGlmModel::createOutput( int simulations_to_keep )
   number_of_simulations = simulations_to_keep;
 
   #ifdef DEBUG1
-    printf("HGLM: Creating objects to hold simulation output\n");fflush(stdout);
+    Rprintf("HGLM: Creating objects to hold simulation output\n");
   #endif
 
   if ( simulations_to_keep > 0 )
@@ -2135,7 +2128,7 @@ void BayesianHierarchicalGlmModel::createOutput( int simulations_to_keep )
   }//end if keep any simulations
   
   #ifdef DEBUG1
-    printf("HGLM: Finished creating objects to hold simulation output\n");  fflush(stdout);
+    Rprintf("HGLM: Finished creating objects to hold simulation output\n");
   #endif
 
 }//end
@@ -2347,7 +2340,7 @@ void BayesianHierarchicalGlmModel::simulationsToArrayWithMeans( double * simul_o
   int i, j, total_dim, start_dim, g, v, s, start_i, end_i, g_length;
 
   #ifdef DEBUG1
-    printf( "HGLM: Converting samples into an array with means \n" );
+    Rprintf( "HGLM: Converting samples into an array with means \n" );
   #endif
   
   start_dim = 0;
@@ -2503,7 +2496,7 @@ void BayesianHierarchicalGlmModel::simulationsToArrayWithMeans( double * simul_o
   glm_model[0]->simulationsToArray( simul_output, start_dim, &simulated_mu );
 
   #ifdef DEBUG1
-    printf( "HGLM: Finished converting samples into an array with means \n" );
+    Rprintf( "HGLM: Finished converting samples into an array with means \n" );
   #endif
 
 }//end
@@ -2541,12 +2534,12 @@ double BayesianHierarchicalGlmModel::logRatioProposal( int index )
         }
         else
         {
-          printf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if null
       else
       {
-        printf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if glm
@@ -2684,7 +2677,7 @@ double BayesianHierarchicalGlmModel::logRatioProposal( int index )
               //CMatrix beta_cov( glm_proposal_hessian.inverse() );
 
 #ifdef DEBUGBETA
-              printf("logRatioProposal: glm proposal beta matrix = \n" );
+              Rprintf("logRatioProposal: glm proposal beta matrix = \n" );
               glm_proposal_hessian.Print();
 #endif
 
@@ -2713,8 +2706,7 @@ double BayesianHierarchicalGlmModel::logRatioProposal( int index )
                   ratio = beta[ group_index ]->logDensity( (*(beta_vectors[0])) ) - proposal.logDensity( (*(beta_vectors[1])) );
                 } else {
 #ifdef DEBUGBETA
-                  printf( "BayesianHierarchicalGlmModel::logRatioProposal: Using covariance from beta for proposal.\n" );
-                  fflush( stdout );
+                  Rprintf( "BayesianHierarchicalGlmModel::logRatioProposal: Using covariance from beta for proposal.\n" );
 #endif
 
                   ratio = 0;                  
@@ -2727,8 +2719,7 @@ double BayesianHierarchicalGlmModel::logRatioProposal( int index )
                 //proposal.setCovariance( &prev_beta_cov );
 
 #ifdef DEBUGBETA
-                printf( "BayesianHierarchicalGlmModel::logRatioProposal: Using covariance from beta for proposal.\n" );
-                fflush( stdout );
+                Rprintf( "BayesianHierarchicalGlmModel::logRatioProposal: Using covariance from beta for proposal.\n" );
 #endif
 
                 ratio = 0;
@@ -2749,28 +2740,28 @@ double BayesianHierarchicalGlmModel::logRatioProposal( int index )
           }
           else
           {
-            printf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }          
         }//end if not null
         else
         {
-          printf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::logRatioProposal: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianHierarchicalGlmModel::logRatioProposal: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianHierarchicalGlmModel::logRatioProposal: Variable index [%d] does not exist.\n", index );
   }
 
 #ifdef DEBUG1
-  printf("proposal: ratio[%d] = %f\n", index, ratio ); fflush(stdout);
+  Rprintf("proposal: ratio[%d] = %f\n", index, ratio );
 #endif
 
   return ( ratio );
@@ -2808,12 +2799,12 @@ double BayesianHierarchicalGlmModel::logRatioTargetDensity( int index )
         }
         else
         {
-          printf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if null
       else
       {
-        printf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if glm
@@ -2943,11 +2934,11 @@ double BayesianHierarchicalGlmModel::logRatioTargetDensity( int index )
                 ratio = 0.5 * ( scale - M_D( beta_inv_cov, beta_diff ) );
                 ratio += glm_ratio;
                 #ifdef DEBUGBETA
-                  printf("beta_inv_cov = \n");  beta_inv_cov.Print(); 
-                  printf("second_residuals = \n");  second_residuals[ group_index ]->Print();
-                  printf("beta_diff = \n");  beta_diff.Print();
-                  printf("beta = \n");  beta[ group_index ]->initialMean().Print();  
-                  printf("beta star = \n");  beta[ group_index ]->lastItemDrawn().Print();  fflush(stdout);
+                  Rprintf("beta_inv_cov = \n");  beta_inv_cov.Print();
+                  Rprintf("second_residuals = \n");  second_residuals[ group_index ]->Print();
+                  Rprintf("beta_diff = \n");  beta_diff.Print();
+                  Rprintf("beta = \n");  beta[ group_index ]->initialMean().Print();
+                  Rprintf("beta star = \n");  beta[ group_index ]->lastItemDrawn().Print();
                 #endif
               }
             }
@@ -2958,28 +2949,28 @@ double BayesianHierarchicalGlmModel::logRatioTargetDensity( int index )
           }
           else
           {
-            printf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }          
         }//end if not null
         else
         {
-          printf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::logRatioTargetDensity: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianHierarchicalGlmModel::logRatioTargetDensity: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianHierarchicalGlmModel::logRatioTargetDensity: Variable index [%d] does not exist.\n", index );
   }
 
 #ifdef DEBUG1
-  printf("target density: ratio[%d] = %f\n", index, ratio ); fflush(stdout);
+  Rprintf("target density: ratio[%d] = %f\n", index, ratio );
 #endif
 
   return ( ratio );
@@ -3013,12 +3004,12 @@ void BayesianHierarchicalGlmModel::setCurrentVariableFromProposal( int index )
         }
         else
         {
-          printf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if null
       else
       {
-        printf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if glm
@@ -3026,15 +3017,15 @@ void BayesianHierarchicalGlmModel::setCurrentVariableFromProposal( int index )
     {
       updateLinearResponse();
 #ifdef DEBUG1
-      printf("Gamma draw accepted.  New value:\n");
-      gamma->lastItemDrawn().Print(); fflush(stdout);
+      Rprintf("Gamma draw accepted.  New value:\n");
+      gamma->lastItemDrawn().Print();
 #endif
     }
     else if ( !strcmp( distr_map[ index ], "alpha" ) )
     {
       gibbsUpdateSecondStageResiduals();
 #ifdef DEBUG1
-      printf("New value of alpha is:\n" );  alpha->lastItemDrawn().Print();  fflush(stdout);
+      Rprintf("New value of alpha is:\n" );  alpha->lastItemDrawn().Print();
 #endif
     }
     else if ( !strcmp( distr_map[ index ], "tau2" ) )
@@ -3072,7 +3063,7 @@ void BayesianHierarchicalGlmModel::setCurrentVariableFromProposal( int index )
               updateLinearResponse( group_index );
               gibbsUpdateSecondStageResiduals( group_index );
 #ifdef DEBUG1
-              printf("beta[%d] accepted.  New value: \n", group_index);
+              Rprintf("beta[%d] accepted.  New value: \n", group_index);
               beta[ group_index ]->lastItemDrawn().Print();
 #endif
             }
@@ -3083,24 +3074,24 @@ void BayesianHierarchicalGlmModel::setCurrentVariableFromProposal( int index )
           }
           else
           {
-            printf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }          
         }//end if not null
         else
         {
-          printf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianHierarchicalGlmModel::setCurrentVariableFromProposal: Variable index [%d] does not exist.\n", index );
   }
 
 }//end
@@ -3128,12 +3119,12 @@ void BayesianHierarchicalGlmModel::keepCurrentVariable( int index )
         }
         else
         {
-          printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }//end if null
       else
       {
-        printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if glm
@@ -3141,29 +3132,29 @@ void BayesianHierarchicalGlmModel::keepCurrentVariable( int index )
     {
       gamma->setLastDraw( gamma->initialMean() );
 #ifdef DEBUG1
-      printf("Gamma draw rejected.  Keeping old value:\n");
-      gamma->lastItemDrawn().Print(); fflush(stdout);
+      Rprintf("Gamma draw rejected.  Keeping old value:\n");
+      gamma->lastItemDrawn().Print();
 #endif
     }
     else if ( !strcmp( distr_map[ index ], "alpha" ) )
     {
       //this will not occur: this is is a Gibbs draw.
-      printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] );
+      Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] );
     }
     else if ( !strcmp( distr_map[ index ], "tau2" ) )
     {
       //this will not occur: this is is a Gibbs draw.    
-      printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] );
+      Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] );
     }
     else if ( !strcmp( distr_map[ index ], "tau2a" ) )
     {
       //this will not occur: this is is a Gibbs draw.
-      printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] );
+      Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] );
     }
     else if ( !strcmp( distr_map[ index ], "tau2gm" ) )
     {
       //this will not occur: this is is a Gibbs draw.
-      printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] ); 
+      Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] );
     }
     else if ( !strncmp( distr_map[ index ], "beta", 4 ) 
               || !strncmp( distr_map[ index ], "tau2b", 5 ) )
@@ -3187,36 +3178,36 @@ void BayesianHierarchicalGlmModel::keepCurrentVariable( int index )
             {
               beta[ group_index ]->setLastDraw( beta[ group_index ]->initialMean() );
 #ifdef DEBUG1
-              printf("Setting beta[%d] back to its previous value: \n", group_index);
+              Rprintf("Setting beta[%d] back to its previous value: \n", group_index);
               beta[ group_index ]->lastItemDrawn().Print();
 #endif
             }
             else if ( !strncmp( distr_map[ index ], "tau2b", 5 ) )
 	    {
               //this will not occur: this is is a Gibbs draw.
-              printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] ); 
+              Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong call to [%s].\n", distr_map[ index ] );
             }          
           }
           else
           {
-            printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+            Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
           }          
         }//end if not null
         else
         {
-          printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianHierarchicalGlmModel::keepCurrentVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianHierarchicalGlmModel::keepCurrentVariable: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianHierarchicalGlmModel::keepCurrentVariable: Variable index [%d] does not exist.\n", index );
   }
 
 }//end

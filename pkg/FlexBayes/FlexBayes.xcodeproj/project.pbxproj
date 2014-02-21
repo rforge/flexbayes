@@ -10,7 +10,6 @@
 		0E2FFB411729938D00427552 /* DESCRIPTION */ = {isa = PBXFileReference; lastKnownFileType = text; path = DESCRIPTION; sourceTree = "<group>"; };
 		0E2FFB421729938D00427552 /* NAMESPACE */ = {isa = PBXFileReference; lastKnownFileType = text; path = NAMESPACE; sourceTree = "<group>"; };
 		0E2FFB431729938D00427552 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		0E2FFB491729946400427552 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
 		0E2FFB4B1729946400427552 /* inst */ = {isa = PBXFileReference; lastKnownFileType = folder; path = inst; sourceTree = "<group>"; };
 		0E2FFB4C1729946400427552 /* man */ = {isa = PBXFileReference; lastKnownFileType = folder; path = man; sourceTree = "<group>"; };
 		0E2FFB4D1729946400427552 /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
@@ -31,7 +30,6 @@
 				0E2FFB421729938D00427552 /* NAMESPACE */,
 				0E2FFB431729938D00427552 /* README */,
 				0E2FFB531729951E00427552 /* .Rbuildignore */,
-				0E2FFB491729946400427552 /* data */,
 				0E2FFB541729E9ED00427552 /* funs */,
 				0E2FFB4B1729946400427552 /* inst */,
 				0E2FFB4C1729946400427552 /* man */,

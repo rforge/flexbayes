@@ -746,7 +746,7 @@ void BayesianMissingDataHLM::alphaPrior( CVector * p_alpha, CMatrix * p_alphaCov
   }
   else
   {
-    printf( "BayesianMissingDataHLM::alphaPrior: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::alphaPrior: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::alphaPrior: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -769,7 +769,7 @@ void BayesianMissingDataHLM::alphaPriorNonInformative( int dim ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::alphaPriorNonInformative: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::alphaPriorNonInformative: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::alphaPriorNonInformative: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1034,7 +1034,7 @@ void BayesianMissingDataHLM::sigma2PriorNonInformative( double p_power ) throw( 
   {
     if ( p_power <= -0.5 * number_of_observations * response[0]->Row() )
     {
-      printf( "BayesianMissingDataHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianMissingDataHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianMissingDataHLM::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -1066,7 +1066,7 @@ void BayesianMissingDataHLM::sigma2PriorNonInformative( double p_power ) throw( 
     {
       if ( p_power <= -0.5 * response[i]->Row() * response[i]->Col() )
       {
-        printf( "BayesianMissingDataHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+        Rprintf( "BayesianMissingDataHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
 	char the_error[] = "BayesianMissingDataHLM::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -1092,7 +1092,7 @@ void BayesianMissingDataHLM::sigma2PriorNonInformative( double * p_power ) throw
   {
     if ( p_power[0] <= -0.5 * number_of_observations * response[0]->Row() )
     {
-      printf( "BayesianMissingDataHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianMissingDataHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianMissingDataHLM::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -1124,7 +1124,7 @@ void BayesianMissingDataHLM::sigma2PriorNonInformative( double * p_power ) throw
     {
       if ( p_power[i] <= -0.5 * response[i]->Row() * response[i]->Col() )
       {
-        printf( "BayesianMissingDataHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+        Rprintf( "BayesianMissingDataHLM::sigma2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
         char the_error[] = "BayesianMissingDataHLM::sigma2PriorNonInformative: Power in noninformative prior is not valid.";
         rtErr runtime_error( the_error );
         throw runtime_error;
@@ -1305,7 +1305,7 @@ void BayesianMissingDataHLM::tau2PriorInvChisq( double p_nuTau2, double p_tau2 )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::tau2PriorInvChisq: There are no radom effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::tau2PriorInvChisq: There are no radom effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::tau2PriorInvChisq: There are no radom effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1335,7 +1335,7 @@ void BayesianMissingDataHLM::tau2PriorDuMouchel( double p_tau2 ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::tau2PriorDuMouchel: There are no radom effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::tau2PriorDuMouchel: There are no radom effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::tau2PriorDuMouchel: There are no radom effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1364,7 +1364,7 @@ void BayesianMissingDataHLM::tau2PriorUniformShrinkage( double p_tau2 ) throw( r
   }
   else
   {
-    printf( "BayesianMissingDataHLM::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::tau2PriorUniformShrinkage: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1381,7 +1381,7 @@ void BayesianMissingDataHLM::tau2PriorNonInformative( double p_power ) throw( rt
 
     if ( p_power <= -0.5 * number_of_groups * beta[0]->dimension() )
     {
-      printf( "BayesianMissingDataHLM::tau2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );  
+      Rprintf( "BayesianMissingDataHLM::tau2PriorNonInformative: Power [%f] in noninformative prior is not valid.\n", p_power );
       char the_error[] = "BayesianMissingDataHLM::tau2PriorNonInformative: Power in noninformative prior is not valid.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -1399,7 +1399,7 @@ void BayesianMissingDataHLM::tau2PriorNonInformative( double p_power ) throw( rt
   }
   else
   {
-    printf( "BayesianMissingDataHLM::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::tau2PriorNonInformative: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::tau2PriorNonInformative: Power in noninformative prior is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1424,7 +1424,7 @@ void BayesianMissingDataHLM::betaCovPriorInvWishart( double p_nuV, CMatrix * p_V
   }
   else
   {
-    printf( "BayesianMissingDataHLM::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::betaCovPriorInvWishart: There are no random effects in the model. Tau2 does not make sense in this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1480,7 +1480,7 @@ void BayesianMissingDataHLM::gammaTPrior( double p_nuGamma ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::gammaTPrior: gamma is not a parameter of this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::gammaTPrior: gamma is not a parameter of this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::gammaTPrior: gamma is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1508,7 +1508,7 @@ void BayesianMissingDataHLM::betaTPrior( double p_nuBeta ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::betaTPrior: beta is not a parameter of this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::betaTPrior: beta is not a parameter of this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::betaTPrior: beta is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1528,7 +1528,7 @@ void BayesianMissingDataHLM::alphaTPrior( double p_nuAlpha ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::alphaTPrior: alpha is not a parameter of this model.\n" );
+    Rprintf( "BayesianMissingDataHLM::alphaTPrior: alpha is not a parameter of this model.\n" );
     char the_error[] = "BayesianMissingDataHLM::alphaTPrior: alpha is not a parameter of this model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -1735,7 +1735,7 @@ void BayesianMissingDataHLM::samplerTau2InitialPoint( double init_tau2 )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::samplerTau2InitialPoint: Initial point should be a matrix, not a scalar.\n" );
+    Rprintf( "BayesianMissingDataHLM::samplerTau2InitialPoint: Initial point should be a matrix, not a scalar.\n" );
   }
 }//end
 
@@ -1750,7 +1750,7 @@ void BayesianMissingDataHLM::samplerTau2InitialPoint( CMatrix & init_tau2 )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::samplerTau2InitialPoint: Initial point should not be a matrix, but a scalar.\n" );
+    Rprintf( "BayesianMissingDataHLM::samplerTau2InitialPoint: Initial point should not be a matrix, but a scalar.\n" );
   }
 }//end
 
@@ -1854,7 +1854,7 @@ void BayesianMissingDataHLM::updateRegressionWeight( int index ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::updateRegressionWeight: Index [%d] out of range.\n", index );
+    Rprintf( "BayesianMissingDataHLM::updateRegressionWeight: Index [%d] out of range.\n", index );
     char the_error[] = "BayesianMissingDataHLM::updateRegressionWeight: Index out of range.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -2951,7 +2951,7 @@ void BayesianMissingDataHLM::gibbsUpdateSigma2() throw( rtErr )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.\n" );
+    Rprintf( "BayesianMissingDataHLM::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.\n" );
     char the_error[] = "BayesianMissingDataHLM::gibbsUpdateSigma2: Trying to update a common variance variable when there are number of groups variances in the model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -3046,7 +3046,7 @@ void BayesianMissingDataHLM::gibbsUpdateSigma2( int index ) throw( rtErr )
   }
   else
   {
-    printf( "BayesianMissingDataHLM::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.\n" );
+    Rprintf( "BayesianMissingDataHLM::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.\n" );
     char the_error[] = "BayesianMissingDataHLM::gibbsUpdateSigma2: Trying to update number of groups variances when there is a common variance in the model.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -3484,7 +3484,7 @@ void BayesianMissingDataHLM::fullConditionalUpdateVariable( int index )
             }
             else
 	    {
-              printf( " BayesianMissingDataHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMissingDataHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else
@@ -3510,25 +3510,25 @@ void BayesianMissingDataHLM::fullConditionalUpdateVariable( int index )
             }
             else
             {
-              printf( " BayesianMissingDataHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMissingDataHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
         }//end if not null
         else
         {
-          printf( " BayesianMissingDataHLM::fullConditionalUpdateVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianMissingDataHLM::fullConditionalUpdateVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianMissingDataHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianMissingDataHLM::fullConditionalUpdateVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianMissingDataHLM::fullConditionalUpdateVariable: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianMissingDataHLM::fullConditionalUpdateVariable: Variable index [%d] does not exist.\n", index );
   }
 
 }//end
@@ -3598,7 +3598,7 @@ void BayesianMissingDataHLM::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else if ( !strncmp( distr_map[ index ], "missingR", 8 ) )
@@ -3610,7 +3610,7 @@ void BayesianMissingDataHLM::drawVariable( int index )
             }
             else
 	    {
-              printf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
           else
@@ -3641,25 +3641,25 @@ void BayesianMissingDataHLM::drawVariable( int index )
             }
             else
             {
-              printf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
+              Rprintf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s]. Index [%d]out of range.\n", distr_map[ index ], group_index );
             }
           }
         }//end if not null
         else
         {
-          printf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianMissingDataHLM::drawVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }//end if 
   }//end if index is valid
   else
   {
-    printf( "BayesianMissingDataHLM::drawVariable: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianMissingDataHLM::drawVariable: Variable index [%d] does not exist.\n", index );
   }
 
 }//end

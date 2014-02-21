@@ -145,7 +145,7 @@ CVector CMatrix::getRow( int iRow )  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::getRow: Row index [%d] is out of range. Max row is %d.\n\n", iRow, Row() );
+    Rprintf( "CMatrix::getRow: Row index [%d] is out of range. Max row is %d.\n\n", iRow, Row() );
 
     char the_error[] = "CMatrix::getRow: Row index is out of range.";
     rtErr runtime_error( the_error );
@@ -171,7 +171,7 @@ CVector CMatrix::getColumn( int iCol )  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::getColumn: Column index [%d] is out of range. Max column is %d.\n\n", iCol, Col() );
+    Rprintf( "CMatrix::getColumn: Column index [%d] is out of range. Max column is %d.\n\n", iCol, Col() );
 
     char the_error[] = "CMatrix::getColumn: Column index is out of range.";
     rtErr runtime_error( the_error );
@@ -199,21 +199,21 @@ CMatrix CMatrix::subMatrix( CVector & index )  throw( rtErr )
   }
   else if ( Col() != Row() )
   {
-    printf( "CMatrix::subMatrix: need a square matrix.\n" );
+    Rprintf( "CMatrix::subMatrix: need a square matrix.\n" );
     char the_error[] = "CMatrix::subMatrix: need a square matrix.";
     rtErr runtime_error( the_error );
     throw runtime_error;    
   }
   else if ( index.Len() > Col() )
   {
-    printf( "CMatrix::subMatrix: vector of indexes is too long.\n" );
+    Rprintf( "CMatrix::subMatrix: vector of indexes is too long.\n" );
     char the_error[] = "CMatrix::subMatrix: vector of indexes is too long.";
     rtErr runtime_error( the_error );
     throw runtime_error; 
   }
   else
   {
-    printf( "Reached past end of control in CMatrix CMatrix::subMatrix( CVector & index ).\n" );
+    Rprintf( "Reached past end of control in CMatrix CMatrix::subMatrix( CVector & index ).\n" );
     return sub_m;
   }
 
@@ -245,21 +245,21 @@ CMatrix CMatrix::subMatrixComplement( CVector & index )  throw( rtErr )
   }
   else if ( Col() != Row() )
   {
-    printf( "CMatrix::subMatrix: need a square matrix.\n" );
+    Rprintf( "CMatrix::subMatrix: need a square matrix.\n" );
     char the_error[] = "CMatrix::subMatrix: need a square matrix.";
     rtErr runtime_error( the_error );
     throw runtime_error; 
   }
   else if ( index.Len() >= Col() )
   {
-    printf( "CMatrix::subMatrix: vector of indexes is too long.\n" );
+    Rprintf( "CMatrix::subMatrix: vector of indexes is too long.\n" );
     char the_error[] = "CMatrix::subMatrix: vector of indexes is too long.";
     rtErr runtime_error( the_error );
     throw runtime_error; 
   }
   else
   {
-    printf( "Reached past end of control in CMatrix CMatrix::subMatrixComplement( CVector & index ).\n" );
+    Rprintf( "Reached past end of control in CMatrix CMatrix::subMatrixComplement( CVector & index ).\n" );
   }
 
 }//end
@@ -294,21 +294,21 @@ CMatrix CMatrix::subMatrixCross( CVector & index )  throw( rtErr )
   }
   else if ( Col() != Row() )
   {
-    printf( "CMatrix::subMatrix: need a square matrix.\n" );
+    Rprintf( "CMatrix::subMatrix: need a square matrix.\n" );
     char the_error[] = "CMatrix::subMatrix: need a square matrix.\n";
     rtErr runtime_error( the_error );
     throw runtime_error;
   }
   else if ( index.Len() >= Col() )
   {
-    printf( "CMatrix::subMatrix: vector of indexes is too long.\n" );
+    Rprintf( "CMatrix::subMatrix: vector of indexes is too long.\n" );
     char the_error[] = "CMatrix::subMatrix: vector of indexes is too long.";
     rtErr runtime_error( the_error );
     throw runtime_error;
   }
   else
   {
-    printf( "Reached past end of control in CMatrix CMatrix::subMatrixCross( CVector & index ).\n" );
+    Rprintf( "Reached past end of control in CMatrix CMatrix::subMatrixCross( CVector & index ).\n" );
   }
 
 }//end
@@ -331,7 +331,7 @@ void CMatrix::setRow( int iRow, CVector& row_vector )  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::setRow: Row index [%d] is out of range. Max row is %d.\n\n", iRow, Row() );
+    Rprintf( "CMatrix::setRow: Row index [%d] is out of range. Max row is %d.\n\n", iRow, Row() );
 
     char the_error[] = "CMatrix::setRow: Row index is out of range.";
     rtErr runtime_error( the_error );
@@ -353,7 +353,7 @@ void CMatrix::setColumn( int iCol, CVector& col_vector ) throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::setColumn: Column index [%d] is out of range. Max column is %d.\n\n", iCol, Col() );
+    Rprintf( "CMatrix::setColumn: Column index [%d] is out of range. Max column is %d.\n\n", iCol, Col() );
 
     char the_error[] = "CMatrix::setColumn: Column index is out of range.";
     rtErr runtime_error( the_error );
@@ -377,7 +377,7 @@ void CMatrix::setSubColumn( int iCol, CVector & index, CVector& col_vector )  th
   }
   else
   {
-    printf( "CMatrix::setSubColumn: wrong index dimensions.\n" );
+    Rprintf( "CMatrix::setSubColumn: wrong index dimensions.\n" );
     char the_error[] = "CMatrix::setSubColumn: wrong index dimensions.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -391,7 +391,7 @@ void CMatrix::setSubRow( int iRow, int from_index, int to_index, CVector & row_v
 
   if ( to_index > Col() || from_index < 0 || to_index < from_index )
   {
-    printf( "CMatrix::setSubRow: wrong index dimensions.\n" );
+    Rprintf( "CMatrix::setSubRow: wrong index dimensions.\n" );
     char the_error[] = "CMatrix::setSubRow: wrong index dimensions.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -432,7 +432,7 @@ CMatrix CMatrix::getRows( int init_row, int end_row )  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::getRows: indeces out of range.\n" );
+    Rprintf( "CMatrix::getRows: indeces out of range.\n" );
     //return CMatrix();
     char the_error[] = "CMatrix::getRows: indeces out of range.";
     rtErr runtime_error( the_error );
@@ -467,7 +467,7 @@ CMatrix CMatrix::getRows( CVector & index )  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::getRows: indeces out of range.\n" );
+    Rprintf( "CMatrix::getRows: indeces out of range.\n" );
     //return CMatrix();
     char the_error[] = "CMatrix::getRows: indeces out of range.";
     rtErr runtime_error( the_error );
@@ -500,7 +500,7 @@ void CMatrix::setDiagonal( double value )  throw( rtErr )
 
   if ( m_iRow != m_iCol )
   {
-    printf( "CMatrix:setDiagonal: matrix need to be a squared matrix.\n" );
+    Rprintf( "CMatrix:setDiagonal: matrix need to be a squared matrix.\n" );
     char the_error[] = "CMatrix:setDiagonal: matrix need to be a squared matrix.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -540,7 +540,7 @@ void CMatrix::setToWeightedColumn( int iCol, CVector& weights )  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::setToWeightedColumn: Column index [%d] is out of range. Max column is %d.\n\n", iCol, Col() );
+    Rprintf( "CMatrix::setToWeightedColumn: Column index [%d] is out of range. Max column is %d.\n\n", iCol, Col() );
     char the_error[] = "CMatrix::setToWeightedColumn: Column index is out of range.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -580,7 +580,7 @@ void CMatrix::add( CMatrix & a )  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::add: Matrix to add has wrong dimensions [%d, %d]. Current dimensions are [%d, %d]\n", a.Row(), a.Col(), Row(), Col() );
+    Rprintf( "CMatrix::add: Matrix to add has wrong dimensions [%d, %d]. Current dimensions are [%d, %d]\n", a.Row(), a.Col(), Row(), Col() );
     char the_error[] = "CMatrix::add: Matrix to add has wrong dimensions.";
     rtErr runtime_error( the_error );
     throw runtime_error;    
@@ -626,7 +626,7 @@ CMatrix CMatrix::xTransposedX( CMatrix & weights )  throw( rtErr )
 
   if ( weights.Row() != weights.Col() || weights.Col() != Row() )
   {
-    printf( "Matrix::xTransposedX( CMatrix weights ): matrix of weights has wrong dimensions.\n" );
+    Rprintf( "Matrix::xTransposedX( CMatrix weights ): matrix of weights has wrong dimensions.\n" );
     char the_error[] = "Matrix::xTransposedX( CMatrix weights ): matrix of weights has wrong dimensions.";
     rtErr runtime_error( the_error );
     throw runtime_error;     
@@ -664,7 +664,7 @@ CMatrix CMatrix::xTransposedX( CVector & weights )  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::xTransposedX( Cvector weights ): weights vector has wrong dimension [%d]. Row dimension is %d\n\n", weights.Len(), Row() );
+    Rprintf( "CMatrix::xTransposedX( Cvector weights ): weights vector has wrong dimension [%d]. Row dimension is %d\n\n", weights.Len(), Row() );
     char the_error[] = "CMatrix::xTransposedX( Cvector weights ): weights vector has wrong dimension.";
     rtErr runtime_error( the_error );
     throw runtime_error;  
@@ -689,7 +689,7 @@ void CMatrix::xxT( CVector & weights )  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::xxT( Cvector weights ): weights vector has wrong dimension [%d]. Column dimension is %d\n\n", weights.Len(), Col() );
+    Rprintf( "CMatrix::xxT( Cvector weights ): weights vector has wrong dimension [%d]. Column dimension is %d\n\n", weights.Len(), Col() );
     char the_error[] = "CMatrix::xxT( Cvector weights ): weights vector has wrong dimension.";
     rtErr runtime_error( the_error );
     throw runtime_error;  
@@ -715,7 +715,7 @@ double CMatrix::trace()  throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::trace: Invalid call to trace. Matrix is not a square matrix.\n" );
+    Rprintf( "CMatrix::trace: Invalid call to trace. Matrix is not a square matrix.\n" );
     char the_error[] = "CMatrix::trace: Invalid call to trace. Matrix is not a square matrix.";
     rtErr runtime_error( the_error );
     throw runtime_error; 
@@ -830,11 +830,11 @@ CVector CMatrix::toVector()
 
 void CMatrix::Print()
 {
-    printf("iRow = %d, iCol = %d\n", m_iRow, m_iCol); 
+    Rprintf("iRow = %d, iCol = %d\n", m_iRow, m_iCol);
 
     if ( m_iRow <= 0 || m_iCol <= 0 )
     {
-      printf( "wrong dimensions is matrix.\n" );
+      Rprintf( "wrong dimensions is matrix.\n" );
     }
     else
     {    
@@ -844,14 +844,14 @@ void CMatrix::Print()
         {
             if (m_pVal[i * m_iCol + j] >= 0)
             {
-                printf(" ");
+                Rprintf(" ");
             }
-            printf(" %f  ", m_pVal[i * m_iCol + j]);
+            Rprintf(" %f  ", m_pVal[i * m_iCol + j]);
             
         }
-        printf("\n");
+        Rprintf("\n");
     }
-    printf("\n");
+    Rprintf("\n");
     }
 }
 
@@ -929,7 +929,7 @@ CMatrix CMatrix::Cholesky()
 {
     if(m_iRow != m_iCol)
     {
-      printf( "***CMatrix::Cholesky: needs square matrix. ***");
+      Rprintf( "***CMatrix::Cholesky: needs square matrix. ***");
      
       return *this;
     }
@@ -951,7 +951,7 @@ CMatrix CMatrix::Cholesky()
 
         if (B.Val(k, k) < DELTA)
         {
-	    printf("***CMatrix::Cholesky: nonpositive matrix! ***");
+	    Rprintf("***CMatrix::Cholesky: nonpositive matrix! ***");
            
             return B;
         }
@@ -999,7 +999,7 @@ CMatrix CMatrix:: Inverse_LT()
   int i,j;
   if(m_iRow != m_iCol)
     {
-      printf("*** Inverse_LT: Need squared matrix. ***");
+      Rprintf("*** Inverse_LT: Need squared matrix. ***");
     }
 
     CMatrix C(*this);
@@ -1008,7 +1008,7 @@ CMatrix CMatrix:: Inverse_LT()
     {
         if ( fabs( Val(i,i) ) <= DELTA )
         {
-	        printf("*** Inverset_LT: Error: Diagonal element is too small. ***");
+	        Rprintf("*** Inverset_LT: Error: Diagonal element is too small. ***");
 
             return C;
         }
@@ -1062,7 +1062,7 @@ CVector CMatrix::choleskyDecomposition() throw( rtErr )
   }
   catch( rtErr choldcError )
   {
-    printf( "CMatrix::choleskyDecomposition: Matrix does not seem to be symmetric positive definite.\n" );
+    Rprintf( "CMatrix::choleskyDecomposition: Matrix does not seem to be symmetric positive definite.\n" );
     char the_error[] = "CMatrix::choleskyDecomposition: Matrix does not seem to be symmetric positive definite.";
     //rtErr runtime_error( the_error );
     //throw runtime_error;
@@ -1142,7 +1142,7 @@ void CMatrix::assignLowerTriangular( CVector & lTriangular ) throw( rtErr )
 
   if( m_iRow != m_iCol )
   {
-    printf( "CMatrix::assignLowerTriangular: Invalid call to assignLowerTriangular. Matrix is not a square matrix.\n" );
+    Rprintf( "CMatrix::assignLowerTriangular: Invalid call to assignLowerTriangular. Matrix is not a square matrix.\n" );
     char the_error[] = "CMatrix::assignLowerTriangular: Invalid call to assignLowerTriangular. Matrix is not a square matrix.";
     rtErr runtime_error( the_error );
     throw runtime_error; 
@@ -1163,7 +1163,7 @@ void CMatrix::assignLowerTriangular( CVector & lTriangular ) throw( rtErr )
   }
   else
   {
-    printf( "CMatrix::assignLowerTriangular: wrong dimensions.\n" );
+    Rprintf( "CMatrix::assignLowerTriangular: wrong dimensions.\n" );
     char the_error[] = "CMatrix::assignLowerTriangular: wrong dimensions.";
     rtErr runtime_error( the_error );
     throw runtime_error; 
@@ -1181,7 +1181,7 @@ void CMatrix::assignInverseOfLowerTriangular( CVector & lTriangular ) throw( rtE
 
   if( m_iRow != m_iCol )
   {
-    printf( "CMatrix::assignInverseOfLowerTriangular: Need squared matrix.\n" );
+    Rprintf( "CMatrix::assignInverseOfLowerTriangular: Need squared matrix.\n" );
     char the_error[] = "CMatrix::assignInverseOfLowerTriangular: Need squared matrix.";
     rtErr runtime_error( the_error );
     throw runtime_error; 
@@ -1196,7 +1196,7 @@ void CMatrix::assignInverseOfLowerTriangular( CVector & lTriangular ) throw( rtE
     {
         if ( fabs( lTriangular.lowerTriangularVal(i, i) ) <= DELTA )
         {
-	  printf( "CMatrix::assignInverseOfLowerTriangular: Error: Diagonal element [%f] is too small.\n", lTriangular.lowerTriangularVal(i, i) );
+	  Rprintf( "CMatrix::assignInverseOfLowerTriangular: Error: Diagonal element [%f] is too small.\n", lTriangular.lowerTriangularVal(i, i) );
           char the_error[] = "CMatrix::assignInverseOfLowerTriangular: Error: Diagonal element is too small.";
           rtErr runtime_error( the_error );
           throw runtime_error; 
@@ -1221,7 +1221,7 @@ void CMatrix::assignInverseOfLowerTriangular( CVector & lTriangular ) throw( rtE
   }//end if
   else
   {
-    printf( "CMatrix::assignInverseOfLowerTriangular: wrong dimensions.\n" );
+    Rprintf( "CMatrix::assignInverseOfLowerTriangular: wrong dimensions.\n" );
     char the_error[] = "CMatrix::assignInverseOfLowerTriangular: wrong dimensions.";
     rtErr runtime_error( the_error );
     throw runtime_error; 
@@ -1250,7 +1250,7 @@ void CMatrix::assignInverseOfLowerTriangular( CVector & lTriangular ) throw( rtE
   }
   else
   {
-    printf( "CMatrix::assignInverseOfLowerTriangular: wrong dimensions.\n" );
+    Rprintf( "CMatrix::assignInverseOfLowerTriangular: wrong dimensions.\n" );
   }
   */
 
@@ -1279,8 +1279,8 @@ CMatrix CMatrix::inverse() throw( rtErr )
     }
     else
     {
-      printf( "CMatrix::inverse: Matrix element [%f] is too small.  Matrix:\n", m_pVal[0] ); 
-      this->Print();  fflush(stdout);
+      Rprintf( "CMatrix::inverse: Matrix element [%f] is too small.  Matrix:\n", m_pVal[0] );
+      this->Print();
       char the_error[] = "CMatrix::inverse:Matrix element is too small.\n";
       rtErr runtime_error( the_error );
       throw runtime_error;       
@@ -1311,7 +1311,7 @@ CMatrix CMatrix::Inverse() throw( rtErr )
       }
       else
       {
-        printf( "CMatrix::Inverse: Matrix element [%f] is too small.\n", m_pVal[0] ); fflush(stdout);
+        Rprintf( "CMatrix::Inverse: Matrix element [%f] is too small.\n", m_pVal[0] );
         char the_error[] = "CMatrix::inverse:Matrix element is too small.\n";
         rtErr runtime_error( the_error );
         throw runtime_error;       
@@ -1361,7 +1361,7 @@ CMatrix operator +(const CMatrix & A, const CVector & B)
 
     if ( A.Col() != B.Len() )
     {
-      printf( "CMatrix: operator+: Dimensions of Matrix and Vector do not match.\n" );
+      Rprintf( "CMatrix: operator+: Dimensions of Matrix and Vector do not match.\n" );
       // Bug fix by Dawn: the following was:  exit(1);    which causes problems within S-PLUS
       MESSAGE "CMatrix: operator+: Dimensions of Matrix and Vector do not match.\n" ERROR;
     }
@@ -1401,7 +1401,7 @@ CMatrix operator -(const CMatrix & A, const CVector & B)
 
     if ( A.Col() != B.Len() )
     {
-      printf( "CMatrix: operator+: Dimensions of Matrix and Vector do not match.\n" );
+      Rprintf( "CMatrix: operator+: Dimensions of Matrix and Vector do not match.\n" );
       // Bug fix by Dawn: the following was:   exit(1);   which causes problems within S-PLUS
       MESSAGE "CMatrix: operator+: Dimensions of Matrix and Vector do not match.\n" ERROR;
     }
@@ -1467,7 +1467,7 @@ CVector operator *(const CMatrix & A, const CVector & B)
 
     CVector    C(Row);
     if (A.Col() != Col){
-    	printf( "operator *: Attempt to multiplying matrix with [%d] columns by a vector of length [%d]\n", A.Col(), Col );
+    	Rprintf( "operator *: Attempt to multiplying matrix with [%d] columns by a vector of length [%d]\n", A.Col(), Col );
       MESSAGE "operator *: Invalid matrix multiplication" ERROR;
     }
     for (int i = 0; i < Row; i ++)

@@ -278,7 +278,7 @@ void fitBayesianMVHLM( int * number_groups,
 
   if ( !random_effects && !fixed_effects )
   {
-    printf( "fitBayesianHLM: No fixed effects nor random effects provided. This model is not valid.\n" );
+    Rprintf( "fitBayesianHLM: No fixed effects nor random effects provided. This model is not valid.\n" );
     char the_error[] = "fitBayesianHLM: No fixed effects nor random effects provided. This model is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -965,7 +965,7 @@ void  transformResponseAndPredictorsMV( int * number_groups,
     }
     else
     {
-      printf( "fitBayesianHierarchicalLinearModel: wrong error covariance argument.\n" );
+      Rprintf( "fitBayesianHierarchicalLinearModel: wrong error covariance argument.\n" );
       char the_error[] = "fitBayesianHierarchicalLinearModel: wrong error covariance argument.";
       rtErr runtime_error( the_error );
       throw runtime_error;

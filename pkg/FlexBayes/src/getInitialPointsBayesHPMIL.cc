@@ -167,7 +167,7 @@ void getInitialPointsBayesHPMIL(
 
   if ( !random_effects && !fixed_effects )
   {
-    printf( "getInitialPointsBhpm: No fixed effects nor random effects provided. This model is not valid.\n" );
+    Rprintf( "getInitialPointsBhpm: No fixed effects nor random effects provided. This model is not valid.\n" );
     char the_error[] = "getInitialPointsBhpm: No fixed effects nor random effects provided. This model is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -508,7 +508,7 @@ void getInitialPointsBayesHPMIL(
     }
     else if ( ((int) (*dim_sigmaScale) ) > 1 )
     {
-      printf( "getInitialPointsBayesHPMIL: Wrong dimensions in error variance hyperparameter array.\n" );
+      Rprintf( "getInitialPointsBayesHPMIL: Wrong dimensions in error variance hyperparameter array.\n" );
       char the_error[] = "getInitialPointsBayesHPMIL: Wrong dimensions in error variance hyperparameter array.";
       rtErr runtime_error( the_error );
       throw runtime_error;
@@ -581,8 +581,8 @@ void getInitialPointsBayesHPMIL(
       }
     }
     #ifdef DEBUG_SIGMA
-      printf( "getInitialPointsBHPMIL: sigmaInit = \n" );  
-      sigmaInit->Print();  fflush(stdout);
+      Rprintf( "getInitialPointsBHPMIL: sigmaInit = \n" );
+      sigmaInit->Print();
     #endif        
   }//end for i
 

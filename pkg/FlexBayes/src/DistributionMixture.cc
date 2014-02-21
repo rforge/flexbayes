@@ -39,7 +39,7 @@ DistributionMixture::DistributionMixture( int n_mixs )
   }
   else
   {
-    printf( "\nDistributionMixture: Number of mixtures must be positive.\n" );
+    Rprintf( "\nDistributionMixture: Number of mixtures must be positive.\n" );
   }
 }//end
 
@@ -98,7 +98,7 @@ DistributionParameter * DistributionMixture::stratifiedDrawFromMixture( int numb
 
   if ( number_draws <= 0 )
   {
-    printf( "DistributionMixture::drawFromMixture: wrong number of  draws [%d] specified. Assuming one draw.\n", number_draws );
+    Rprintf( "DistributionMixture::drawFromMixture: wrong number of  draws [%d] specified. Assuming one draw.\n", number_draws );
     n_draws = 1;
   }
   else
@@ -152,12 +152,12 @@ void DistributionMixture::updateProportion( int i, double val )
     }
     else
     {
-      printf( "DistributionMixture::updateProportion: negative proportion [%f] ignored.\n", val );
+      Rprintf( "DistributionMixture::updateProportion: negative proportion [%f] ignored.\n", val );
     }
   }
   else
   {
-    printf( "DistributionMixture::updateProportion: index [%d] out of range.\n", i );
+    Rprintf( "DistributionMixture::updateProportion: index [%d] out of range.\n", i );
   }
 
 }//end
@@ -191,7 +191,7 @@ void DistributionMixture::normalizeProportions()
   }
   else
   {
-    printf( " DistributionMixture::normalizeProportions: zero or negative cumulative probability [%f].\n", total );
+    Rprintf( " DistributionMixture::normalizeProportions: zero or negative cumulative probability [%f].\n", total );
   }
 
 }//end
@@ -206,7 +206,7 @@ void DistributionMixture::updateLogProportion( int i, double val )
   }
   else
   {
-    printf( "DistributionMixture::updateProportion: index [%d] out of range.\n", i );
+    Rprintf( "DistributionMixture::updateProportion: index [%d] out of range.\n", i );
   }
 
 }//end
@@ -259,7 +259,7 @@ void DistributionMixture::normalizeLogProportions()
     }
     else
     {
-      printf( " DistributionMixture::normalizeProportions: zero or negative cumulative probability [%f].\n", total );
+      Rprintf( " DistributionMixture::normalizeProportions: zero or negative cumulative probability [%f].\n", total );
     }
   }
   else
@@ -290,14 +290,14 @@ void DistributionMixture::printDrawingStats()
 
   if ( draw_stats != NULL )
   {
-    printf( "\nDistributionMixture: Drawing Statistics: \n" );
+    Rprintf( "\nDistributionMixture: Drawing Statistics: \n" );
     total = draw_stats->Len() * draw_stats->Mean();
     for ( i = 0; i < n_mixtures; i++ )
     {
-      printf( "component[ %d ] = %f (%f out of %f).\n", i, draw_stats->Val(i) / total, draw_stats->Val(i), total );
+      Rprintf( "component[ %d ] = %f (%f out of %f).\n", i, draw_stats->Val(i) / total, draw_stats->Val(i), total );
     }
   
-    printf( "\n" );
+    Rprintf( "\n" );
   }
 
 }//end
@@ -375,7 +375,7 @@ DistributionParameter DistributionMixture::draw()
   }
   else if ( cumu_props->Val( n_mixtures - 1 ) <= 0.0 )
   {
-    printf( "DistributionMixture::draw: zero or negative proportions.\n" );
+    Rprintf( "DistributionMixture::draw: zero or negative proportions.\n" );
     // Bug fix by Dawn: the following was: exit(1);   which causes problems within S-PLUS.
     MESSAGE "DistributionMixture::draw: zero or negative proportions.\n" ERROR;
   }
@@ -402,7 +402,7 @@ DistributionParameter DistributionMixture::draw()
   if ( !found )
   {
     //this condition should never be reached
-    printf( "DistributionMixture::draw: something wrong in the choice of component [random index = %f].\n", random_index );
+    Rprintf( "DistributionMixture::draw: something wrong in the choice of component [random index = %f].\n", random_index );
     index = n_mixtures - 1;  
   }
 
@@ -500,7 +500,7 @@ Distribution * DistributionMixture::clone()
 DistributionParameter DistributionMixture::mode()
 {
 
-  printf( "DistributionMixture::mode(): Sorry this method is not implemented yet. It returns the mean.\n" );
+  Rprintf( "DistributionMixture::mode(): Sorry this method is not implemented yet. It returns the mean.\n" );
   return mean();
 
 }//end
@@ -576,6 +576,6 @@ double DistributionMixture::logDensity( DistributionParameter & value )
 void DistributionMixture::update( DistributionParameter * par_list, int list_size )
 {
 
-  printf( "DistributionMixture::update: Sorry you need to update each component separately, since it is not known what the components are. \n" );
+  Rprintf( "DistributionMixture::update: Sorry you need to update each component separately, since it is not known what the components are. \n" );
 
 }//end

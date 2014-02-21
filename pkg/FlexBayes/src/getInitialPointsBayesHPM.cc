@@ -165,7 +165,7 @@ void getInitialPointsBayesHPM(
 
   if ( !random_effects && !fixed_effects )
   {
-    printf( "getInitialPointsBhpm: No fixed effects nor random effects provided. This model is not valid.\n" );
+    Rprintf( "getInitialPointsBhpm: No fixed effects nor random effects provided. This model is not valid.\n" );
     char the_error[] = "getInitialPointsBhpm: No fixed effects nor random effects provided. This model is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -508,7 +508,7 @@ void getInitialPointsBayesHPM(
     }
     else
     {
-      printf( "getInitialPointsBhpm: Wrong prior type [%d] for glm parameters.\n", ((int) (*glm_type)) );
+      Rprintf( "getInitialPointsBhpm: Wrong prior type [%d] for glm parameters.\n", ((int) (*glm_type)) );
       char the_error[] = "getInitialPointsBhpm: Wrong prior type for glm parameters.";
       rtErr runtime_error( the_error );
       throw runtime_error;  

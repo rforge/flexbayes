@@ -188,7 +188,7 @@ void CVector::add( CVector & a_vector )
   }
   else
   {
-    printf( "CVector::add: Adding vector dimension [%d] differs from this vector dimension [%d]\n", a_vector.Len(), m_iLen );
+    Rprintf( "CVector::add: Adding vector dimension [%d] differs from this vector dimension [%d]\n", a_vector.Len(), m_iLen );
     MESSAGE "" ERROR;
   }
 }
@@ -237,7 +237,7 @@ CVector CVector::subVector( CVector & index )
 
   if ( index.Len() > Len() )
   {
-    printf( "CVector::subVector: vector of indexes is too long.\n" );
+    Rprintf( "CVector::subVector: vector of indexes is too long.\n" );
     // Bug fix by Dawn: the following was: exit(1);
     MESSAGE "CVector::subVector: vector of indexes is too long.\n" ERROR;
   }
@@ -247,7 +247,7 @@ CVector CVector::subVector( CVector & index )
   {
     if ( ((int) index.Val(i)) >= Len() )
     {
-      printf( "CVector::subVector: vector of indexes is too long.\n" );
+      Rprintf( "CVector::subVector: vector of indexes is too long.\n" );
       // Bug fix by Dawn: the following was: exit(1);
       MESSAGE "CVector::subVector: vector of indexes is too long.\n" ERROR;
     }
@@ -271,21 +271,21 @@ CVector CVector::subVector( int from_index, int to_index )
 
   if ( to_index - from_index + 1 > Len() )
   {
-    printf( "CVector::subVector: list of indexes is too long.\n" );
+    Rprintf( "CVector::subVector: list of indexes is too long.\n" );
     // Bug fix by Dawn: the following was:  exit(1);  which causes problems within S-PLUS
     MESSAGE "CVector::subVector: list of indexes is too long.\n" ERROR;
   }
 
   if ( from_index < 0 )
   {
-    printf( "CVector::subVector: negative index.\n" );
+    Rprintf( "CVector::subVector: negative index.\n" );
     // Bug fix by Dawn: the following was:  exit(1);  which causes problems within S-PLUS
     MESSAGE "CVector::subVector: negative index.\n" ERROR;
   }
 
   if ( to_index - from_index < 0 )
   {
-    printf( "CVector::subVector: negative or zero span for indexes.\n" );
+    Rprintf( "CVector::subVector: negative or zero span for indexes.\n" );
     // Bug fix by Dawn: the following was:  exit(1);  which causes problems within S-PLUS
     MESSAGE "CVector::subVector: negative or zero span for indexes.\n" ERROR;
   }
@@ -310,7 +310,7 @@ CVector CVector::subVectorComplement( CVector & index )
 
   if ( index.Len() >= Len() )
   {
-    printf( "CVector::subVector: vector of indexes is too long.\n" );
+    Rprintf( "CVector::subVector: vector of indexes is too long.\n" );
     // Bug fix by Dawn: the following was: exit(1); which causes problems within SPLUS
     MESSAGE "CVector::subVector: vector of indexes is too long.\n" ERROR;
   }
@@ -351,14 +351,14 @@ void CVector::setSubVector( CVector & index, CVector & values )
 
   if ( index.Len() > Len() )
   {
-    printf( "CVector::setSubVector: vector of indexes is too long.\n" );
+    Rprintf( "CVector::setSubVector: vector of indexes is too long.\n" );
     // Bug fix by Dawn: the following was:   exit(1);  which causes problems within S-PLUS
     MESSAGE "CVector::setSubVector: vector of indexes is too long.\n" ERROR;
   }
 
   if ( index.Len() > values.Len() )
   {
-    printf( "CVector::setSubVector: vector of indexes is longer than vector of values.\n" );
+    Rprintf( "CVector::setSubVector: vector of indexes is longer than vector of values.\n" );
     // Bug fix by Dawn: the following was:   exit(1);  which causes problems within S-PLUS
     MESSAGE "CVector::setSubVector: vector of indexes is longer than vector of values.\n" ERROR;
   }
@@ -367,14 +367,14 @@ void CVector::setSubVector( CVector & index, CVector & values )
   {
     if ( ((int) index.Val(i)) >= Len() )
     {
-      printf( "CVector::setSubVector: vector of indexes is too long.\n" );
+      Rprintf( "CVector::setSubVector: vector of indexes is too long.\n" );
       // Bug fix by Dawn: the following was:   exit(1);  which causes problems within S-PLUS
       MESSAGE "CVector::setSubVector: vector of indexes is too long.\n" ERROR;
     }
 
     if ( index.Val(i) < 0 )
     {
-      printf( "CVector::setSubVector: negative index.\n" );
+      Rprintf( "CVector::setSubVector: negative index.\n" );
       // Bug fix by Dawn: the following was:   exit(1);  which causes problems within S-PLUS
       MESSAGE "CVector::setSubVector: negative index.\n" ERROR;
     }
@@ -427,7 +427,7 @@ void CVector::setLowerTriangularVal( int i, int j, double ltval )
   }
   else
   {
-    printf( "Indexes (%d, %d) are not valid for lower Triangular matrix\n", i, j );
+    Rprintf( "Indexes (%d, %d) are not valid for lower Triangular matrix\n", i, j );
   }
 }
 
@@ -482,7 +482,7 @@ CVector CVector::asLowerTriangularSolve( CVector & b )
  
   if ( ( b.Len() * (b.Len() + 1) )/2 != Len() )
   {
-    printf( "CVector::asLowerTriangularSolve: lengths differ: b.Len = %d, Len = %d\n", b.Len(), Len() ); 
+    Rprintf( "CVector::asLowerTriangularSolve: lengths differ: b.Len = %d, Len = %d\n", b.Len(), Len() );
   }
   else
   {
@@ -567,15 +567,15 @@ void CVector::viewAsCholeskyDecomposition()
   root_row = ( sqrt( 8 * ((double) m_iLen) + 1 )  - 1 ) / 2;
   rows = (int) root_row;
 
-  printf( "CVector:viewAsCholeskyDecomposition: root = %f, rows = %d\n", root_row, rows );
+  Rprintf( "CVector:viewAsCholeskyDecomposition: root = %f, rows = %d\n", root_row, rows );
 
   for ( i = 0; i < rows; i++ )
   {
     for ( j = 0; j < rows; j++ )
     {
-      printf(  "%f ", lowerTriangularVal( i, j ) );
+      Rprintf(  "%f ", lowerTriangularVal( i, j ) );
     }
-    printf( "\n" );
+    Rprintf( "\n" );
   }
 
 }
@@ -585,17 +585,17 @@ void CVector::Print()
 {
   int i;
 
-    printf("Len = %d\n", m_iLen);
+    Rprintf("Len = %d\n", m_iLen);
 
     for ( i = 0; i < m_iLen; i ++)
     {
         if (m_pVal[i] >= 0.0)
         {
-            printf(" ");
+            Rprintf(" ");
         }
-        printf("%f  ", m_pVal[i]);
+        Rprintf("%f  ", m_pVal[i]);
     }
-    printf("\n\n");
+    Rprintf("\n\n");
 }
 
 

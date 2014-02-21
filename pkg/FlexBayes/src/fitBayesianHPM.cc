@@ -167,7 +167,7 @@ void fitBayesianHPM( int * number_groups,
     number_obs += ((int) number_data[i]);
 
 #ifdef DEBUG1
-    printf( "HPM: fit: counts[%d] = \n",i );
+    Rprintf( "HPM: fit: counts[%d] = \n",i );
     counts[i]->Print();
 #endif
 
@@ -211,7 +211,7 @@ void fitBayesianHPM( int * number_groups,
       start_index += dim * counts[i]->Len();
 
 #ifdef DEBUG1
-      printf( "HPM: fit: random[%d] = \n",i );
+      Rprintf( "HPM: fit: random[%d] = \n",i );
       random_predictors[i]->Print();
 #endif
 
@@ -239,7 +239,7 @@ void fitBayesianHPM( int * number_groups,
       start_index += dim * counts[i]->Len();
 
 #ifdef DEBUG1
-      printf( "HPM: fit: fixed[%d] = \n",i );
+      Rprintf( "HPM: fit: fixed[%d] = \n",i );
       fixed_predictors[i]->Print();
 #endif
     }//end for i
@@ -247,7 +247,7 @@ void fitBayesianHPM( int * number_groups,
 
   if ( !random_effects && !fixed_effects )
   {
-    printf( "fitBayesianHPM: No fixed effects nor random effects provided. This model is not valid.\n" );
+    Rprintf( "fitBayesianHPM: No fixed effects nor random effects provided. This model is not valid.\n" );
     char the_error[] = "fitBayesianHPM: No fixed effects nor random effects provided. This model is not valid.";
     rtErr runtime_error( the_error );
     throw runtime_error;
@@ -282,7 +282,7 @@ void fitBayesianHPM( int * number_groups,
   BayesianHierarchicalGlmModel bayes_HGlm;
   
 #ifdef DEBUG1
-  printf( "HPM: counts[0] = \n");
+  Rprintf( "HPM: counts[0] = \n");
   counts[0]->Print();
 #endif
   // Just sets the number of groups and number of obs in each group
@@ -444,8 +444,8 @@ void fitBayesianHPM( int * number_groups,
       CMatrix p_betaCov( tauScale, ((int) (*dim_beta) ), ((int) (*dim_beta) ), by_column );
 
 #ifdef DEBUG1
-      printf("HPM: setting invWishart. original df = %f. original cov dim is %d, cov is\n",  (*tauDF), ((int) (*dim_beta) ) );
-      p_betaCov.Print(); fflush(stdout);
+      Rprintf("HPM: setting invWishart. original df = %f. original cov dim is %d, cov is\n",  (*tauDF), ((int) (*dim_beta) ) );
+      p_betaCov.Print();
 #endif
       bayes_HGlm.betaCovPriorInvWishart( (*tauDF), &p_betaCov );
     }
@@ -485,7 +485,7 @@ void fitBayesianHPM( int * number_groups,
         CVector init_alpha( alphaInit, ((int) (*dim_alpha) ) );
 
 #ifdef DEBUG1
-        printf( "HPM: init alpha \n" );
+        Rprintf( "HPM: init alpha \n" );
         init_alpha.Print();
 #endif
 
@@ -503,7 +503,7 @@ void fitBayesianHPM( int * number_groups,
         CMatrix init_beta( betaInit, ((int) (*dim_beta) ), ((int) (*number_groups) ), by_column );
 
 #ifdef DEBUG1
-        printf( "HPM: init beta \n" );
+        Rprintf( "HPM: init beta \n" );
         init_beta.Print();
 #endif
 
@@ -517,14 +517,14 @@ void fitBayesianHPM( int * number_groups,
           bayes_HGlm.samplerTau2InitialPoint( tau2Init );
 
 #ifdef DEBUG1
-          printf( "HPM: init random var \n %f\n", (*tau2Init) );
+          Rprintf( "HPM: init random var \n %f\n", (*tau2Init) );
 #endif
         }
         else
         {
           CMatrix init_tau2( tau2Init, ((int) (*dim_beta) ), ((int) (*dim_beta) ), by_column );
 #ifdef DEBUG1
-          printf( "HPM: init random var \n" );
+          Rprintf( "HPM: init random var \n" );
           init_tau2.Print();
 #endif
 
@@ -538,7 +538,7 @@ void fitBayesianHPM( int * number_groups,
       CVector init_gamma( gammaInit, ((int) (*dim_gamma) ) );
 
 #ifdef DEBUG1
-      printf( "HPM: init gamma \n" );
+      Rprintf( "HPM: init gamma \n" );
       init_gamma.Print();
 #endif
 
@@ -608,7 +608,7 @@ void fitBayesianHPM( int * number_groups,
   	   ( ( (int) (*common_xi) ) == 2 ) )
   {
     #ifdef DEBUG1
-      printf( "HPM: *xi_z0 = %f\n", *xi_z0 );
+      Rprintf( "HPM: *xi_z0 = %f\n", *xi_z0 );
     #endif
     bayes_PoissonLL.logXiPrior( (*xi_z0) );
   }
@@ -625,7 +625,7 @@ void fitBayesianHPM( int * number_groups,
     else
     {
 #ifdef DEBUG1
-      printf( "HPM: xiInit = %f\n", *xiInit );
+      Rprintf( "HPM: xiInit = %f\n", *xiInit );
 #endif
       CVector init_xi( xiInit, ((int) (*number_groups)) );
       bayes_PoissonLL.samplerXiInitialPoint( init_xi );

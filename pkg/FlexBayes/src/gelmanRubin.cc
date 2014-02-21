@@ -61,10 +61,10 @@ void gelmanRubin( CMatrix * x,
   {
 #ifdef FIX1
     CVector tmpvec = mean.square();
-    printf( "var.Cov( mean.square() ) =  %f,  var.Cov( mean ) = %f,  overall_mean = %f\n",
+    Rprintf( "var.Cov( mean.square() ) =  %f,  var.Cov( mean ) = %f,  overall_mean = %f\n",
       var.Cov( tmpvec ),
 #else
-    printf( "var.Cov( mean.square() ) =  %f,  var.Cov( mean ) = %f,  overall_mean = %f\n",
+    Rprintf( "var.Cov( mean.square() ) =  %f,  var.Cov( mean ) = %f,  overall_mean = %f\n",
       var.Cov( mean.square() ),
 #endif
 //	    var.Cov( mean.square() ),
@@ -82,7 +82,7 @@ void gelmanRubin( CMatrix * x,
 
   if ( debug )
   {
-    printf( "var_within var = %f,  var_between var = %f,  cov_within_between = %f\n",
+    Rprintf( "var_within var = %f,  var_between var = %f,  cov_within_between = %f\n",
 	    var_within_var, var_between_var, cov_within_between );
   }
 
@@ -93,7 +93,7 @@ void gelmanRubin( CMatrix * x,
   }
   else 
   {
-    printf( "gelmanRubin: degrees of freedom of within variance W estimate is too small. Set to 1.0.\n" );
+    Rprintf( "gelmanRubin: degrees of freedom of within variance W estimate is too small. Set to 1.0.\n" );
     degrees_freedom_within_var = 1.0;   
   }
 
@@ -105,13 +105,13 @@ void gelmanRubin( CMatrix * x,
   }
   else
   {
-    printf( "gelmanRubin: degrees of freedom of V estimate is too small.\n" );
+    Rprintf( "gelmanRubin: degrees of freedom of V estimate is too small.\n" );
     degrees_freedom_hat_V = DELTA;
   }
 
   if ( debug )
   {
-    printf( " hat_V = %f, hat_var_V = %f, within_var = %f, between_var = %f, dfhatV = %f\n",
+    Rprintf( " hat_V = %f, hat_var_V = %f, within_var = %f, between_var = %f, dfhatV = %f\n",
 	    hat_V, hat_var_V, within_var, between_var, degrees_freedom_hat_V );
   }
 
@@ -129,9 +129,9 @@ void gelmanRubin( CMatrix * x,
 
   if ( debug )
   {
-    printf("\nprop_b = %f, prop_w = %f, prop_wb = %f, dfhatV = %f dfwv = %f\n",
+    Rprintf("\nprop_b = %f, prop_w = %f, prop_wb = %f, dfhatV = %f dfwv = %f\n",
 	   prop_b,prop_w,prop_wb,degrees_freedom_hat_V,degrees_freedom_within_var );
-    printf("gelman_rubin_sqrt_R = %f,  gelman_rubin_sqrt_upper_quartile = %f\n",
+    Rprintf("gelman_rubin_sqrt_R = %f,  gelman_rubin_sqrt_upper_quartile = %f\n",
 	   (*gelman_rubin_sqrt_R), (*gelman_rubin_sqrt_upper_quartile) );
   }
 
@@ -156,7 +156,7 @@ void gelmanRubinDiagnostics( double * data,
 
   if ( debug > 2 )
   {
-    printf( "gelmanRubinDiagnostics: data matrix is: \n" );
+    Rprintf( "gelmanRubinDiagnostics: data matrix is: \n" );
     x.Print();
   }
 
@@ -180,7 +180,7 @@ void gelmanRubinDiagnostics( double * data,
 
     if ( debug )
     {
-      printf("gelman_rubin_sqrt_R[%d] = %f,  gelman_rubin_sqrt_upper_quartile = %f\n",
+      Rprintf("gelman_rubin_sqrt_R[%d] = %f,  gelman_rubin_sqrt_upper_quartile = %f\n",
 	     count, gelman_rubin_sqrt_R[count], gelman_rubin_sqrt_upper_quartile[count] );
     }
 
@@ -196,7 +196,7 @@ void gelmanRubinDiagnostics( double * data,
 
       if ( debug )
       {
-        printf( "count = %d\n", count);
+        Rprintf( "count = %d\n", count);
       }
     }
   }//end loop

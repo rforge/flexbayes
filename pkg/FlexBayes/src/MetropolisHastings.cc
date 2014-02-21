@@ -74,7 +74,7 @@ void MetropolisHastings::doMetropolisHastings( BayesianModel * model )
   //printf( "MetropolisHastings::doMetropolisHastings: Started MetropolisHastings sampler for this model [%s].\n", model->name() ); fflush(stdout);
 
 #ifdef DEBUG1
-  printf("MH: Number of variables = %d\n", model->numberOfVariables());  fflush(stdout);
+  Rprintf("MH: Number of variables = %d\n", model->numberOfVariables());
 #endif
   if ( simulations_to_keep > 0 )
   {
@@ -261,28 +261,28 @@ void MetropolisHastings::printDrawingStats()
   /*
   if ( vars_stats != NULL )
   {
-    printf( "\nMetropolisHastings: Drawing Statistics: \n" );
+    Rprintf( "\nMetropolisHastings: Drawing Statistics: \n" );
     total = vars_stats->Len() * vars_stats->Mean();
     for ( i = 0; i < vars_stats->Len(); i++ )
     {
-      printf( "variable[ %d ] = %f (%f out of %f).\n", i, vars_stats->Val(i) / total, vars_stats->Val(i), total );
+      Rprintf( "variable[ %d ] = %f (%f out of %f).\n", i, vars_stats->Val(i) / total, vars_stats->Val(i), total );
     }
 
-    printf( "\n" );
+    Rprintf( "\n" );
 
   }
   */
 
   if ( accept_count != NULL )
   {
-    printf( "\nMetropolisHastings: Acceptance Rate Statistics: \n" );
+    Rprintf( "\nMetropolisHastings: Acceptance Rate Statistics: \n" );
     for ( i = 0; i < accept_count->Len(); i++ )
     {
       total = simulations_to_keep;
-      printf( "variable[ %d ] = %f (%f out of %f).\n", i, accept_count->Val(i) / total, accept_count->Val(i), total );
+      Rprintf( "variable[ %d ] = %f (%f out of %f).\n", i, accept_count->Val(i) / total, accept_count->Val(i), total );
     }
 
-    printf( "\n" );
+    Rprintf( "\n" );
 
   }
 

@@ -55,7 +55,7 @@ void BayesianLinearModel::initialize( CVector * y, CMatrix * x,
     }
     else
     {
-      printf( "BayesianLinearModel::nonInformative: Initial scale for sigma is zero or negative. Replacing initial scale to one.\n\n" );
+      Rprintf( "BayesianLinearModel::nonInformative: Initial scale for sigma is zero or negative. Replacing initial scale to one.\n\n" );
       sigma2->setScale( 1.0 );
     }
 
@@ -97,7 +97,7 @@ void BayesianLinearModel::initialize( CVector * y, CMatrix * x,
   }//end if dimensions are right
   else
   {
-    printf("data has wrong dimensions. len(y) = %d, nrow(x) = %d.", y->Len(), x->Row() );
+    Rprintf("data has wrong dimensions. len(y) = %d, nrow(x) = %d.", y->Len(), x->Row() );
     emptyModel();
   }
     
@@ -131,7 +131,7 @@ void BayesianLinearModel::initialize( CVector * y, CMatrix * x,
     }
     else
     {
-      printf( "BayesianLinearModel::nonInformative: Initial scale for sigma is zero or negative. Replacing initial scale to one.\n\n" );
+      Rprintf( "BayesianLinearModel::nonInformative: Initial scale for sigma is zero or negative. Replacing initial scale to one.\n\n" );
       sigma2->setScale( 1.0 );
     }
 
@@ -204,7 +204,7 @@ void BayesianLinearModel::initialize( CVector * y, CMatrix * x,
   }//end if dimensions are right
   else
   {
-    printf("data has wrong dimensions. len(y) = %d, nrow(x) = %d.", y->Len(), x->Row() );
+    Rprintf("data has wrong dimensions. len(y) = %d, nrow(x) = %d.", y->Len(), x->Row() );
     emptyModel();
   }
     
@@ -286,7 +286,7 @@ void BayesianLinearModel::nonInformative( CVector * y, CMatrix * x,
   }//end if dimensions are right
   else
   {
-    printf( "data has wrong dimensions. len(y) = %d, nrow(x) = %d.", y->Len(), x->Row() );
+    Rprintf( "data has wrong dimensions. len(y) = %d, nrow(x) = %d.", y->Len(), x->Row() );
     emptyModel();
   }
     
@@ -468,7 +468,7 @@ void BayesianLinearModel::t_likelihood( double p_nuError )
   }
   else
   {
-    printf( "Likelihood must be normally-distributed for conjugate prior specification." );
+    Rprintf( "Likelihood must be normally-distributed for conjugate prior specification." );
   }
 }//end
 
@@ -758,7 +758,7 @@ void BayesianLinearModel::keepSimulation( int simulations_kept )
   }
   else
   {
-    printf( "BayesianLinearModel::keepSimulation: Index [%d] out of range. Maximum is [%d].\n", simulations_kept, simulated_sigma2->Len() );
+    Rprintf( "BayesianLinearModel::keepSimulation: Index [%d] out of range. Maximum is [%d].\n", simulations_kept, simulated_sigma2->Len() );
   }
 
 }//end
@@ -832,28 +832,28 @@ void BayesianLinearModel::drawVariable( int index )
           }
           else
           {
-            printf( " BayesianLinearModel::drawVariable: Wrong argument in [%s]. Index out of range.\n", distr_map[ index ] );
+            Rprintf( " BayesianLinearModel::drawVariable: Wrong argument in [%s]. Index out of range.\n", distr_map[ index ] );
           }
         }
         else
         {
-          printf( " BayesianLinearModel::drawVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianLinearModel::drawVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianLinearModel::drawVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianLinearModel::drawVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }
     else
     {
-      printf( " BayesianLinearModel::drawVariable: Unknown variable [%s].\n", distr_map[ index ] );
+      Rprintf( " BayesianLinearModel::drawVariable: Unknown variable [%s].\n", distr_map[ index ] );
     }
   }
   else
   {
-    printf( "BayesianLinearModel::drawVariable: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianLinearModel::drawVariable: Variable index [%d] does not exist.\n", index );
   }
 
 }//end
@@ -895,28 +895,28 @@ void BayesianLinearModel::fullConditionalUpdateVariable( int index )
           }
           else
           {
-            printf( " BayesianLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Index out of range.\n", distr_map[ index ] );
+            Rprintf( " BayesianLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Index out of range.\n", distr_map[ index ] );
           }
         }
         else
         {
-          printf( " BayesianLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s].\n", distr_map[ index ] );
+          Rprintf( " BayesianLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s].\n", distr_map[ index ] );
         }
       }
       else
       {
-        printf( " BayesianLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
+        Rprintf( " BayesianLinearModel::fullConditionalUpdateVariable: Wrong argument in [%s]. Number expected.\n", distr_map[ index ] );
       }
       delete [] temp_distr;
     }
     else
     {
-      printf( " BayesianLinearModel::fullConditionalUpdateVariable: Unknown variable [%s].\n", distr_map[ index ] );
+      Rprintf( " BayesianLinearModel::fullConditionalUpdateVariable: Unknown variable [%s].\n", distr_map[ index ] );
     }
   }
   else
   {
-    printf( "BayesianLinearModel::fullConditionalUpdateVariable: Variable index [%d] does not exist.\n", index );
+    Rprintf( "BayesianLinearModel::fullConditionalUpdateVariable: Variable index [%d] does not exist.\n", index );
   }
 
 }//end
