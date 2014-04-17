@@ -14,7 +14,7 @@ The error terms can be distributed \bold{normal} or \bold{t}.
 }
 
 \arguments{
-  \item{type}{a character string. Either \code{"normal"} for normally distributed errors, or \code{"t"} for t distributed errors. error terms are \bold{normally} distributed.}
+  \item{type}{a character string. Either \code{"normal"} for normally distributed errors, or \code{"t"} for t distributed errors.}
 
   \item{df}{a positive integer value specifying the degrees of freedom for t distributed errors.  This argument is ignored when \code{type = "normal"}.}
 }

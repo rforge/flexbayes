@@ -4,7 +4,7 @@
 \title{MCMC Control and Initial Value Parameters}
 
 \description{
-  Specifies the number of parallel chains to be simulated, the control parameters governing each chain, and the initial values of the model parameters for each chain. The resulting list must be passed to a call of \code{bhlm()} in order to fit a Bayesian hierarchical linear model.
+  Specify the number of parallel chains to be simulated, the control parameters governing each chain, and the initial values of the model parameters for each chain.
 }
 
 \usage{
@@ -13,17 +13,17 @@ bhlm.sampler(nBurnin = 1000, nSamples = 1000, nThin = 1, nChains = 1,
 }
 
 \arguments{
-  \item{nSamples}{number of samples drawn per chain (not including burn-in and after thinning).}
+  \item{nBurnin}{a positive integer value specifying the length of the burn in period (i.e., the number of iterations to discard from the beginning of each chain).}
 
-  \item{nBurnin}{length of burn in, i.e. number of iterations to discard at the beginning of each chain.}
+  \item{nSamples}{a positive integer value specifying the number of samples drawn per chain (not including burn-in and after thinning).}
 
-  \item{nThin}{thinning rate.  Must be a positive integer.  Set \code{nThin} > 1 to reduce the autocorrelation of the samples.}
+  \item{nThin}{a positive integer specifying the thinning rate.  Setting \code{nThin} to a value greater than 1 is highly likely to reduce the autocorrelation of the samples.}
 
-  \item{nChains}{an integer specifying the number of parallel (independent) MCMC simulations (chains) to run.  In practice several chains should be run in order to test whether or not the chains have converged to their limiting distribution. This test can be run by calling \code{gelman.diag} on the output of the \code{bhlm} function.}
+  \item{nChains}{a positive integer value specifying the number of parallel (independent) MCMC simulations (chains) to run.  In practice several chains should be run in order to test whether the chains have converged to their limiting distribution.  This test can be run by calling \code{gelman.diag} on the output of the \code{bhlm} function.}
 
-  \item{init.point}{an string specifying the type of method to generate initial values for the \code{nChains} simulations.  \bold{"prior":} initial values for the fixed effect and second-level coefficients are drawn from t-distributions with location and scale given by the prior specification for the coefficients; initial values for the outcome variance and random effect variances (or covariance matrix) are sampled from an appropriate inverse chi-squared (or inverse Wishart) distribution, depending on the prior specification.  \bold{"user's choice":} initial values for the coefficients and the variance components are explicitly provided in \code{params.init}.}
+  \item{init.point}{a string specifying the method used to generate initial values for the simulations.  \describe{ \item{\code{"prior"}}{Initial values for the fixed effect and second-level coefficients are drawn from t distributions with location and scale given by the prior specification for the coefficients.  Initial values for the outcome variance and random effect variances (or covariance matrix) are sampled from an appropriate inverse chi-squared (or inverse Wishart) distribution, depending on the prior specification.} \item{\code{"user"}}{Initial values for the coefficients and the variance components are explicitly provided in the \code{params.init} argument to this function.}}}
 
-  \item{params.init}{a list specifying initial values for the MCMC simulations.  \code{params.init} is required only if \code{init.point} = "user's choice".  If  \code{nChains} > 1, then \code{params.init}  must be a list of lists containing the initial values for the parameters in each chain.  Otherwise it can simply be a list containing the initial values for the parameters.  Each chain's list must include the following elements:  \bold{error.var:} a vector, matrix or list specifying the initial values for the error variance parameter \bold{sigma^2}.  The type of input depends on the value of \code{common.error.var} in the call to \code{bhlm.prior} and the value of \code{nChains}.  \code{error.var} must be a list if \code{common.error.var} = 0.  \bold{random.coef:} a vector, matrix or list specifying the initial values for the random effects coefficients (\bold{beta}). If \code{random.coef} is a matrix or list, then the number of columns (or length, if a list) must coincide with the number of groups in the model. The dimension (or number of rows) must be the dimension of \bold{beta}.  If there are no random effects in the model, these initial values will be ignored.  \bold{fixed.coef:} a vector specifying the initial values for the fixed effects coefficients (\bold{gamma}).  If there are no fixed effects in the model, these initial values will be ignored.  \bold{level2.coef:} a vector specifying the initial values for the second level effects coefficients (\bold{alpha}).  If there are no second-level effects in the model, these initial values will be ignored.  \bold{random.var:} a vector or matrix specifying the initial values for the variances \bold{tau^2_k} or covariance matrix \bold{V} of the random effects.  If there are no random effects in the model, these initial values will be ignored.}
+  \item{params.init}{a list specifying initial values for the MCMC simulations to be used when \code{init.point = "user"}.  If \code{nChains} is greater than 1, then \code{params.init} must be a list of lists containing the initial values for the parameters in each chain.  Otherwise it can simply be a list containing the initial values for the parameters.  Each chain's list must include the following elements: \describe{\item{\code{error.var}}{a vector, matrix or list specifying the initial values for the error variance parameter \eqn{\sigma^{2}}.  The type of input depends on the value of \code{common.error.var} in the call to \code{bhlm.prior} and the value of \code{nChains}.  \code{error.var} must be a list if \code{common.error.var} = 0.}  \item{\code{random.coef}}{a vector, matrix or list specifying the initial values for the random effects coefficients \eqn{\beta}. If \code{random.coef} is a matrix or list, then the number of columns (or length, if a list) must coincide with the number of groups in the model. The dimension (or number of rows) must be the dimension of \eqn{\beta}.  If there are no random effects in the model, these initial values will be ignored.} \item{\code{fixed.coef}}{a vector specifying the initial values for the fixed effects coefficients \eqn{\gamma}.  If there are no fixed effects in the model, these initial values will be ignored.}  \item{\code{level2.coef}}{a vector specifying the initial values for the second level effects coefficients \eqn{\alpha}.  If there are no second-level effects in the model, these initial values will be ignored.}  \item{\code{random.var}}{a vector or matrix specifying the initial values for the variances \eqn{\tau_{k}^{2}} or covariance matrix \eqn{V} of the random effects.  If there are no random effects in the model, these initial values will be ignored.}}}
 }
 
 \value{
@@ -31,7 +31,7 @@ a list containing the control parameters and initial values for the Gibbs sample
 }
 
 \seealso{
-\code{\link{bhlm}}.
+\code{\link{bhlm}}
 }
 
 \keyword{FlexBayes}
