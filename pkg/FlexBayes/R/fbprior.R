@@ -111,13 +111,13 @@ fbprior <- function(dstn, ...)
     },
 
     "wishart" = {
-      default.parameters <- list(df = 1, Sigma = 1)
+      default.parameters <- list(df = 1, scale = 1)
       params <- ParseDotsForParameters(dots, default.parameters)
       list(name = dstn, parameters = params)
     },
 
     "invWishart" = {
-      default.parameters <- list(df = 1, Sigma = 1)
+      default.parameters <- list(df = 1, scale = 1)
       params <- ParseDotsForParameters(dots, default.parameters)
       list(name = dstn, parameters = params)
     },

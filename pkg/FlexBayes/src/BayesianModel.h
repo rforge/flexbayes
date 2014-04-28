@@ -10,7 +10,7 @@ class BayesianModel
 {
   public:
     virtual ~BayesianModel() { };
-    virtual char * name() = 0;
+    //virtual char * name() = 0;
     virtual int numberOfVariables() = 0;
 
     //necessary methods for Gibbs Sampler

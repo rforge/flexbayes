@@ -121,7 +121,7 @@ class BayesianMissingDataHLM: public BayesianModel
     CVector ** second_residuals;
 
 
-    //array of distributions map (maps distributions names to actual objects)
+    //array of distributions map (maps distributions gs to actual objects)
     char ** distr_map;
 
   public:
@@ -232,7 +232,7 @@ class BayesianMissingDataHLM: public BayesianModel
     void simulationsToArray( double * simul_output, int simulations_to_keep ); 
 
     //required methods
-    inline char * name() { return "Bayes Hierarchical Linear Model"; }
+    //inline char * name() { return "Bayes Hierarchical Linear Model"; }
     inline int numberOfVariables() { return number_of_variables; }
     void drawVariable( int var_index );
     void drawMissingResponse( int index );

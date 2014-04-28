@@ -956,7 +956,7 @@ bhlmUV <- function( response.formula = NULL, random.formula = NULL, fixed = NULL
 
       "invWishart" =
       {
-        random.var.scale <- valid.Cov.specification( valid.prior$random.var$parameters[["Sigma"]], ncol( X ) )
+        random.var.scale <- valid.Cov.specification( valid.prior$random.var$parameters[["scale"]], ncol( X ) )
         random.var.nu <- valid.prior$random.var$parameters[["df"]]
         4
       },

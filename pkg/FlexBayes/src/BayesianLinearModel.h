@@ -110,7 +110,7 @@ class BayesianLinearModel: public BayesianModel
     void saveMixtureDrawingStatistics( double * stats );
 
     //required methods
-    inline char * name() { return "Bayes Linear Model"; }
+    //inline char * name() { return "Bayes Linear Model"; }
     inline int numberOfVariables() { return number_of_variables; }
     void drawVariable( int var_index );
     void fullConditionalUpdateVariable( int var_index );
