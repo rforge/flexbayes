@@ -1,5 +1,5 @@
 FlexBayesPriorDistributions <- c("normal", "t", "nonInformative", "beta",
-                                 "gamma", "normal.mixture", "t.mixture",
+                                 "gamma", "normalMixture", "tMixture",
                                  "uniformShrinkage", "duMouchel",
                                  "nonInfoPower", "massPoint", "wishart",
                                  "invWishart", "invChisq")
@@ -7,33 +7,14 @@ FlexBayesPriorDistributions <- c("normal", "t", "nonInformative", "beta",
 ParseDotsForParameters <- function(dots, params)
 {
   dots.names <- names(dots)
-  params.names <- names(params)
+  prp <- list()
 
-  if(is.null(dots.names)) {
-    if(n.dots <- length(dots)) {
-      n.dots <- min(c(length(params), n.dots))
-      params[1:n.dots] <- dots
-    }
+  for(p in params) {
+    if(is.null(prp[[p]] <- dots[[p]]))
+      stop("parameter ", sQuote(p), " not found")
   }
 
-  else {
-    named.dots <- dots.names[nchar(dots.names) > 0]
-    if(!all(named.dots %in% params.names))
-    stop("parameter not for dstn")
-
-    common.names <- intersect(names(params), names(dots))
-    params[common.names] <- dots[common.names]
-
-    pidx <- !(params.names %in% common.names)
-    didx <- !(dots.names %in% common.names)
-
-    if((n.dots <- sum(didx)) > sum(pidx))
-    stop("too many parameters")
-
-    params[pidx][1:n.dots] <- dots[didx]
-  }
-
-  params
+  prp
 }
 
 
@@ -45,21 +26,26 @@ fbprior <- function(dstn, ...)
   prior <- switch(dstn,
 
     "normal" = {
-      default.parameters <- list(mean = 0, S = diag, k0 = 1)
-      parameters <- ParseDotsForParameters(dots, default.parameters)
+      parameters <- ParseDotsForParameters(dots, c("mean", "S"))
+      parameters$S <- as.matrix(parameters$S)
+      if(!all(dim(parameters$S) == length(parameters$mean)))
+        stop("mean vector ", sQuote("mean"), " and scale matrix ", sQuote("S"),
+             " are not conformable")
+      parameters$k0 <- 1.0
       list(name = dstn, parameters = parameters)
     },
 
     "t" = {
-      default.parameters <- list(mean = 0, S = diag, df = 1)
-      params <- ParseDotsForParameters(dots, default.parameters)
-      list(name = dstn, parameters = params)
+      parameters <- ParseDotsForParameters(dots, c("mean", "S", "df"))
+      parameters$S <- as.matrix(parameters$S)
+      if(!all(dim(parameters$S) == length(parameters$mean)))
+        stop("mean vector ", sQuote("mean"), " and scale matrix ", sQuote("S"),
+             " are not conformable")
+      list(name = dstn, parameters = parameters)
     },
 
     "nonInformative" = {
-      default.parameters <- list(mean = 0, S = diag)
-      params <- ParseDotsForParameters(dots, default.parameters)
-      list(name = dstn, parameters = params)
+      list(name = dstn, parameters = list())
     },
 
     "beta" = {
@@ -74,16 +60,72 @@ fbprior <- function(dstn, ...)
       list(name = dstn, parameters = params)
     },
 
-    "normal.mixture" = {
-      default.parameters <- list(mean = 0, S = diag, k = 3, probs = rep(0.5, 2), k0 = 1)
-      params <- ParseDotsForParameters(dots, default.parameters)
-      list(name = dstn, parameters = params)
+    "normalMixture" = {
+      parameters <- ParseDotsForParameters(dots, c("mean", "S", "w"))
+      n.comps <- length(parameters$w)
+
+      parameters$mean <- as.list(parameters$mean)
+      p <- length(parameters$mean[[1]])
+      if(any(sapply(parameters$mean, length) != p))
+        stop("mean vectors are not all the same length")
+
+      if(length(parameters$mean) != n.comps)
+        stop("weights vector ", sQuote("w"), " and mean vectors ", sQuote("mean"),
+             " are not conformable")
+
+      parameters$S <- as.list(parameters$S)
+      if(p > 1) {
+        if(any(sapply(parameters$S, dim) != p))
+          stop("mean vectors ", sQuote("mean"), " and scale matrix array ",
+               sQuote("S"), " are not conformable")
+      }
+
+      else {
+        if(any(sapply(parameters$S, length) != p))
+           stop("mean vectors ", sQuote("mean"), " and scale matrix array ",
+           sQuote("S"), " are not conformable")
+      }
+
+      if(length(parameters$S) != n.comps)
+        stop("weights vector ", sQuote("w"), " and scale matrix array ",
+             sQuote("S"), " are not conformable")
+
+      parameters$k0 <- 1.0
+      list(name = dstn, parameters = parameters)
     },
 
-    "t.mixture" = {
-      default.parameters <- list(mean = 0, S = diag, k = 3, df = 3, probs = rep(0.5, 2))
-      params <- ParseDotsForParameters(dots, default.parameters)
-      list(name = dstn, parameters = params)
+    "tMixture" = {
+      parameters <- ParseDotsForParameters(dots, c("mean", "S", "w", "df"))
+      n.comps <- length(parameters$w)
+
+      parameters$mean <- as.list(parameters$mean)
+      p <- length(parameters$mean[[1]])
+      if(any(sapply(parameters$mean, length) != p))
+        stop("mean vectors are not all the same length")
+
+      if(length(parameters$mean) != n.comps)
+        stop("weights vector ", sQuote("w"), " and mean vectors ", sQuote("mean"),
+             " are not conformable")
+
+      parameters$S <- as.list(parameters$S)
+      if(p > 1) {
+        if(any(sapply(parameters$S, dim) != p))
+          stop("mean vectors ", sQuote("mean"), " and scale matrix array ",
+               sQuote("S"), " are not conformable")
+      }
+
+      else {
+        if(any(sapply(parameters$S, length) != p))
+          stop("mean vectors ", sQuote("mean"), " and scale matrix array ",
+               sQuote("S"), " are not conformable")
+      }
+
+      if(length(parameters$S) != n.comps)
+        stop("weights vector ", sQuote("w"), " and scale matrix array ",
+             sQuote("S"), " are not conformable")
+
+      parameters$k <- 1.0
+      list(name = dstn, parameters = parameters)
     },
 
     "uniformShrinkage" = {
@@ -123,9 +165,8 @@ fbprior <- function(dstn, ...)
     },
 
     "invChisq" = {
-      default.parameters <- list(df = 3, sigma0.sq = 1)
-      params <- ParseDotsForParameters(dots, default.parameters)
-      list(name = dstn, parameters = params)
+      parameters <- ParseDotsForParameters(dots, c("df", "sigma0.sq"))
+      list(name = dstn, parameters = parameters)
     },
 
     stop("Impossible error: switch in fbprior")
@@ -141,7 +182,7 @@ print.fbprior <- function(x, ...)
 	cat(paste(x$name, "with:\n\n"))
 
 	for(name in names(x$parameters)) {
-		cat(paste(name, ":\n"))
+		cat(paste(name, ":\n", sep = ""))
 		print(x$parameters[[name]])
 		cat("\n")
 	}

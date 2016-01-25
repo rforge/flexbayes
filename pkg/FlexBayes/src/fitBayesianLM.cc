@@ -65,7 +65,7 @@ void fitBayesianLM( int * number_data,
                     double * betamean,
                     double * betaCov,
                     double * betaDF,
-		    double * proportions,
+                    double * proportions,
                     int * number_mixtures,
                     int * burnInLength,
                     int * simulationsToPerform,
@@ -227,6 +227,17 @@ void fitBayesianLM( int * number_data,
         mixture_type = new char [2];
         sprintf( mixture_type, "t" );
       }
+
+//for ( i = 0; i < (int) (*number_mixtures); i++ )
+//{
+//  beta0s[i]->Print();
+//}
+
+
+//for ( i = 0; i < (int) (*number_mixtures); i++ )
+//{
+//  prior_betaCovs[i]->Print();
+//}
 
       bayes_linear.initialize( response, predictors, (int) (*number_mixtures), 
                                beta0s, prior_betaCovs, proportions, betaDF, mixture_type,

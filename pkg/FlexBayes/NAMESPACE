@@ -1,5 +1,9 @@
 export(
   fbprior,
+  blm,
+  blm.likelihood,
+  blm.prior,
+  blm.sampler,
   bhlm,
   bhlm.likelihood,
   bhlm.prior,
@@ -22,4 +26,14 @@ S3method(print, fbprior)
 S3method(print, posterior)
 S3method(summary, posterior)
 S3method(print, summary.posterior)
+
+S3method(coef, blm)
+S3method(residuals, blm)
+S3method(fitted, blm)
+S3method(print, blm)
+S3method(model.frame, blm)
+S3method(model.matrix, blm)
+S3method(summary, blm)
+S3method(print, summary.blm)
+
 
