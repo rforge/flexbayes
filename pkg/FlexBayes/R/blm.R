@@ -2,62 +2,45 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
                 likelihood = blm.likelihood(), sampler = blm.sampler(),
                 contrasts = NULL)
 {
-  ### if we want the statistics on variable drawings from Gibbs 
-  ### or a mixture set print.stats to 1; otherwise set it to 0
-  print.stats <- 1
-
   if(!missing(weights))
-    stop("weighted regression is not implemented yet")
-
-  #make sure formula is of the form y ~ 1  
-  #  if(length(terms(formula)@term.labels)== 0 && terms(formula)@intercept == 1 &&  terms(formula)@response == 1)
-  #  {
-  #    location.scale <- T
-  #  }
-  #  else
-  #  {
-  #    location.scale <- F
-  #  }
+    stop("weighted regression is not implemented")
 
   cl <- mf <- match.call()
-  keep <- c(TRUE, names(mf)[-1] %in% names(formals(model.frame.default)))
+  keep <- c(TRUE, names(mf)[-1] %in% names(formals(stats::model.frame.default)))
   mf <- mf[keep]
-  mf[[1L]] <- quote(stats::model.frame)
-  
-
-#  terms.attrs <- attributes(terms(formula))
-#  location.scale <- (!length(terms.attrs$term.labels) && terms.attrs$intercept && terms.attrs$response)
-
-  #Kjell: these checks not necessary
-  ###check if this is a call for the Location/Scale model
-  #if(location.scale)
-  #{
-    #make sure formula is of the form y ~ 1  
-    #if(length(terms(formula)@term.labels)!= 0)
-    #{
-    #  stop("blm: formula must contain no variables besides the response one.\n")
-    #}
-
-    #if(terms(formula)@intercept != 1)
-    #{
-    #  stop("blm: formula must contain the intercept term.")
-    #}
-
-    #if(terms(formula)@response == 0)
-    #{
-    #  stop("blm: must specified response variable in formula.")
-    #}
-  #}#end if location.scale
-
-
-#model.blm <- call("model.frame", formula = formula, na.action = na.action)
-#  if(!missing(data))
-#   model.blm$data <- data
+  mf[[1L]] <- quote(stats::model.frame.default)
 
   mf <- eval(mf, parent.frame())
   mt <- attr(mf, "terms")
   Y <- model.extract(mf, "response")
   X <- model.matrix(mt, mf, contrasts)
+
+  coef.names <- dimnames(X)[[2]]
+
+  n <- nrow(X)
+  p <- ncol(X)
+
+  likelihood$type <- match.arg(likelihood$type, choices = c("norm", "t"))
+
+  if(likelihood$type == "norm") {
+    mle.fit <- stats::.lm.fit(X, Y)
+    cov.unscaled <- chol2inv(mle.fit$qr[1:p, , drop = FALSE])
+    resvar <- sum(mle.fit$residuals^2) / (n - p)
+    mle <- list(distribution = "norm", coefficients = mle.fit$coefficients,
+                vcov = resvar * cov.unscaled)
+    names(mle$coefficients) <- coef.names
+    dimnames(mle$vcov) <- list(coef.names, coef.names)
+  }
+  
+  else if(likelihood$type == "t") {
+      contr <- list(penalty = NULL, trace = FALSE, info.type = "observed",
+                    opt.method = "nlminb", opt.control = list())
+
+      mle.fit <- sn::selm.fit(X, Y, family = "ST",
+                              fixed.param = list(alpha = 0, nu = likelihood$df),
+                              selm.control = contr)
+      mle <- list()
+  }
 
   a <- attributes(mt)
   location.scale <- (!length(a$term.labels) && a$intercept && a$response)
@@ -65,12 +48,8 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
   #Kjell: redundant!?
   #contrasts <- contrasts(X)
 
-  n <- nrow(X)
-  p <- ncol(X)
 
   ### First validate/interpret the arguments for the likelihood ###
-
-  likelihood$type <- match.arg(likelihood$type, choices = c("normal", "t"))
 
   if(prior$conjugate && likelihood$type == "t")
     stop("the conjugate prior requires a normal likelihood")
@@ -123,6 +102,19 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 #  else
 #    prior.sigma <- "nonInformative"
 
+  if(prior$priorBeta$name %in% c("norm", "t")) {
+    names(prior$priorBeta$parameters$mean) <- coef.names
+    dimnames(prior$priorBeta$parameters$S) <- list(coef.names, coef.names)
+  }
+
+  if(prior$priorBeta$name %in% c("normmix", "tmix")) {
+    for(i in 1:length(prior$priorBeta$parameters$w)) {
+      names(prior$priorBeta$parameters$mean[[i]]) <- coef.names
+      dimnames(prior$priorBeta$parameters$S[[i]]) <- list(coef.names, coef.names)
+    }
+  }
+
+
   iType <- paste(likelihood$type,
                  prior$priorBeta$name,
                  prior$priorSigma$name,
@@ -130,7 +122,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 
   iType <- switch(iType,
 
-		"normal:nonInformative:nonInformative" = {
+		"norm:nonInformative:nonInformative" = {
 			betaMean <- rep(0.0, p)
 			betaCov <- diag(p)
 			betaDf <- 3.0
@@ -139,7 +131,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			0
 		},
 
-		"normal:nonInformative:invChisq" = {
+		"norm:nonInformative:invChisq" = {
 			betaMean <- rep(0.0, p)
 			betaCov <- diag(p)
 			betaDf <- 3.0
@@ -148,7 +140,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			0
 		},
 
-		"normal:normal:nonInformative" = {
+		"norm:norm:nonInformative" = {
 			betaMean <- prior$priorBeta$parameters$mean
 			betaCov <- prior$priorBeta$parameters$S
 			betaDf <- 3.0
@@ -157,16 +149,16 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			1
 		},
 
-		"normal:normal:invChisq" = {
-      betaMean <- prior$priorBeta$parameters$mean
-      betaCov <- prior$priorBeta$parameters$S
-      betaDf <- 3.0
+		"norm:norm:invChisq" = {
+			betaMean <- prior$priorBeta$parameters$mean
+			betaCov <- prior$priorBeta$parameters$S
+			betaDf <- 3.0
 			sigmaDf <- prior$priorSigma$parameters[["df"]]
 			sigmaScale <- prior$priorSigma$parameters[["sigma0.sq"]]
 			ifelse(prior$conjugate, 6, 1)
 		},
 
-		"normal:t:nonInformative" = {
+		"norm:t:nonInformative" = {
 			betaMean <- prior$priorBeta$parameters[["mean"]]
 			betaCov <- prior$priorBeta$parameters[["S"]]
 			betaDf <- prior$priorBeta$parameters[["df"]]
@@ -175,7 +167,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			2
 		},
 
-		"normal:t:invChisq" = {
+		"norm:t:invChisq" = {
 			betaMean <- prior$priorBeta$parameters[["mean"]]
 			betaCov <- prior$priorBeta$parameters[["S"]]
 			betaDf <- prior$priorBeta$parameters[["df"]]
@@ -184,46 +176,46 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			2
 		},
 
-		"normal:normalMixture:nonInformative" = {
+		"norm:normmix:nonInformative" = {
 			betaMean <- prior$priorBeta$parameters$mean
 			betaCov <- prior$priorBeta$parameters$S
-      beta.props <- prior$priorBeta$parameters$w
-      beta.k <- prior$priorBeta$parameters$k0
-      beta.components <- length(beta.props)
-      #beta.components <- prior$priorBeta$parameters[["components"]]
+			beta.props <- prior$priorBeta$parameters$w
+			beta.k <- prior$priorBeta$parameters$k0
+			beta.components <- length(beta.props)
+			#beta.components <- prior$priorBeta$parameters[["components"]]
 			betaDf <- 3.0
 			sigmaDf <- 0.0
 			sigmaScale <- 1.0
 			7
 		},
 
-		"normal:normalMixture:invChisq" = {
-      betaMean <- prior$priorBeta$parameters$mean
-      betaCov <- prior$priorBeta$parameters$S
-      beta.props <- prior$priorBeta$parameters$w
-      beta.k <- prior$priorBeta$parameters$k0
-      beta.components <- length(beta.props)
-      #beta.components <- prior$priorBeta$parameters[["components"]]
+		"norm:normmix:invChisq" = {
+			betaMean <- prior$priorBeta$parameters$mean
+			betaCov <- prior$priorBeta$parameters$S
+			beta.props <- prior$priorBeta$parameters$w
+			beta.k <- prior$priorBeta$parameters$k0
+			beta.components <- length(beta.props)
+			#beta.components <- prior$priorBeta$parameters[["components"]]
 			betaDf <- 3.0
 			sigmaDf <- prior$priorSigma$parameters[["df"]]
 			sigmaScale <- prior$priorSigma$parameters[["sigma0.sq"]]
 			ifelse(prior$conjugate, 15, 8)
 		},
 
-		"normal:tMixture:nonInformative" = {
+		"norm:tmix:nonInformative" = {
 			betaMean <- prior$priorBeta$parameters[["mean"]]
 			betaCov <- prior$priorBeta$parameters[["S"]]
-      beta.k <- prior$priorBeta$parameters[["k"]]
-      beta.props <- prior$priorBeta$parameters[["w"]]
-      beta.components <- length(beta.props)
-      #beta.components <- prior$priorBeta$parameters[["components"]]
+			beta.k <- prior$priorBeta$parameters[["k"]]
+			beta.props <- prior$priorBeta$parameters[["w"]]
+			beta.components <- length(beta.props)
+			#beta.components <- prior$priorBeta$parameters[["components"]]
 			betaDf <- prior$priorBeta$parameters[["df"]]
 			sigmaDf <- 0.0
 			sigmaScale <- 1.0
 			9
 		},
 
-		"normal:tMixture:invChisq" = {
+		"norm:tmix:invChisq" = {
 			betaMean <- prior$priorBeta$parameters[["mean"]]
       betaCov <- prior$priorBeta$parameters[["S"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -254,7 +246,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			3
 		},
 
-		"t:normal:nonInformative" = {
+		"t:norm:nonInformative" = {
       betaMean <- prior$priorBeta$parameters$mean
       betaCov <- prior$priorBeta$parameters$S
       betaDf <- 3.0
@@ -263,7 +255,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			4
 		},
 
-		"t:normal:invChisq" = {
+		"t:norm:invChisq" = {
       betaMean <- prior$priorBeta$parameters$mean
       betaCov <- prior$priorBeta$parameters$S
       betaDf <- 3.0
@@ -290,7 +282,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			5
 		},
 
-		"t:normalMixture:nonInformative" = {
+		"t:normmix:nonInformative" = {
       betaMean <- prior$priorBeta$parameters$mean
       betaCov <- prior$priorBeta$parameters$S
       beta.props <- prior$priorBeta$parameters$w
@@ -303,7 +295,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			11
 		},
 
-		"t:normalMixture:invChisq" = {
+		"t:normmix:invChisq" = {
       betaMean <- prior$priorBeta$parameters$mean
       betaCov <- prior$priorBeta$parameters$S
       beta.props <- prior$priorBeta$parameters$w
@@ -316,7 +308,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			12
 		},
 
-		"t:tMixture:nonInformative" = {
+		"t:tmix:nonInformative" = {
       betaMean <- prior$priorBeta$parameters[["mean"]]
       betaCov <- prior$priorBeta$parameters[["S"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -329,7 +321,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 			13
 		},
 
-		"t:tMixture:invChisq" = {
+		"t:tmix:invChisq" = {
       betaMean <- prior$priorBeta$parameters[["mean"]]
       betaCov <- prior$priorBeta$parameters[["S"]]
       beta.k <- prior$priorBeta$parameters[["k"]]
@@ -711,9 +703,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 #    beta.names <- "MEAN"
 
   #run the code
-  coefs <- list()
-  sigma <- list()
-  tau2ErrorScale <- list()
+  chains <- list()
 
   for(i in 1:nChains) {
 
@@ -736,7 +726,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
                    read.init.point,
                    starting.points$beta[, i],
                    starting.points$sigma[i],
-                   print.stats)
+                   1)
 
     #create new object blm
 #    gibbs.drawing.stats <- NULL
@@ -790,45 +780,31 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
 #                           end = simulationsToPerform*sampleFrequency + burnInLength)
 #    }
 
-    samples.this.chain <- fit$samples[, 1:(p + 1)]
-    dimnames(samples.this.chain) <- list(NULL, c(dimnames(X)[[2]], "~sigma~"))
+    samples <- fit$samples
+    
+    if(ncol(samples) == (p + 1))
+      dimnames(samples) <- list(NULL, c(coef.names, "(sigma)"))
+    else if(ncol(samples) == (n + p + 1))
+      dimnames(samples) <- list(NULL,
+                                c(coef.names, "(sigma)", paste("TAU:ERROR:", seq(1, n), sep = "")))
+    else
+      stop("something went wrong")
 
-    samples <- fit$samples[, 1:p, drop = FALSE]
-    dimnames(samples) <- list(NULL, colnames(X))
+    chains[[i]] <- mcmc(samples,
+                        thin = sampleFrequency,
+                        start = burnInLength + 1,
+                        end = simulationsToPerform*sampleFrequency + burnInLength)
 
-    coefs[[i]] <- mcmc(samples,
-                       thin = sampleFrequency,
-                       start = burnInLength + 1,
-                       end = simulationsToPerform*sampleFrequency + burnInLength)
-
-    samples <- fit$samples[, p + 1, drop = FALSE]
-    dimnames(samples) <- list(NULL, "sigma")
-
-    sigma[[i]] <- mcmc(samples,
-                       thin = sampleFrequency,
-                       start = burnInLength + 1,
-                       end = simulationsToPerform*sampleFrequency + burnInLength)
-
-    if((d <- dim(fit$samples)[2]) > p + 1) {
-
-      samples <- fit$samples[, (p + 2):d, drop = FALSE]
-      dimnames(samples) <- list(NULL, paste("TAU:ERROR:", seq(1, n), sep = ""))
-
-      tau2ErrorScale[[i]] <- mcmc(samples,
-                                  thin = sampleFrequency,
-                                  start = burnInLength + 1,
-                                  end = simulationsToPerform*sampleFrequency + burnInLength)
-
-    }
   }
 
-	ans <- list(coefficients = mcmc.list(coefs),
-              sigma = mcmc.list(sigma),
-              tau2ErrorScale = mcmc.list(tau2ErrorScale),
+  ans <- list(coef.names = coef.names,
+              chains = mcmc.list(chains),
               call = cl,
               terms = mt,
               model = mf,
-              contrasts = contrasts)
+              contrasts = contrasts,
+              prior = prior,
+              mle = mle)
 
   oldClass(ans) <- "blm"
   ans

@@ -262,6 +262,8 @@ CMatrix CMatrix::subMatrixComplement( CVector & index )  throw( rtErr )
     Rprintf( "Reached past end of control in CMatrix CMatrix::subMatrixComplement( CVector & index ).\n" );
   }
 
+  CMatrix sub_m( 0, 0 );
+  return sub_m;
 }//end
 
 
@@ -311,6 +313,8 @@ CMatrix CMatrix::subMatrixCross( CVector & index )  throw( rtErr )
     Rprintf( "Reached past end of control in CMatrix CMatrix::subMatrixCross( CVector & index ).\n" );
   }
 
+  CMatrix sub_m( 0, 0 );
+  return sub_m;
 }//end
 
 

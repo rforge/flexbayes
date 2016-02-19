@@ -1,8 +1,5 @@
-FlexBayesPriorDistributions <- c("normal", "t", "nonInformative", "beta",
-                                 "gamma", "normalMixture", "tMixture",
-                                 "uniformShrinkage", "duMouchel",
-                                 "nonInfoPower", "massPoint", "wishart",
-                                 "invWishart", "invChisq")
+FlexBayesPriorDistributions <- c("norm", "t", "nonInformative", "normmix",
+                                 "tmix", "invChisq")
 
 ParseDotsForParameters <- function(dots, params)
 {
@@ -25,7 +22,7 @@ fbprior <- function(dstn, ...)
 
   prior <- switch(dstn,
 
-    "normal" = {
+    "norm" = {
       parameters <- ParseDotsForParameters(dots, c("mean", "S"))
       parameters$S <- as.matrix(parameters$S)
       if(!all(dim(parameters$S) == length(parameters$mean)))
@@ -60,7 +57,7 @@ fbprior <- function(dstn, ...)
       list(name = dstn, parameters = params)
     },
 
-    "normalMixture" = {
+    "normmix" = {
       parameters <- ParseDotsForParameters(dots, c("mean", "S", "w"))
       n.comps <- length(parameters$w)
 
@@ -74,17 +71,17 @@ fbprior <- function(dstn, ...)
              " are not conformable")
 
       parameters$S <- as.list(parameters$S)
-      if(p > 1) {
-        if(any(sapply(parameters$S, dim) != p))
-          stop("mean vectors ", sQuote("mean"), " and scale matrix array ",
-               sQuote("S"), " are not conformable")
-      }
+      parameters$S <- lapply(parameters$S, as.matrix)
 
-      else {
-        if(any(sapply(parameters$S, length) != p))
-           stop("mean vectors ", sQuote("mean"), " and scale matrix array ",
-           sQuote("S"), " are not conformable")
-      }
+      if(any(sapply(parameters$S, dim) != p))
+        stop("mean vectors ", sQuote("mean"), " and scale matrix array ",
+             sQuote("S"), " are not conformable")
+
+#      else {
+#        if(any(sapply(parameters$S, length) != p))
+#           stop("mean vectors ", sQuote("mean"), " and scale matrix array ",
+#           sQuote("S"), " are not conformable")
+#      }
 
       if(length(parameters$S) != n.comps)
         stop("weights vector ", sQuote("w"), " and scale matrix array ",
@@ -94,7 +91,7 @@ fbprior <- function(dstn, ...)
       list(name = dstn, parameters = parameters)
     },
 
-    "tMixture" = {
+    "tmix" = {
       parameters <- ParseDotsForParameters(dots, c("mean", "S", "w", "df"))
       n.comps <- length(parameters$w)
 

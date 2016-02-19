@@ -34,10 +34,10 @@ blm.sampler <- function(nBurnin = 1000, nSamples = 1000, nThin = 1, nChains = 1,
              "the coefficients")
     }
 
-    if(!is.vector(sigma.init))
+    if(!is.vector(sigma))
       stop("initial points for sigma must be provided")
 
-    else if(length(sigma.init)!= nChains)
+    else if(length(sigma)!= nChains)
       stop("there must be ", nChains, " initial points specified for sigma")
   }
 

@@ -1,14 +1,14 @@
-coef.blm <- function(object, LOC = mean, agg = TRUE, ...)
+coef.blm <- function(object, LOC = mean, ...)
 {
-  chains <- object$coefficients
+  chains <- object$chains
   nChains <- nchain(chains)
-  coef.names <- dimnames(chains[[1]])[[2]]
+  coef.names <- object$coef.names
   coefs <- array(NA, c(nChains, length(coef.names)))
   dimnames(coefs) <- list(paste("Chain ", 1:nChains, ":", sep = ""), coef.names)
   for(chain in 1:nChains)
-    coefs[chain, ] <- apply(chains[[chain]], 2, LOC)
+    coefs[chain, ] <- apply(chains[[chain]][, coef.names, drop = FALSE], 2, LOC)
 
-  if(agg) colMeans(coefs) else coefs
+  coefs
 }
 
 
@@ -19,7 +19,7 @@ print.blm <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
 
   if(length(coef(x))) {
     cat("Coefficients:\n")
-    print.default(format(coef(x), digits = digits), print.gap = 2L,
+    print.default(format(coef(x)[1, ], digits = digits), print.gap = 2L,
                   quote = FALSE)
   }
   else
@@ -32,7 +32,7 @@ print.blm <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
 
 fitted.blm <- function(object, LOC = mean, ...)
 {
-  cf <- coef(object, LOC = LOC)
+  cf <- coef(object, LOC = LOC)[1, ]
   X <- model.matrix(object)
   drop(X %*% cf)
 }
@@ -54,15 +54,20 @@ residuals.blm <- function(object, LOC = mean, ...)
 }
 
 
-summary.blm <- function(object, LOC = mean, DISP = sd, ...)
+summary.blm <- function(object, LOC = mean, DISP = stats::sd, ...)
 {
-    cf <- coef(object, LOC = LOC)
+    cf <- coef(object, LOC = LOC)[1, ]
     coefficients <- matrix(NA, length(cf), 4)
     coefficients[, 1] <- cf
     coefficients[, 2] <- coef(object, LOC = DISP)
-    dimnames(coefficients) <- list(names(cf), c("Estimate", "Std. Error", "", ""))
-    
-    sigma <- mean(sapply(object$sigma, DISP))
+    coefficients[, 3] <- coefficients[, 1] / coefficients[, 2]
+    p.values <- apply(object$chains[[1]][, names(cf)], 2,
+                      function(u) sum(u > 0.0) / length(u))
+    coefficients[, 4] <- ifelse(cf > 0, 1.0 - p.values, p.values)
+    dimnames(coefficients) <- list(names(cf), c("Estimate", "Std. Error", "t value", "Pr(>|t|)"))
+
+    sigma.chains <- lapply(object$chains, function(u) u[, "(sigma)"])
+    sigma <- mean(sapply(sigma.chains, LOC))
     
     res <- residuals(object, LOC = LOC)
     

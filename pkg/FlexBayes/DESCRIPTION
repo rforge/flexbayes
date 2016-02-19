@@ -1,10 +1,11 @@
 Package: FlexBayes
-Version: 0.9-5
-Date: 2016-01-25
+Version: 0.9-6
+Date: 2016-02-10
 Title: Flexible Bayesian Inference
 Author: TIBCO Software Inc.
 Maintainer: Kjell Konis <kjell.konis@me.com>
 Depends: coda
+Imports: sn, nor1mix
 Description: Using this package, it is possible to run an MCMC on a model and \
              data set, summarize inferences, and do convergence diagnostics.
 License: GPL-2
