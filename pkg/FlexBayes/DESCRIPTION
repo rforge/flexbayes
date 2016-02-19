@@ -1,6 +1,6 @@
 Package: FlexBayes
-Version: 0.9-6
-Date: 2016-02-10
+Version: 0.9-7
+Date: 2016-02-19
 Title: Flexible Bayesian Inference
 Author: TIBCO Software Inc.
 Maintainer: Kjell Konis <kjell.konis@me.com>

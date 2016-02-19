@@ -25,8 +25,7 @@ profile.blm <- function(fitted, param, ...)
   status <- switch(prior,
 
     "nonInformative" = {
-      prior.min <- mle.min
-      prior.max <- mle.max
+      prior.range <- c(mle.min, mle.max)
       0
     },
 
@@ -34,6 +33,7 @@ profile.blm <- function(fitted, param, ...)
       prior.m <- fitted$prior$priorBeta$parameters$mean[param]
       prior.sd <- sqrt(fitted$prior$priorBeta$parameters$S[param, param])
       prior.range <- qnorm(c(0.001, 0.999), mean = prior.m, sd = prior.sd)
+      0
     },
 
     "t" = {1},
