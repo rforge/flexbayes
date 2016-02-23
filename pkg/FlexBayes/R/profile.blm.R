@@ -42,11 +42,11 @@ profile.blm <- function(fitted, param, ...)
       prior.m <- sapply(fitted$prior$priorBeta$parameters$mean,
                         function(u, param) u[param],
                         param = param)
-      prior.sd <- sapply(fitted$prior$priorBeta$parameters$S,
-                         function(u, param) u[param, param],
-                         param = param)
+      prior.var <- sapply(fitted$prior$priorBeta$parameters$S,
+                          function(u, param) u[param, param],
+                          param = param)
       prior.w <- fitted$prior$priorBeta$parameters$w
-      prior.nm <- norMix(mu = prior.m, sigma = sqrt(prior.sd), w = prior.w)
+      prior.nm <- norMix(mu = prior.m, sigma = sqrt(prior.var), w = prior.w)
       prior.range <- qnorMix(c(0.001, 0.999), prior.nm)
     },
 

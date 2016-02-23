@@ -18,9 +18,13 @@ print.blm <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
       "\n\n", sep = "")
 
   if(length(coef(x))) {
+    cf <- coef(x)
+    cf.names <- dimnames(cf)[[2]]
+    cf <- cf[1, , drop = TRUE]
+    names(cf) <- cf.names
+
     cat("Coefficients:\n")
-    print.default(format(coef(x)[1, ], digits = digits), print.gap = 2L,
-                  quote = FALSE)
+    print.default(format(cf, digits = digits), print.gap = 2L, quote = FALSE)
   }
   else
     cat("No coefficients\n")
@@ -56,12 +60,16 @@ residuals.blm <- function(object, LOC = mean, ...)
 
 summary.blm <- function(object, LOC = mean, DISP = stats::sd, ...)
 {
-    cf <- coef(object, LOC = LOC)[1, ]
+    cf <- coef(object, LOC = LOC)
+    cf.names <- dimnames(cf)[[2]]
+    cf <- cf[1, , drop = TRUE]
+    names(cf) <- cf.names
     coefficients <- matrix(NA, length(cf), 4)
     coefficients[, 1] <- cf
     coefficients[, 2] <- coef(object, LOC = DISP)
     coefficients[, 3] <- coefficients[, 1] / coefficients[, 2]
-    p.values <- apply(object$chains[[1]][, names(cf)], 2,
+
+    p.values <- apply(object$chains[[1]][, cf.names, drop = FALSE], 2,
                       function(u) sum(u > 0.0) / length(u))
     coefficients[, 4] <- ifelse(cf > 0, 1.0 - p.values, p.values)
     dimnames(coefficients) <- list(names(cf), c("Estimate", "Std. Error", "t value", "Pr(>|t|)"))
@@ -72,7 +80,7 @@ summary.blm <- function(object, LOC = mean, DISP = stats::sd, ...)
     res <- residuals(object, LOC = LOC)
     
     ans <- list(call = object$call, terms = object$terms, residuals = res,
-    coefficients = coefficients, sigma = sigma)
+                coefficients = coefficients, sigma = sigma)
     oldClass(ans) <- "summary.blm"
     ans
 }

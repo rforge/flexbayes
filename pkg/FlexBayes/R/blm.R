@@ -43,7 +43,7 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
   }
 
   a <- attributes(mt)
-  location.scale <- (!length(a$term.labels) && a$intercept && a$response)
+  #location.scale <- (!length(a$term.labels) && a$intercept && a$response)
 
   #Kjell: redundant!?
   #contrasts <- contrasts(X)
@@ -470,8 +470,9 @@ blm <- function(formula, data, subset, weights, na.action, prior = blm.prior(),
   ###  CHANGE GUI TO ASK FOR VARIANCE  ###
 
   ## For the Location Scale Model betaCov corresponds to standard deviations
-  if(location.scale && p == 1)
-      betaCov <- betaCov^2
+
+  #if(location.scale && p == 1)
+  #      betaCov <- betaCov^2
 
   # the "normal:normal:invChisq" && prior$conjugate  case
   if(iType == 6 || iType == 15)
